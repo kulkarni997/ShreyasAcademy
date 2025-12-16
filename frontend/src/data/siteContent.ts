@@ -210,11 +210,12 @@ export const pricingPlans: PricingPlan[] = [
     name: '6 Month Complete',
     price: '₹13,999',
     originalPrice: '₹23,999',
-    duration: 'Comprehensive preparation',
+    duration: 'Monthly Special • Comprehensive preparation',
+    badge: 'Special Offer',
     features: [
       'Everything in 1 Month plan',
       'Personal mentor assignment',
-      'Weekly mock tests',
+      'Monthly mock tests',
       'Performance analytics',
       'Priority doubt resolution',
     ],
@@ -223,8 +224,8 @@ export const pricingPlans: PricingPlan[] = [
     name: '16 Month Elite',
     price: '₹34,999',
     originalPrice: '₹53,999',
-    duration: 'Complete NEET journey',
-    badge: 'Most Recommended',
+    duration: 'Complete NEET journey • Most recommended',
+    badge: 'Few Slots Left',
     featured: true,
     features: [
       'Everything in 6 Month plan',
@@ -240,6 +241,7 @@ export const pricingPlans: PricingPlan[] = [
     name: 'One on One Mentorship',
     price: '₹7,999',
     originalPrice: '₹9,999',
+    badge: '5 Slots Left',
     duration: 'Personalised 1-to-1 guidance for guaranteed improvement',
     features: [
       'Daily 1-on-1 live mentorship sessions',

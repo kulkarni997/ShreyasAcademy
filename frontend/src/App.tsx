@@ -139,8 +139,8 @@ const App = () => {
                 India&apos;s Most Elite NEET Mentorship Program Guided by MBBS Toppers
               </h1>
               <p className="hero-subtitle">
-                Learn directly from NEET toppers with AIR 17, 80, 159, 214, 256 and many more top ranks
-                across Karnataka, Andhra Pradesh &amp; Tamil Nadu.
+                <strong>Learn directly from</strong> NEET toppers with AIR 17, 28, 42, 80, 95, 120, 159, 214, 256 and many more top ranks
+                from prestigious institutions like <strong>AIIMS Delhi</strong>, <strong>JIPMER</strong>, <strong>CMC Vellore</strong>, and <strong>KMC Manipal</strong>.
               </p>
               <div className="hero-features">
                 📚 Personal Guidance + Topper Strategy + Daily Study Plan 
@@ -272,24 +272,24 @@ const App = () => {
             <div className="about-content">
               <div className="about-text">
                 <p className="rewards-intro">
-                  At Shreyas Academy, your dedication and hard work are truly valued. Here&apos;s how your performance can open doors to inspiring experiences and amazing prizes:
+                  At <strong>Shreyas Academy</strong>, your <span className="highlight">dedication</span> and <span className="highlight">hard work</span> are truly valued. Here's how your performance can open doors to <strong>inspiring experiences</strong> and <span className="highlight">amazing prizes</span>:
                 </p>
                 <div className="rewards-list">
                   <div className="reward-item reveal-on-scroll">
                     <div className="reward-icon">🏆</div>
                     <div className="reward-content">
-                      <h3>Monthly Special Test Achievers</h3>
+                      <h3>6-Monthly <span className="highlight">Special Test Achievers</span></h3>
                       <p>
-                        Score the target marks in our exclusive monthly tests, and you&apos;ll earn a sponsored campus tour of <strong>AIIMS Delhi</strong> or <strong>JIPMER</strong> — a once-in-a-lifetime chance to experience India&apos;s top medical colleges up close.
+                        Score the <strong>target marks</strong> in our <span className="highlight">exclusive monthly tests</span> for <strong>6 months</strong>, and you'll earn a <span className="highlight">sponsored campus tour</span> of <strong>AIIMS Delhi</strong> or <strong>JIPMER</strong> — a <span className="highlight">once-in-a-lifetime</span> chance to experience India's <strong>top medical colleges</strong> up close.
                       </p>
                     </div>
                   </div>
                   <div className="reward-item reveal-on-scroll">
                     <div className="reward-icon">⭐</div>
                     <div className="reward-content">
-                      <h3>Weekly Test Stars</h3>
+                      <h3><span className="highlight">Monthly Test Stars</span></h3>
                       <p>
-                        Consistently perform well in weekly tests? You&apos;ll win exciting prizes to keep your motivation high all year long.
+                        <strong>Consistently perform well</strong> in monthly tests? You'll win <span className="highlight">exciting prizes</span> to keep your <strong>motivation high</strong> all year long.
                       </p>
                     </div>
                   </div>
