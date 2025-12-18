@@ -5,7 +5,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import axios from "axios";
 import bcrypt from "bcrypt";
-import User from "./models/User.ts";
+import User from "./models/User";
 
 
 dotenv.config();

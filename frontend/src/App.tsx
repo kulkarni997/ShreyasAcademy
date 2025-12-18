@@ -12,7 +12,47 @@ import type { ContactFormPayload } from './services/contactService';
 import { submitContactForm } from './services/contactService';
 import academyLogo from './assets/logo.jpg';
 import bookShowcase from './assets/book.jpg';
-import './App.css'; 
+import './App.css';
+
+// Mentor images
+import balajiTejasImg from './assets/mentors/balaji tejas.png.png';
+import chaitanyaImg from './assets/mentors/chaitanya.png.png';
+import charanImg from './assets/mentors/charan.png.png';
+// @ts-ignore - .PNG extension
+import harishrajImg from './assets/mentors/Harishraj d.png.PNG';
+import lakshyaPujarImg from './assets/mentors/lakshya pujar.png.png';
+import nuthanImg from './assets/mentors/nuthan.png.jpeg';
+import saiCharanImg from './assets/mentors/sai charan.png.png';
+import saishPanditImg from './assets/mentors/saish pandit.png.png';
+// @ts-ignore - .PNG extension
+import samrudhImg from './assets/mentors/samrudh.png.PNG';
+import shreyasMImg from './assets/mentors/shreyas m .png.png';
+import siddarthImg from './assets/mentors/siddarth.png.png';
+// @ts-ignore - .PNG extension
+import srujanSakpalImg from './assets/mentors/srujan sakpal.PNG';
+import varunSubramaniImg from './assets/mentors/varun subramani.png.png';
+// @ts-ignore - .PNG extension
+import vasanthUdayImg from './assets/mentors/Vasanth uday.png.PNG';
+import viswajitImg from './assets/mentors/viswajit.png.png';
+
+// Map mentor names to their images
+const mentorImageMap: Record<string, string> = {
+  'Saish Pandit': saishPanditImg,
+  'Shreyas M': shreyasMImg,
+  'Harish Raj D V': harishrajImg,
+  'Siddharth': siddarthImg,
+  'Sai Charan': saiCharanImg,
+  'Viswajitt R P': viswajitImg,
+  'Srujan D': srujanSakpalImg,
+  'Balaji Tejas': balajiTejasImg,
+  'Nuthan': nuthanImg,
+  'Charan': charanImg,
+  'Chaitanya': chaitanyaImg,
+  'Lakshya Pujar': lakshyaPujarImg,
+  'Samrudh': samrudhImg,
+  'Varun Subramani': varunSubramaniImg,
+  'Vasanth Uday': vasanthUdayImg,
+}; 
 
 
 const initialFormState: ContactFormPayload = {
@@ -144,31 +184,12 @@ const App = () => {
                 📚 Personal Guidance + Topper Strategy + Daily Study Plan 
               </div>
               <div className="cta-buttons">
-                <a href="#enroll" className="btn btn-primary" onClick={(event) => handleNavClick(event, 'enroll')}>
+                <Link to="/signup" className="btn btn-primary">
                   Enroll Now
-                </a>
-                <div className="auth-buttons">
-                  <Link
-                    to="/signup"
-                    className="btn btn-auth-signin"
-                  >
-                    Sign in
-                  </Link>
-                  <a
-                    href="#login-student"
-                    className="btn btn-auth-login"
-                    onClick={(event) => handleNavClick(event, 'login-student')}
-                  >
-                    Already enrolled? Log in
-                  </a>
-                  <a
-                    href="#login-mentor"
-                    className="btn btn-auth-mentor"
-                    onClick={(event) => handleNavClick(event, 'login-mentor')}
-                  >
-                    Login for Mentors
-                  </a>
-                </div>
+                </Link>
+                <Link to="/login" className="btn btn-secondary">
+                  Already enrolled? Log in
+                </Link>
               </div>
             </div>
           </div>
@@ -186,7 +207,15 @@ const App = () => {
               {mentors.slice(0, 6).map((mentor) => (
                 <div className="mentor-card reveal-on-scroll" key={mentor.name}>
                   <div className="mentor-image-placeholder">
-                    <div className="mentor-image-icon">👤</div>
+                    {mentorImageMap[mentor.name] ? (
+                      <img 
+                        src={mentorImageMap[mentor.name]} 
+                        alt={mentor.name}
+                        className="mentor-avatar"
+                      />
+                    ) : (
+                      <div className="mentor-image-icon">👤</div>
+                    )}
                   </div>
                   <div className="mentor-content">
                     <div className="mentor-rank">{mentor.rank}</div>
@@ -233,7 +262,15 @@ const App = () => {
                 {mentors.map((mentor) => (
                   <div className="mentor-card reveal-on-scroll" key={mentor.name}>
                     <div className="mentor-image-placeholder">
-                      <div className="mentor-image-icon">👤</div>
+                      {mentorImageMap[mentor.name] ? (
+                        <img 
+                          src={mentorImageMap[mentor.name]} 
+                          alt={mentor.name}
+                          className="mentor-avatar"
+                        />
+                      ) : (
+                        <div className="mentor-image-icon">👤</div>
+                      )}
                     </div>
                     <div className="mentor-content">
                       <div className="mentor-rank">{mentor.rank}</div>
@@ -551,12 +588,7 @@ const App = () => {
             <a href="#contact" onClick={(event) => handleNavClick(event, 'contact')}>
               Contact Support
             </a>
-            <a href="#login-student" onClick={(event) => handleNavClick(event, 'login-student')}>
-              Student Login
-            </a>
-            <a href="#login-mentor" onClick={(event) => handleNavClick(event, 'login-mentor')}>
-              Mentor Login
-            </a>
+            <Link to="/login">Student Login</Link>
           </div>
           <div className="footer-section">
             <h3>Legal</h3>
@@ -575,3 +607,4 @@ const App = () => {
 };
 
 export default App;
+

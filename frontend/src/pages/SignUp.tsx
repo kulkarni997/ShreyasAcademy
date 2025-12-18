@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import axios from "axios";
 
 const SignUp = () => {
@@ -86,6 +88,7 @@ const SignUp = () => {
                 {loading ? "Creating account..." : "Sign Up"}
               </button>
             </form>
+
           </div>
         </div>
       </div>
