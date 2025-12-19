@@ -742,35 +742,42 @@ button {
 .mentor-card {
   background: var(--white);
   border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px var(--shadow);
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+  padding: 0;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(30, 58, 138, 0.1);
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  gap: 1.5rem;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0 auto;
+  overflow: hidden;
   text-align: left;
+  position: relative;
+  z-index: 1;
 }
 
 .mentor-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(30, 64, 175, 0.15);
-  border-color: var(--accent-blue);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(30, 64, 175, 0.15), 0 5px 15px rgba(0, 0, 0, 0.07);
+  border-color: rgba(59, 130, 246, 0.3);
 }
 
 .mentor-image-placeholder {
-  width: 140px;
-  height: 140px;
-  min-width: 140px;
-  border-radius: 12px;
+  width: 50%;
+  min-height: 300px;
   background: linear-gradient(135deg, var(--light-blue), rgba(59, 130, 246, 0.1));
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid var(--primary-blue);
+  border: none;
+  border-radius: 0;
+  border-right: 3px solid var(--primary-blue);
   overflow: hidden;
   position: relative;
+  padding: 0;
+  margin: 0;
 }
 
 .mentor-image-placeholder img {
@@ -788,7 +795,11 @@ button {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
+  padding: 2rem;
+  width: 50%;
+  box-sizing: border-box;
+  justify-content: center;
 }
 
 .mentor-rank {
@@ -818,9 +829,10 @@ button {
 
 .mentor-college {
   color: var(--primary-blue);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
 }
 
 .mentor-achievements {
@@ -1805,6 +1817,26 @@ button {
 }
 
 @media (max-width: 768px) {
+  .mentor-card {
+    flex-direction: column;
+    max-width: 100%;
+  }
+  
+  .mentor-image-placeholder {
+    width: 100%;
+    min-height: 200px;
+    border-right: none;
+    border-bottom: 3px solid var(--primary-blue);
+  }
+  
+  .mentor-content {
+    width: 100%;
+    padding: 1.5rem;
+  }
+  
+  .mentor-grid {
+    grid-template-columns: 1fr;
+  }
   .nav-links {
     position: fixed;
     top: 80px;

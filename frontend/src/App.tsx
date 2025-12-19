@@ -10,15 +10,12 @@ import {
   supportHours,
 } from './data/siteContent';
 import { mentors } from './data/mentors';
-
-
 import type { ContactFormPayload } from './services/contactService';
 import { submitContactForm } from './services/contactService';
 import academyLogo from './assets/logo.jpg';
 import bookShowcase from './assets/book.jpg';
 import './App.css';
 import MentorCard from './components/MentorCard';
-
 
 const initialFormState: ContactFormPayload = {
   name: '',
