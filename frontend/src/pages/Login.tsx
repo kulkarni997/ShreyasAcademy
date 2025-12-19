@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import "../App.css";
-
 
 const Login = () => {
   const [phone, setPhone] = useState("");
@@ -16,10 +14,17 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/login", {
-        phone,
-        password,
-      });
+      // Make login request with credentials enabled (for cookies)
+      const res = await axios.post(
+        "http://localhost:5000/login",
+        {
+          phone,
+          password,
+        },
+        {
+          withCredentials: true, // Enable sending/receiving cookies
+        }
+      );
 
       alert(res.data.message || "Login successful 🎉");
       // TODO: Handle login success, e.g., redirect or set auth state
@@ -31,42 +36,60 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-page">
-      <h1>Welcome Back</h1>
-      <p>Log in to continue your mentorship journey</p>
+    <section className="contact" style={{ minHeight: "100vh" }}>
+      <div className="section-container">
+        <div className="contact-content">
+          <div className="contact-info">
+            <h2>Welcome Back</h2>
+            <p>
+              Log in to continue your mentorship journey
+            </p>
+          </div>
 
-      <form onSubmit={handleLogin} className="auth-form">
-        <input
-          type="text"
-          placeholder="Phone Number"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-        />
+          <div className="contact-form">
+            <form onSubmit={handleLogin}>
+              <div className="form-group">
+                <label>Phone Number</label>
+                <input
+                  type="text"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+              <div className="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
 
-        {error && (
-          <p style={{ color: "red", marginBottom: "10px" }}>
-            {error}
-          </p>
-        )}
+              {error && (
+                <p style={{ color: "red", marginBottom: "10px" }}>
+                  {error}
+                </p>
+              )}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Log In"}
-        </button>
-      </form>
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Logging in..." : "Log In"}
+              </button>
+            </form>
 
-      <p style={{ marginTop: "20px" }}>
-        Don't have an account? <Link to="/signup">Sign up</Link>
-      </p>
-    </div>
+            <p style={{ marginTop: "20px", textAlign: "center", color: "var(--gray)" }}>
+              Don't have an account? <Link to="/signup" style={{ color: "var(--primary-blue)", fontWeight: 600, textDecoration: "none" }}>Sign up</Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
