@@ -44,38 +44,68 @@
 /* ===== Mentors Page ===== */
 
 .all-mentors {
-  background: #f8fafc; /* SAME neutral background */
+  background: #f8fafc;
   padding: 4rem 1rem;
 }
 
 .section-container {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
+  position: relative;
+  padding-top: 60px;
 }
 
+
+
+/* Mentor Grid */
 .mentor-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  margin-top: 2rem;
+  padding: 0 3rem;
 }
 
+
+/* Mentor Card */
 .mentor-card {
   background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  display: flex;
-  gap: 1rem;
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  position: relative;
 }
 
-.mentor-image-placeholder {
-  width: 96px;
-  height: 96px;
-  border-radius: 16px;
-  border: 2px solid #1d4ed8;
-  overflow: hidden;            /* 🔥 IMPORTANT */
-  background: #eaf2ff;
+.mentor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Card Inner */
+.mentor-card-inner {
+  display: flex;
+  min-height: 220px;
+}
+
+/* ===== LEFT HALF : IMAGE ===== */
+.mentor-image-container {
+  width: 50%;
+  background: #ffd700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mentor-image-wrapper {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,33 +114,190 @@
 .mentor-avatar {
   width: 100%;
   height: 100%;
-  object-fit: cover;           /* 🔥 THIS MAKES IMAGE SHOW */
-  border-radius: 14px;
-  display: block;
+  object-fit: contain;
+  object-position: center;
+  padding: 1.2rem;
 }
 
-
- .mentor-avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;           /* 🔥 THIS MAKES IMAGE SHOW */
-  border-radius: 14px;
-  display: block;
-}
-
+/* ===== RIGHT HALF : CONTENT ===== */
 .mentor-content {
-  flex: 1;
+  width: 50%;
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
 }
 
-.mentor-rank {
+/* Rank Badge */
+.mentor-rank-badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: #2563eb;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 1rem;
   font-weight: 700;
-  color: #4f46e5;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  z-index: 2;
+  min-width: 80px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
 }
 
-.mentor-speciality {
-  display: inline-block;
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
-  color: #64748b;
+/* Mentor Details */
+.mentor-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(
+    90deg,
+    #1e3a8a,
+    #2563eb,
+    #38bdf8
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.4rem;
+}
+
+
+.mentor-location {
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: linear-gradient(
+    to right,
+    #475569,
+    #64748b
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.2rem;
+}
+
+
+.mentor-qualification {
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #60a5fa
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: 0.4rem;
+}
+
+
+/* Achievements */
+.mentor-achievements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.achievement-badge {
+  background: linear-gradient(
+    135deg,
+    #e0f2fe,
+    #dbeafe
+  );
+  color: #1e3a8a;
+  font-weight: 600;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.6),
+    0 4px 10px rgba(30,58,138,0.15);
+}
+
+.mentor-card:hover .mentor-name {
+  filter: brightness(1.1);
+}
+
+
+/* ===== Mobile ===== */
+@media (max-width: 640px) {
+  .mentor-card-inner {
+    flex-direction: column;
+  }
+
+   .mentor-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1.25rem;
+  }
+
+  .mentor-image-container,
+  .mentor-content {
+    width: 100%;
+  }
+
+  .mentor-image-container {
+    height: 220px;
+  }
+
+  .mentor-content {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .mentor-achievements {
+    justify-content: center;
+  }
+
+ .mentor-rank-badge {
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1e40af
+  );
+  box-shadow: 0 6px 20px rgba(37,99,235,0.45);
+  letter-spacing: 0.6px;
+  font-size: 0.95rem;
+  padding: 7px 16px;
+  top: 1rem;
+  right: 1rem;
+}
+
+}
+
+
+/* Go Back Button */
+.go-back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.go-back-button:hover {
+  background-color: #1e3a8a;
+}
+
+.go-back-button svg {
+  font-size: 14px;
+}
+
+/* Adjust section container to accommodate the absolute button */
+.section-container {
+  position: relative;
+  padding-top: 60px; /* Add space for the button */
 }
 

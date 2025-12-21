@@ -1,10 +1,19 @@
 import { mentors } from "../data/mentors";
 import MentorCard from "../components/MentorCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 const Mentors = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="all-mentors" id="all-mentors" style={{ minHeight: "100vh" }}>
+      <button 
+        onClick={() => navigate(-1)}
+        className="go-back-button"
+        aria-label="Go back to previous page"
+      >
+        ← Go Back
+      </button>
       <div className="section-container">
         <div className="section-header">
           <h2 className="section-title">All Our Mentors</h2>

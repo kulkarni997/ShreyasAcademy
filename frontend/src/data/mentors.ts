@@ -20,6 +20,15 @@ export const mentors: Mentor[] = [
     image: '/images/mentors/chaitanya.png.png',
   },
   {
+    rank: 'AIR 985',
+    name: 'Srujan D',
+    state: 'Karnataka',
+    speciality: 'Senior Mentor',
+    achievements: ['Karnataka NEET Rank 71', 'JEE 98.52'],
+    college: 'MBBS at JIPMER Pondicherry',
+    image: '/images/mentors/srujan-sakpal.PNG',
+  },
+  {
     rank: 'AIR 80',
     name: 'Diganth',
     state: 'Karnataka',
@@ -36,15 +45,6 @@ export const mentors: Mentor[] = [
     achievements: ['Karnataka NEET Rank 10', 'JEE 99.76', 'IISER AIR 66', 'NDA Cleared', 'KCET Rank 2'],
     college: 'MBBS at JIPMER Pondicherry',
     image: '/images/mentors/saish-pandit.png.png',
-  },
-  {
-    rank: 'AIR 214',
-    name: 'Shreyas M',
-    state: 'Karnataka',
-    speciality: 'Senior Mentor',
-    achievements: ['Karnataka NEET Rank 14', 'JEE 98.66'],
-    college: 'MBBS at JIPMER Pondicherry',
-    image: '/images/mentors/shreyas-m .png.png',
   },
   {
     rank: 'AIR 256',
@@ -81,15 +81,6 @@ export const mentors: Mentor[] = [
     achievements: ['Tamil Nadu Rank 36', 'JEE 99', 'JEE Physics 100% (twice)'],
     college: 'MBBS at JIPMER Pondicherry',
     image: '/images/mentors/viswajit.png.png',
-  },
-  {
-    rank: 'AIR 985',
-    name: 'Srujan D',
-    state: 'Karnataka',
-    speciality: 'Senior Mentor',
-    achievements: ['Karnataka NEET Rank 71', 'JEE 98.52'],
-    college: 'MBBS at JIPMER Pondicherry',
-    image: '/images/mentors/srujan-sakpal.PNG',
   },
   {
     rank: 'AIR 2591',
