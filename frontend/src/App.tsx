@@ -138,15 +138,15 @@ const App = () => {
                 India&apos;s Most Elite NEET Mentorship Program Guided by MBBS Toppers
               </h1>
               <p className="hero-subtitle">
-                <strong>Learn directly from</strong> NEET toppers with AIR 17, 28, 42, 80, 95, 120, 159, 214, 256 and many more top ranks
-                from prestigious institutions like <strong>AIIMS Delhi</strong>, <strong>JIPMER</strong>, <strong>CMC Vellore</strong>, and <strong>KMC Manipal</strong>.
+                <strong>Learn directly from</strong> NEET toppers with AIR 17, 80, 159, 214, 256 and many more top ranks
+                from prestigious institutions like <strong>AIIMS Delhi</strong>, <strong>JIPMER</strong>, <strong>BMC</strong>.
               </p>
               <div className="hero-features">
                 📚 Personal Guidance + Topper Strategy + Daily Study Plan 
               </div>
               <div className="cta-buttons">
                 <Link to="/signup" className="btn btn-primary">
-                  Enroll Now
+                  Sign in
                 </Link>
                 <Link to="/login" className="btn btn-secondary">
                   Already enrolled? Log in

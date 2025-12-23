@@ -3,6 +3,7 @@ import App from "./App";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Mentors from "./pages/Mentors";
+import Dashboard from "./pages/Dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ export const router = createBrowserRouter([
     path: "/mentors",
     element: <Mentors />,
   },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+  },
 ]);
+
 
 

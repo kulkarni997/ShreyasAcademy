@@ -41,76 +41,493 @@
 .read-the-docs {
   color: #888;
 }
-/* ===== Mentors Page ===== */
 
+/* ===== Mentors Page ===== */
 .all-mentors {
-  background: #f8fafc; /* SAME neutral background */
-  padding: 4rem 1rem;
+  background: #f8fafc;
+  padding: 0 1rem 4rem;
 }
 
 .section-container {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
+  position: relative;
+  padding-top: 0;
 }
 
+/* Mentor Grid */
 .mentor-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  margin-top: 2rem;
+  padding: 0 3rem;
 }
 
+/* ===== MENTOR CARD ===== */
 .mentor-card {
+  width: 100%;
+  min-height: 300px;
+  margin-bottom: 2rem;
   background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  display: flex;
-  gap: 1rem;
+  border-radius: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+  will-change: opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-.mentor-image-placeholder {
-  width: 96px;
-  height: 96px;
-  border-radius: 16px;
-  border: 2px solid #1d4ed8;
-  overflow: hidden;            /* 🔥 IMPORTANT */
-  background: #eaf2ff;
+.mentor-card.visible {
+  opacity: 1;
+}
+
+.mentor-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.mentor-card-inner {
+  display: flex;
+  min-height: 300px;
+  position: relative;
+}
+
+/* ===== LEFT SECTION - Image with Blob ===== */
+.mentor-image-section {
+  position: relative;
+  width: 40%;
+  min-width: 200px;
+  height: 100%;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.blob-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.blob-background svg {
+  width: 100%;
+  height: 100%;
+  max-width: 280px;
+  max-height: 280px;
+  filter: drop-shadow(0 10px 15px rgba(165, 180, 252, 0.3));
+}
+
+.mentor-card:hover .blob-background svg {
+  transform: scale(1.05);
+  transition: transform 300ms ease;
+}
+
+.mentor-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 2;
+}
+
 .mentor-avatar {
   width: 100%;
-  height: 100%;
-  object-fit: cover;           /* 🔥 THIS MAKES IMAGE SHOW */
-  border-radius: 14px;
+  max-width: 180px;
+  min-height: 350px;
+  height: auto;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: bottom center;
+  position: relative;
+  z-index: 2;
+  border-radius: 12px 12px 0 0;
+  background: transparent;
   display: block;
+  /* Prevent alt text from dancing */
+  font-size: 0.85rem;
+  color: #64748b;
+  text-align: center;
+  font-weight: 500;
 }
 
-
- .mentor-avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;           /* 🔥 THIS MAKES IMAGE SHOW */
-  border-radius: 14px;
-  display: block;
-}
-
+/* ===== RIGHT SECTION - Content ===== */
 .mentor-content {
-  flex: 1;
+  width: 60%;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
-.mentor-rank {
+.mentor-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.mentor-name {
+  font-size: 1.75rem;
   font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1.2;
+  background: linear-gradient(90deg, #1e3a8a, #2563eb, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.mentor-card:hover .mentor-name {
+  filter: brightness(1.1);
+}
+
+.experience-badge {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  flex-shrink: 0;
+}
+
+.mentor-subject {
+  color: #6366f1;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+}
+
+.mentor-meta {
+  margin: 0.5rem 0 1.5rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.mentor-meta p {
+  margin: 0.4rem 0;
+  color: #64748b;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+
+.meta-label {
+  font-weight: 600;
+  color: #475569;
+  min-width: 80px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.mentor-speciality,
+.mentor-location,
+.mentor-college {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.mentor-achievements {
+  margin-top: 1.5rem;
+}
+
+.achievements-label {
+  font-weight: 600;
+  color: #475569;
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+}
+
+.achievements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background-color: rgba(199, 180, 255, 0.2);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #4c1d95;
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.achievement-bullet {
+  color: #6366f1;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 0.2em;
+}
+
+.achievement-text {
+  flex: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.achievement-tag {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.mentor-card:hover .achievement-tag {
+  background: #e0e7ff;
   color: #4f46e5;
 }
 
-.mentor-speciality {
-  display: inline-block;
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
-  color: #64748b;
+/* Go Back Button */
+.go-back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.go-back-button:hover {
+  background-color: #1e3a8a;
+}
+
+.go-back-button svg {
+  font-size: 14px;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 992px) {
+  .mentor-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 0 2rem;
+  }
+
+  .mentor-card-inner {
+    flex-direction: column;
+    min-height: auto;
+  }
+  
+  .mentor-image-section,
+  .mentor-content {
+    width: 100%;
+  }
+  
+  .mentor-image-section {
+    padding: 2rem 2rem 0;
+    height: auto;
+    min-height: 300px;
+    align-items: flex-end;
+  }
+
+  .mentor-avatar {
+    max-width: 220px;
+    min-height: 300px;
+  }
+
+  .blob-background svg {
+    max-width: 240px;
+    max-height: 240px;
+  }
+  
+  .mentor-content {
+    padding: 2rem 2rem 2.5rem;
+  }
+  
+  .mentor-name {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mentor-grid {
+    padding: 0 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .mentor-image-section {
+    min-height: 280px;
+    padding: 1.5rem 1.5rem 0;
+  }
+
+  .mentor-avatar {
+    max-width: 200px;
+    min-height: 280px;
+  }
+
+  .blob-background svg {
+    max-width: 220px;
+    max-height: 220px;
+  }
+
+  .mentor-content {
+    padding: 1.5rem 2rem 2rem;
+  }
+
+  .mentor-name {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .mentor-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+    gap: 1.5rem;
+  }
+
+  .mentor-card {
+    min-height: auto;
+  }
+
+  .mentor-card-inner {
+    flex-direction: column;
+  }
+
+  .mentor-image-section {
+    height: auto;
+    min-height: 260px;
+    padding: 1.5rem 1rem 0;
+  }
+
+  .mentor-avatar {
+    max-width: 180px;
+    min-height: 260px;
+  }
+
+  .blob-background svg {
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .mentor-content {
+    padding: 1.5rem;
+  }
+
+  .mentor-name {
+    font-size: 1.4rem;
+  }
+  
+  .experience-badge {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.8rem;
+  }
+
+  .mentor-meta p {
+    font-size: 0.85rem;
+  }
+
+  .meta-label {
+    min-width: 70px;
+  }
+
+  .mentor-achievements {
+    margin-top: 1rem;
+  }
+
+  .achievement-item {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mentor-grid {
+    padding: 0 0.75rem;
+  }
+
+  .mentor-image-section {
+    min-height: 240px;
+    padding: 1rem 1rem 0;
+  }
+
+  .mentor-avatar {
+    max-width: 160px;
+    min-height: 240px;
+  }
+
+  .blob-background svg {
+    max-width: 180px;
+    max-height: 180px;
+  }
+
+  .mentor-content {
+    padding: 1.25rem;
+  }
+
+  .mentor-name {
+    font-size: 1.3rem;
+  }
+
+  .mentor-header {
+    gap: 0.75rem;
+  }
+
+  .experience-badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.7rem;
+  }
+
+  .mentor-meta {
+    margin: 0.5rem 0 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .mentor-meta p {
+    font-size: 0.8rem;
+    margin: 0.3rem 0;
+  }
+
+  .meta-label {
+    min-width: 65px;
+    font-size: 0.8rem;
+  }
+
+  .achievements-label {
+    font-size: 0.85rem;
+  }
+
+  .achievement-item {
+    font-size: 0.8rem;
+  }
+}

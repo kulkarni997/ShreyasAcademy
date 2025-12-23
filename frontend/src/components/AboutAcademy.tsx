@@ -12,6 +12,17 @@ const AboutAcademy = () => {
         </div>
 
         <div className="about-content">
+          <div className="about-hero reveal-on-scroll">
+            <div className="about-hero-text">
+              <h3>Welcome to Shreyas Academy</h3>
+              <p>At Shreyas Academy, we're dedicated to nurturing the next generation of medical professionals through comprehensive NEET preparation and mentorship.</p>
+              <p>Our unique approach combines structured learning with personalized guidance from top NEET rankers, ensuring every student receives the support they need to excel.</p>
+              <p>Join us on this journey to achieve your medical career aspirations with confidence and excellence.</p>
+            </div>
+            <div className="about-hero-image">
+              <img src="/about.png" alt="Shreyas Academy - NEET Preparation" />
+            </div>
+          </div>
           <div className="about-card reveal-on-scroll">
             <div className="about-icon">🎓</div>
             <h3>Live Online Study Sessions</h3>
