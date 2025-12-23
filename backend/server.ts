@@ -22,9 +22,10 @@ const JWT_SECRET =
   process.env.JWT_SECRET || "change-this-secret-in-production";
 
 /* ================= MIDDLEWARE ================= */
+/* ✅ FIXED CORS – allow all localhost Vite ports */
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: true,
     credentials: true,
   })
 );
@@ -48,7 +49,7 @@ app.post("/signup", async (req: Request, res: Response) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "Email already registered" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -60,10 +61,15 @@ app.post("/signup", async (req: Request, res: Response) => {
       password: hashedPassword,
     });
 
-    res.status(201).json({ message: "Signup successful 🎉" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(201).json({ message: "Signup successful 🎉" });
+  } catch (error: any) {
+    console.error("Signup error:", error);
+
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    return res.status(400).json({ message: "Signup failed" });
   }
 });
 
@@ -101,7 +107,7 @@ app.post("/login", async (req: Request, res: Response) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({
+    return res.json({
       message: "Login successful 🎉",
       user: {
         name: user.name,
@@ -110,11 +116,11 @@ app.post("/login", async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
-/* ================= AUTH MIDDLEWARE ================= */
+/* ================= AUTH ================= */
 const verifyToken = (
   req: Request,
   res: Response,
@@ -148,7 +154,7 @@ app.get("/profile", verifyToken, async (req: Request, res: Response) => {
     return res.status(404).json({ message: "User not found" });
   }
 
-  res.json({ user });
+  return res.json({ user });
 });
 
 /* ================= LOGOUT ================= */
@@ -159,7 +165,7 @@ app.post("/logout", (_req: Request, res: Response) => {
     sameSite: "lax",
   });
 
-  res.json({ message: "Logged out successfully" });
+  return res.json({ message: "Logged out successfully" });
 });
 
 /* ================= START ================= */
