@@ -138,14 +138,14 @@ export const faqs: FAQItem[] = [
   {
     question: 'What is your refund policy?',
     answer:
-      "We offer a 7-day money-back guarantee. If you're not satisfied within the first week, we'll provide a full refund, no questions asked. After 7 days, refunds are processed on a case-by-case basis.",
+      "All sales are final, and no refunds will be issued under any circumstances. Purchases are non-refundable once completed.",
   },
 ];
 
 export const contactDetails: ContactDetail[] = [
   { icon: '📧', label: 'Email', value: 'support@shreyasacademy.com' },
-  { icon: '📞', label: 'Phone', value: '+91 98765 43210' },
+  { icon: '📞', label: 'Phone', value: '+91 7411060709' },
 ];
 
-export const supportHours = 'Mon-Sat: 9AM - 8PM IST';
+export const supportHours = 'Mon-Sat: 9AM - 5PM IST';
 
