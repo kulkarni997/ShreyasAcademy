@@ -41,3 +41,76 @@
 .read-the-docs {
   color: #888;
 }
+/* ===== Mentors Page ===== */
+
+.all-mentors {
+  background: #f8fafc; /* SAME neutral background */
+  padding: 4rem 1rem;
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mentor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.mentor-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  display: flex;
+  gap: 1rem;
+}
+
+.mentor-image-placeholder {
+  width: 96px;
+  height: 96px;
+  border-radius: 16px;
+  border: 2px solid #1d4ed8;
+  overflow: hidden;            /* 🔥 IMPORTANT */
+  background: #eaf2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mentor-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;           /* 🔥 THIS MAKES IMAGE SHOW */
+  border-radius: 14px;
+  display: block;
+}
+
+
+ .mentor-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;           /* 🔥 THIS MAKES IMAGE SHOW */
+  border-radius: 14px;
+  display: block;
+}
+
+.mentor-content {
+  flex: 1;
+}
+
+.mentor-rank {
+  font-weight: 700;
+  color: #4f46e5;
+}
+
+.mentor-speciality {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+

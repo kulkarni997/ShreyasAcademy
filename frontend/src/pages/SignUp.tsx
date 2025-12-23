@@ -1,22 +1,66 @@
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 import axios from "axios";
 
 const SignUp = () => {
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const validate = () => {
+    const errs: Record<string, string> = {};
+
+    if (!firstName.trim() || firstName.trim().length < 2) {
+      errs.firstName = "First name must be at least 2 characters.";
+    }
+
+    if (!lastName.trim() || lastName.trim().length < 2) {
+      errs.lastName = "Last name must be at least 2 characters.";
+    }
+
+    if (!email.trim()) {
+      errs.email = "Email is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      errs.email = "Please enter a valid email address.";
+    }
+
+    if (!phone.trim()) {
+      errs.phone = "Phone number is required.";
+    } else if (!/^\d{10}$/.test(phone.trim())) {
+      errs.phone = "Phone number must be 10 digits.";
+    }
+
+    if (!password || password.length < 8) {
+      errs.password = "Password must be at least 8 characters.";
+    }
+
+    setFieldErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!validate()) {
+      return;
+    }
+
     setLoading(true);
+
+    const name = `${firstName.trim()} ${lastName.trim()}`.trim();
 
     try {
       const res = await axios.post("http://localhost:5000/signup", {
         name,
-        phone,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
         password,
       });
 
@@ -43,39 +87,72 @@ const SignUp = () => {
           <div className="contact-form">
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>Full Name</label>
+                <label>First Name</label>
                 <input
                   type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
                 />
+                {fieldErrors.firstName && (
+                  <span className="error-message">{fieldErrors.firstName}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                />
+                {fieldErrors.lastName && (
+                  <span className="error-message">{fieldErrors.lastName}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                {fieldErrors.email && (
+                  <span className="error-message">{fieldErrors.email}</span>
+                )}
               </div>
 
               <div className="form-group">
                 <label>Phone Number</label>
                 <input
                   type="tel"
-                  required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  required
                 />
+                {fieldErrors.phone && (
+                  <span className="error-message">{fieldErrors.phone}</span>
+                )}
               </div>
 
               <div className="form-group">
                 <label>Password</label>
                 <input
                   type="password"
-                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
+                {fieldErrors.password && (
+                  <span className="error-message">{fieldErrors.password}</span>
+                )}
               </div>
 
               {error && (
-                <p style={{ color: "red", marginBottom: "10px" }}>
-                  {error}
-                </p>
+                <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>
               )}
 
               <button

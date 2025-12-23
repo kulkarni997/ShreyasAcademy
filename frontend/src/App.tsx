@@ -5,17 +5,17 @@ import AboutAcademy from './components/AboutAcademy';
 import {
   contactDetails,
   faqs,
-  mentors,
   navLinks,
   pricingPlans,
   supportHours,
 } from './data/siteContent';
+import { mentors } from './data/mentors';
 import type { ContactFormPayload } from './services/contactService';
 import { submitContactForm } from './services/contactService';
 import academyLogo from './assets/logo.jpg';
 import bookShowcase from './assets/book.jpg';
-import './App.css'; 
-
+import './App.css';
+import MentorCard from './components/MentorCard';
 
 const initialFormState: ContactFormPayload = {
   name: '',
@@ -30,7 +30,6 @@ const App = () => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [formValues, setFormValues] = useState<ContactFormPayload>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showAllMentors, setShowAllMentors] = useState(false);
 
   const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     event.preventDefault();
@@ -146,31 +145,12 @@ const App = () => {
                 📚 Personal Guidance + Topper Strategy + Daily Study Plan 
               </div>
               <div className="cta-buttons">
-                <a href="#enroll" className="btn btn-primary" onClick={(event) => handleNavClick(event, 'enroll')}>
+                <Link to="/signup" className="btn btn-primary">
                   Enroll Now
-                </a>
-                <div className="auth-buttons">
-                  <Link
-                    to="/signup"
-                    className="btn btn-auth-signin"
-                  >
-                    Sign in
-                  </Link>
-                  <a
-                    href="#login-student"
-                    className="btn btn-auth-login"
-                    onClick={(event) => handleNavClick(event, 'login-student')}
-                  >
-                    Already enrolled? Log in
-                  </a>
-                  <a
-                    href="#login-mentor"
-                    className="btn btn-auth-mentor"
-                    onClick={(event) => handleNavClick(event, 'login-mentor')}
-                  >
-                    Login for Mentors
-                  </a>
-                </div>
+                </Link>
+                <Link to="/login" className="btn btn-secondary">
+                  Already enrolled? Log in
+                </Link>
               </div>
             </div>
           </div>
@@ -190,79 +170,18 @@ const App = () => {
             </div>
             <div className="mentor-grid">
               {mentors.slice(0, 6).map((mentor) => (
-                <div className="mentor-card reveal-on-scroll" key={mentor.name}>
-                  <div className="mentor-image-placeholder">
-                    <div className="mentor-image-icon">👤</div>
-                  </div>
-                  <div className="mentor-content">
-                    <div className="mentor-rank">{mentor.rank}</div>
-                    <div className="mentor-info">
-                      <h3>{mentor.name}</h3>
-                      <p className="mentor-state">{mentor.state}</p>
-                      {mentor.college && <p className="mentor-college">{mentor.college}</p>}
-                      {mentor.achievements && mentor.achievements.length > 0 && (
-                        <div className="mentor-achievements">
-                          {mentor.achievements.map((achievement, idx) => (
-                            <span key={idx} className="achievement-badge">{achievement}</span>
-                          ))}
-                        </div>
-                      )}
-                      <span className="mentor-speciality">{mentor.speciality}</span>
-                    </div>
-                  </div>
-                </div>
+                <MentorCard key={mentor.name} mentor={mentor} />
               ))}
             </div>
             {mentors.length > 6 && (
               <div className="mentor-actions">
-                <button
-                  className="btn btn-primary"
-                  onClick={() => setShowAllMentors(!showAllMentors)}
-                >
-                  {showAllMentors ? 'Show Less' : 'See All Mentors'}
-                </button>
+                <Link className="btn btn-primary" to="/mentors">
+                  See All Mentors
+                </Link>
               </div>
             )}
           </div>
         </section>
-
-        {showAllMentors && (
-          <section className="all-mentors" id="all-mentors">
-            <div className="section-container">
-              <div className="section-header">
-                <h2 className="section-title">All Our Mentors</h2>
-                <p className="section-subtitle">
-                  Meet all our exceptional mentors who are ready to guide you to success
-                </p>
-              </div>
-              <div className="mentor-grid">
-                {mentors.map((mentor) => (
-                  <div className="mentor-card reveal-on-scroll" key={mentor.name}>
-                    <div className="mentor-image-placeholder">
-                      <div className="mentor-image-icon">👤</div>
-                    </div>
-                    <div className="mentor-content">
-                      <div className="mentor-rank">{mentor.rank}</div>
-                      <div className="mentor-info">
-                        <h3>{mentor.name}</h3>
-                        <p className="mentor-state">{mentor.state}</p>
-                        {mentor.college && <p className="mentor-college">{mentor.college}</p>}
-                        {mentor.achievements && mentor.achievements.length > 0 && (
-                          <div className="mentor-achievements">
-                            {mentor.achievements.map((achievement, idx) => (
-                              <span key={idx} className="achievement-badge">{achievement}</span>
-                            ))}
-                          </div>
-                        )}
-                        <span className="mentor-speciality">{mentor.speciality}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
 
         <section className="about" id="about">
           <div className="section-container">
@@ -557,12 +476,7 @@ const App = () => {
             <a href="#contact" onClick={(event) => handleNavClick(event, 'contact')}>
               Contact Support
             </a>
-            <a href="#login-student" onClick={(event) => handleNavClick(event, 'login-student')}>
-              Student Login
-            </a>
-            <a href="#login-mentor" onClick={(event) => handleNavClick(event, 'login-mentor')}>
-              Mentor Login
-            </a>
+            <Link to="/login">Student Login</Link>
           </div>
           <div className="footer-section">
             <h3>Legal</h3>
@@ -581,3 +495,4 @@ const App = () => {
 };
 
 export default App;
+
