@@ -6,11 +6,15 @@ interface IUser extends mongoose.Document {
   email: string;
   phone: string;
   password: string;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
 }
+
 
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
+
     email: {
       type: String,
       required: true,
@@ -18,20 +22,25 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+
     phone: { type: String, required: true },
+
     password: {
       type: String,
       required: true,
       select: false,
     },
+
+    // 🔐 Forgot password fields
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date },
   },
   { timestamps: true }
 );
 
-userSchema.pre("save", async function(this: any) {
+userSchema.pre("save", async function (this: any) {
   if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 10);
 });
 
 export default mongoose.model<IUser>("User", userSchema);
-

@@ -40,7 +40,6 @@ const Login = () => {
 
       // ✅ REDIRECT TO DASHBOARD
       navigate("/dashboard");
-
     } catch (err: any) {
       setError("Incorrect email or password. Please try again.");
     } finally {
@@ -77,6 +76,21 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+              </div>
+
+              {/* 🔑 Forgot Password Link */}
+              <div style={{ textAlign: "right", marginBottom: "10px" }}>
+                <Link
+                  to="/forgot-password"
+                  style={{
+                    fontSize: "14px",
+                    color: "var(--primary-blue)",
+                    textDecoration: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  Forgot password?
+                </Link>
               </div>
 
               {error && (
