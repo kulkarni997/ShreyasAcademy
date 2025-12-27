@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/Dashboard.css";
 
@@ -30,15 +29,20 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/profile",
-          { withCredentials: true }
-        );
-        setStudentData(response.data);
+        const response = await fetch("http://localhost:5000/profile", {
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile");
+        }
+
+        const data = await response.json();
+        setStudentData(data);
         setLoading(false);
       } catch (err: any) {
         console.error("Failed to fetch student data", err);
-        setError(err.response?.data?.message || "Failed to load dashboard");
+        setError(err.message || "Failed to load dashboard");
         setLoading(false);
       }
     };
@@ -48,11 +52,10 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        "http://localhost:5000/logout",
-        {},
-        { withCredentials: true }
-      );
+      await fetch("http://localhost:5000/logout", {
+        method: "POST",
+        credentials: "include",
+      });
       navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);

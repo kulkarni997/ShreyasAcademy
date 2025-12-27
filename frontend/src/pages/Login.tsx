@@ -1,142 +1,85 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import '../styles/Login.css';
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const isValidEmail = (email: string): boolean => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!isValidEmail(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
-    setError("");
-    setLoading(true);
+    setError('');
+    setIsLoading(true);
 
     try {
-      await axios.post(
-        "http://localhost:5000/login",
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(formData),
+      });
 
-      // ✅ REDIRECT TO DASHBOARD
-      navigate("/dashboard");
-    } catch (err: any) {
-      setError("Incorrect email or password. Please try again.");
+      const data = await response.json();
+
+      if (response.ok) {
+        // ✅ Redirect to dashboard on success
+        navigate('/dashboard');
+      } else {
+        setError(data.message || 'Login failed');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <section className="contact" style={{ minHeight: "100vh" }}>
-      <div className="section-container">
-        <div className="contact-content">
-          <div className="contact-info">
-            <h2>Welcome Back</h2>
-            <p>Log in to continue your mentorship journey</p>
+    <div className="login-page">
+      <div className="login-container">
+        <h2>Login to Shreyas Academy</h2>
+        <form onSubmit={handleSubmit}>
+          {error && <div className="error-message">{error}</div>}
+          
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
 
-          <div className="contact-form">
-            <form onSubmit={handleLogin}>
-              <div className="form-group">
-                <label>Email Address</label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Password</label>
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-
-              {/* 🔑 Forgot Password Link */}
-              <div style={{ textAlign: "right", marginBottom: "10px" }}>
-                <Link
-                  to="/forgot-password"
-                  style={{
-                    fontSize: "14px",
-                    color: "var(--primary-blue)",
-                    textDecoration: "none",
-                    fontWeight: 600,
-                  }}
-                >
-                  Forgot password?
-                </Link>
-              </div>
-
-              {error && (
-                <p
-                  style={{
-                    color: "#ef4444",
-                    marginBottom: "10px",
-                    fontWeight: 600,
-                  }}
-                >
-                  {error}
-                </p>
-              )}
-
-              <button
-                className="btn btn-primary"
-                type="submit"
-                disabled={loading}
-              >
-                {loading ? "Logging in..." : "Log In"}
-              </button>
-            </form>
-
-            <p
-              style={{
-                marginTop: "20px",
-                textAlign: "center",
-                color: "var(--gray)",
-              }}
-            >
-              Don&apos;t have an account?{" "}
-              <Link
-                to="/signup"
-                style={{
-                  color: "var(--primary-blue)",
-                  fontWeight: 600,
-                  textDecoration: "none",
-                }}
-              >
-                Sign up
-              </Link>
-            </p>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
           </div>
+
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Login'}
+          </button>
+        </form>
+
+        <div className="login-links">
+          <Link to="/forgot-password">Forgot Password?</Link>
+          <Link to="/signup">Don't have an account? Sign up</Link>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
