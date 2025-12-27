@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import StudentProblems from './components/StudentProblems';
 import AboutAcademy from './components/AboutAcademy';
 import {
@@ -24,12 +24,47 @@ const initialFormState: ContactFormPayload = {
   message: '',
 };
 
+const GOOGLE_FORM =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfxNkVv-MS8mZwQThQCQnq4FZTTD1quucipXcP-VoywvA_v8A/viewform";
+
 const App = () => {
+  const navigate = useNavigate();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [navbarElevated, setNavbarElevated] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [formValues, setFormValues] = useState<ContactFormPayload>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showGate, setShowGate] = useState(false);
+
+  // 🔐 Check login status
+  useEffect(() => {
+    fetch("http://localhost:5000/profile", {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) setIsLoggedIn(true);
+      })
+      .catch(() => {});
+  }, []);
+
+  // ⏱️ 8 second gateway timer
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isLoggedIn) setShowGate(true);
+    }, 8000);
+    return () => clearTimeout(timer);
+  }, [isLoggedIn]);
+
+  const handleGetStarted = () => {
+    if (!isLoggedIn) {
+      navigate("/signup");
+    } else {
+      window.open(GOOGLE_FORM, "_blank");
+    }
+  };
 
   const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     event.preventDefault();
@@ -104,32 +139,32 @@ const App = () => {
 
   return (
     <div>
-      <nav className={`navbar ${navbarElevated ? 'elevated' : ''}`}>
-        <div className="nav-container">
-          <Link to="/" className="logo-section">
-            <img src={academyLogo} alt="Shreyas Academy Logo" className="logo-image" />
-            <span className="logo-text">Shreyas Academy</span>
-          </Link>
-          <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-            {navLinks.map((link) => (
-              <li key={link.id}>
-                <a href={`#${link.id}`} onClick={(event) => handleNavClick(event, link.id)}>
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <button
-            className="mobile-menu-btn"
-            aria-label="Toggle navigation menu"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-          >
-            {isMenuOpen ? '✕' : '☰'}
-          </button>
-        </div>
-      </nav>
+      <main style={{ filter: showGate ? "blur(6px)" : "none", pointerEvents: showGate ? "none" : "auto" }}>
+        <nav className={`navbar ${navbarElevated ? 'elevated' : ''}`}>
+          <div className="nav-container">
+            <Link to="/" className="logo-section">
+              <img src={academyLogo} alt="Shreyas Academy Logo" className="logo-image" />
+              <span className="logo-text">Shreyas Academy</span>
+            </Link>
+            <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+              {navLinks.map((link) => (
+                <li key={link.id}>
+                  <a href={`#${link.id}`} onClick={(event) => handleNavClick(event, link.id)}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <button
+              className="mobile-menu-btn"
+              aria-label="Toggle navigation menu"
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+            >
+              {isMenuOpen ? '✕' : '☰'}
+            </button>
+          </div>
+        </nav>
 
-      <main>
         <section className="hero" id="home">
           <div className="hero-container">
             <div className="hero-content">
@@ -138,16 +173,16 @@ const App = () => {
                 India&apos;s Most Elite NEET Mentorship Program Guided by MBBS Toppers
               </h1>
               <p className="hero-subtitle">
-                <strong>Learn directly from</strong> NEET toppers with AIR 17, 80, 159, 214, 256 and many more top ranks
-                from prestigious institutions like <strong>AIIMS Delhi</strong>, <strong>JIPMER</strong>, <strong>BMC</strong>.
+                <strong>Learn directly from</strong> NEET toppers with AIR 17, 28, 42, 80, 95, 120, 159, 214, 256 and many more top ranks
+                from prestigious institutions like <strong>AIIMS Delhi</strong>, <strong>JIPMER</strong>, <strong>CMC Vellore</strong>, and <strong>KMC Manipal</strong>.
               </p>
               <div className="hero-features">
                 📚 Personal Guidance + Topper Strategy + Daily Study Plan 
               </div>
               <div className="cta-buttons">
-                <Link to="/signup" className="btn btn-primary">
-                  Sign in
-                </Link>
+                <button onClick={handleGetStarted} className="btn btn-primary">
+                  Sign up
+                </button>
                 <Link to="/login" className="btn btn-secondary">
                   Already enrolled? Log in
                 </Link>
@@ -296,16 +331,46 @@ const App = () => {
         </section>
 
         <section className="cta-section">
-          <div className="section-container">
-            <div className="cta-content reveal-on-scroll">
-              <h2 className="cta-title">So What&apos;s Waiting You From Getting Guidance From India&apos;s Best Mentors and Grabbing Seat in Your Dream College.</h2>
-              <a href="#enroll" className="btn btn-primary cta-button" onClick={(event) => handleNavClick(event, 'enroll')}>
-                Enroll Now
-              </a>
-            </div>
-          </div>
-        </section>
+<div className="section-container">
+<div className="cta-content reveal-on-scroll">
+<h2 className="cta-title">So What's Waiting You From Getting Guidance From India's Best Mentors and Grabbing Seat in Your Dream College.</h2>
+<a href="#enroll" className="btn btn-primary cta-button" onClick={(event) => handleNavClick(event, 'enroll')}>
+Sign up
+</a>
+</div>
+</div>
+</section>
 
+<section className="enroll" id="enroll">
+<div className="section-container">
+<div className="pricing-grid">
+{pricingPlans.map((plan) => (
+<div
+className={`pricing-card reveal-on-scroll ${plan.featured ? 'featured' : ''}`}
+key={plan.name}
+>
+{plan.badge && <div className="badge">{plan.badge}</div>}
+<h3 className="plan-name">{plan.name}</h3>
+<div className="plan-price">
+{plan.originalPrice && <span className="original-price">{plan.originalPrice}</span>}
+<span className="current-price">{plan.price}</span>
+</div>
+<p className="plan-duration">{plan.duration}</p>
+<ul className="plan-features">
+{plan.features.map((feature) => (
+<li key={feature}>
+<span className="check-icon">✓</span> {feature}
+</li>
+))}
+</ul>
+<button className="btn btn-primary" type="button" onClick={handleGetStarted}>
+Get Started
+</button>
+</div>
+))}
+</div>
+</div>
+</section>
         <section className="enroll" id="enroll">
           <div className="section-container">
             <div className="pricing-grid">
@@ -328,7 +393,7 @@ const App = () => {
                       </li>
                     ))}
                   </ul>
-                  <button className="btn btn-primary" type="button">
+                  <button className="btn btn-primary" type="button" onClick={handleGetStarted}>
                     Get Started
                   </button>
                 </div>
@@ -442,57 +507,83 @@ const App = () => {
             </div>
           </div>
         </section>
+
+        <footer className="footer">
+          <div className="footer-content">
+            <div className="footer-section">
+              <h3>Shreyas Academy</h3>
+              <p>
+                India&apos;s premier NEET mentorship platform connecting aspirants with MBBS toppers for personalized
+                guidance and proven success strategies.
+              </p>
+            </div>
+            <div className="footer-section">
+              <h3>Quick Links</h3>
+              <a href="#home" onClick={(event) => handleNavClick(event, 'home')}>
+                Home
+              </a>
+              <a href="#mentor-panel" onClick={(event) => handleNavClick(event, 'mentor-panel')}>
+                Mentor Panel
+              </a>
+              <a href="#about" onClick={(event) => handleNavClick(event, 'about')}>
+                About Us
+              </a>
+              <a href="#enroll" onClick={(event) => handleNavClick(event, 'enroll')}>
+                Enrollment Plans
+              </a>
+            </div>
+            <div className="footer-section">
+              <h3>Support</h3>
+              <a href="#faqs" onClick={(event) => handleNavClick(event, 'faqs')}>
+                FAQs
+              </a>
+              <a href="#contact" onClick={(event) => handleNavClick(event, 'contact')}>
+                Contact Support
+              </a>
+              <Link to="/login">Student Login</Link>
+            </div>
+            <div className="footer-section">
+              <h3>Legal</h3>
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+              <a href="#">Refund Policy</a>
+              <a href="#">Academic Integrity</a>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; 2025 Shreyas Academy. All rights reserved. | Empowering NEET Aspirants Nationwide</p>
+          </div>
+        </footer>
       </main>
 
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-section">
-            <h3>Shreyas Academy</h3>
-            <p>
-              India&apos;s premier NEET mentorship platform connecting aspirants with MBBS toppers for personalized
-              guidance and proven success strategies.
-            </p>
-          </div>
-          <div className="footer-section">
-            <h3>Quick Links</h3>
-            <a href="#home" onClick={(event) => handleNavClick(event, 'home')}>
-              Home
-            </a>
-            <a href="#mentor-panel" onClick={(event) => handleNavClick(event, 'mentor-panel')}>
-              Mentor Panel
-            </a>
-            <a href="#about" onClick={(event) => handleNavClick(event, 'about')}>
-              About Us
-            </a>
-            <a href="#enroll" onClick={(event) => handleNavClick(event, 'enroll')}>
-              Enrollment Plans
-            </a>
-          </div>
-          <div className="footer-section">
-            <h3>Support</h3>
-            <a href="#faqs" onClick={(event) => handleNavClick(event, 'faqs')}>
-              FAQs
-            </a>
-            <a href="#contact" onClick={(event) => handleNavClick(event, 'contact')}>
-              Contact Support
-            </a>
-            <Link to="/login">Student Login</Link>
-          </div>
-          <div className="footer-section">
-            <h3>Legal</h3>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Refund Policy</a>
-            <a href="#">Academic Integrity</a>
-          </div>
+      {showGate && !isLoggedIn && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.85)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "20px",
+            zIndex: 9999,
+            color: "white",
+          }}
+        >
+          <h2 style={{ fontSize: "28px", marginBottom: "10px" }}>Sign in to continue</h2>
+          <p style={{ fontSize: "16px", color: "#ccc" }}>Please sign in to access all features</p>
+          <button 
+            className="btn btn-primary" 
+            onClick={() => navigate("/signup")}
+            style={{ padding: "12px 32px", fontSize: "16px" }}
+          >
+            Sign In
+          </button>
         </div>
-        <div className="footer-bottom">
-          <p>&copy; 2025 Shreyas Academy. All rights reserved. | Empowering NEET Aspirants Nationwide</p>
-        </div>
-      </footer>
+      )}
     </div>
   );
 };
 
 export default App;
-

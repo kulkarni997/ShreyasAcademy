@@ -2,13 +2,20 @@
   "name": "shreyas-academy-fullstack",
   "private": true,
   "scripts": {
-    "start:all": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
+    "start:all": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.0"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-router-dom": "^7.10.1"
   }
 }
