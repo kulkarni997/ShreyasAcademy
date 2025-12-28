@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 const ResetPassword = () => {
@@ -19,9 +19,9 @@ const ResetPassword = () => {
             <div className="contact-info">
               <h2>Invalid Reset Link</h2>
               <p>The reset link is invalid or missing. Please request a new one.</p>
-              <a href="/forgot-password" style={{ color: "#6366f1", textDecoration: "underline" }}>
+              <Link to="/forgot-password" style={{ color: "#6366f1", textDecoration: "underline" }}>
                 Request New Reset Link
-              </a>
+              </Link>
             </div>
           </div>
         </div>
