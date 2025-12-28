@@ -74,14 +74,22 @@ const userSchema = new Schema<IUser>(
 );
 
 /* ================= PASSWORD HASH ================= */
-userSchema.pre("save", function (next: any) {
-  if (!this.isModified("password")) return next();
-  bcrypt.hash(this.password, 10, (err, hash) => {
-    if (err) return next(err);
-    this.password = hash;
-    next();
-  });
+// userSchema.pre("save", function (next: any) {
+//   if (!this.isModified("password")) return next();
+//   bcrypt.hash(this.password, 10, (err, hash) => {
+//     if (err) return next(err);
+//     this.password = hash;
+//     next();
+//   });
+// });
+
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
 });
+
 
 
 /* ================= EXPORT ================= */

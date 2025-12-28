@@ -117,12 +117,48 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  if ((req as any).user.role !== "admin") {
+    return res.status(403).json({ message: "Admins only" });
+  }
+  next();
+};
+
+
 /* ================= PROFILE ================= */
 app.get("/profile", verifyToken, async (req: Request, res: Response) => {
   const user = await User.findById((req as any).user.userId).select("-password");
   if (!user) return res.status(404).json({ message: "User not found" });
   res.json({ user });
 });
+
+/* ================= ADMIN: GET ALL STUDENTS ================= */
+app.get("/admin/students", verifyToken, isAdmin, async (req, res) => {
+  const students = await User.find({ role: "student" }).select("-password");
+  res.json({ students });
+});
+
+/* ================= ADMIN: UPDATE MARKS ================= */
+app.post("/admin/students/:id/marks", verifyToken, isAdmin, async (req, res) => {
+  const { biologyMarks, physicsMarks, chemistryMarks } = req.body;
+
+  const totalMarks =
+    Number(biologyMarks) + Number(physicsMarks) + Number(chemistryMarks);
+
+  const student = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      biologyMarks,
+      physicsMarks,
+      chemistryMarks,
+      totalMarks,
+    },
+    { new: true }
+  );
+
+  res.json({ message: "Marks updated", student });
+});
+
 
 /* ================= FORGOT PASSWORD ================= */
 app.post("/forgot-password", async (req: Request, res: Response) => {
