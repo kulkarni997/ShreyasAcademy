@@ -83,27 +83,78 @@ app.post("/signup", async (req: Request, res: Response) => {
 
 /* ================= LOGIN ================= */
 app.post("/login", async (req: Request, res: Response) => {
-  let { email, password } = req.body;
-  email = email.trim().toLowerCase();
+  try {
+    let { email, password } = req.body;
 
-  const user = await User.findOne({ email }).select("+password");
-  if (!user) return res.status(401).json({ message: "Invalid credentials" });
+    console.log("🔵 LOGIN REQUEST RECEIVED");
+    console.log("Email received:", JSON.stringify(email));
+    console.log("Password received:", JSON.stringify(password));
+    console.log("Password length:", password?.length);
+    console.log("Password bytes:", Buffer.from(password || '').toString('hex'));
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+    // Validate inputs
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required" });
+    }
 
-  const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, {
-    expiresIn: "7d",
-  });
+    // Trim and normalize email
+    email = email.trim().toLowerCase();
 
-  res.cookie("student_token", token, {
-    httpOnly: true,
-    sameSite: "lax",
-  });
+    console.log("Login attempt for:", email);
 
-  res.json({ message: "Login successful 🎉", role: user.role });
+    // Find user and explicitly select password field
+    const user = await User.findOne({ email }).select("+password");
+    
+    if (!user) {
+      console.log("❌ User not found:", email);
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    console.log("✅ User found, checking password...");
+    console.log("Stored hash:", user.password);
+
+    // Ensure password field exists
+    if (!user.password) {
+      console.error("❌ Password field missing for user:", email);
+      return res.status(500).json({ message: "Account error. Please contact support." });
+    }
+
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
+    
+    console.log("🔐 Password match result:", isMatch);
+
+    // TEMPORARY DEBUG: Also try with trimmed password
+    if (!isMatch) {
+      const trimmedMatch = await bcrypt.compare(password.trim(), user.password);
+      console.log("🔐 Trimmed password match:", trimmedMatch);
+    }
+
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.cookie("student_token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+    });
+
+    console.log("✅ Login successful for:", email, "Role:", user.role);
+
+    res.json({ 
+      message: "Login successful 🎉", 
+      role: user.role
+    });
+  } catch (error) {
+    console.error("❌ Login error:", error);
+    res.status(500).json({ message: "Login failed. Please try again." });
+  }
 });
-
 /* ================= AUTH ================= */
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.student_token;
@@ -315,21 +366,110 @@ app.post("/reset-password/:token", async (req: Request, res: Response) => {
   }
 });
 
-//Admin 
-app.post("/make-admin", async (req, res) => {
-  const { email } = req.body;
+/* ================= MAKE ADMIN (SECURE) ================= */
+app.post("/make-admin", verifyToken, async (req, res) => {
+  try {
+    const { email } = req.body;
 
-  const user = await User.findOneAndUpdate(
-    { email },
-    { role: "admin" },
-    { new: true }
-  );
+    // Get the requesting user's email from token
+    const requestingUser = await User.findById((req as any).user.userId);
+    
+    if (!requestingUser) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
-  if (!user) return res.status(404).json({ message: "User not found" });
+    // Only allow the specific academy email to become admin
+    if (email !== "shreaysacademy2025@gmail.com") {
+      return res.status(403).json({ 
+        message: "Only authorized emails can become admin" 
+      });
+    }
 
-  res.json({ message: "User promoted to admin", user });
+    // Ensure the requesting user is promoting themselves
+    if (requestingUser.email !== email) {
+      return res.status(403).json({ 
+        message: "You can only promote yourself" 
+      });
+    }
+
+    const user = await User.findOneAndUpdate(
+      { email },
+      { role: "admin" },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ 
+      message: "Successfully promoted to admin! 🎉", 
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error("Make admin error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
+app.post("/logout", (_req: Request, res: Response) => {
+  res.clearCookie("student_token", {
+    httpOnly: true,
+    sameSite: "lax",
+  });
+  res.json({ message: "Logged out successfully" });
+});
+
+/* ================= ADMIN: DELETE STUDENT ================= */
+app.delete("/admin/students/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const student = await User.findById(req.params.id);
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    // Prevent deleting admin accounts
+    if (student.role === "admin") {
+      return res.status(403).json({ message: "Cannot delete admin accounts" });
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+
+    res.json({ 
+      message: `Student ${student.name} has been removed successfully`,
+      deletedStudent: {
+        name: student.name,
+        email: student.email
+      }
+    });
+  } catch (error) {
+    console.error("Delete student error:", error);
+    res.status(500).json({ message: "Failed to delete student" });
+  }
+});
+
+// TEMPORARY DEBUG ENDPOINT - Remove after fixing
+app.get("/debug-admin", async (req, res) => {
+  const user = await User.findOne({ 
+    email: "shreaysacademy2025@gmail.com" 
+  }).select("+password");
+  
+  if (!user) {
+    return res.json({ error: "User not found" });
+  }
+
+  res.json({
+    email: user.email,
+    role: user.role,
+    passwordHash: user.password,
+    passwordLength: user.password.length
+  });
+});
 
 /* ================= START ================= */
 app.listen(port, () => {

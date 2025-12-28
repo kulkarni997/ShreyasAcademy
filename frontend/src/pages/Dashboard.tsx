@@ -95,18 +95,29 @@ const Dashboard = () => {
   const chemistryMarks = user.chemistryMarks ?? 0;
   const totalMarks = user.totalMarks ?? biologyMarks + physicsMarks + chemistryMarks;
 
-  const makeMeAdmin = async () => {
-  const res = await fetch("http://localhost:5000/make-admin", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({ email: user.email }),
-  });
+ const makeMeAdmin = async () => {
+  try {
+    const res = await fetch("http://localhost:5000/make-admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email: user.email }),
+    });
 
-  const data = await res.json();
-  alert(data.message);
+    const data = await res.json();
+    
+    if (res.ok) {
+      alert(data.message + " - Redirecting to Admin Dashboard...");
+      // Redirect to admin dashboard after successful promotion
+      window.location.href = "/admin";
+    } else {
+      alert(data.message || "Failed to enable admin mode");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Failed to enable admin mode");
+  }
 };
-
 
   return (
     <div className="dashboard-page">
