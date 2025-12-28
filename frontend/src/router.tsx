@@ -28,18 +28,20 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
   },
-{
-  path: "/admin",
-  element: (
-    <ProtectedRoute adminOnly>
-      <AdminDashboard />
-    </ProtectedRoute>
-  ),
-},
-
-  // 🔐 Forgot Password Routes
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute adminOnly>
+        <AdminDashboard />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/forgot-password",
     element: <ForgotPassword />,

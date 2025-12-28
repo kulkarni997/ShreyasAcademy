@@ -22,15 +22,22 @@ const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) =>
 
         const data = await res.json();
 
+        // If this route requires admin but user is student
         if (adminOnly && data.user.role !== "admin") {
-          navigate("/dashboard"); // student tried to open admin
+          navigate("/dashboard");
+          return;
+        }
+
+        // If user is admin but trying to access student dashboard
+        if (!adminOnly && data.user.role === "admin") {
+          navigate("/admin");
           return;
         }
 
         setLoading(false);
       })
       .catch(() => navigate("/login"));
-  }, []);
+  }, [navigate, adminOnly]);
 
   if (loading) return <div>Loading...</div>;
 

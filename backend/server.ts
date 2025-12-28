@@ -140,23 +140,32 @@ app.get("/admin/students", verifyToken, isAdmin, async (req, res) => {
 
 /* ================= ADMIN: UPDATE MARKS ================= */
 app.post("/admin/students/:id/marks", verifyToken, isAdmin, async (req, res) => {
-  const { biologyMarks, physicsMarks, chemistryMarks } = req.body;
+  const { week, biologyMarks, physicsMarks, chemistryMarks } = req.body;
 
   const totalMarks =
     Number(biologyMarks) + Number(physicsMarks) + Number(chemistryMarks);
 
-  const student = await User.findByIdAndUpdate(
-    req.params.id,
-    {
-      biologyMarks,
-      physicsMarks,
-      chemistryMarks,
-      totalMarks,
-    },
-    { new: true }
-  );
+  const student = await User.findById(req.params.id);
+  if (!student) return res.status(404).json({ message: "Student not found" });
 
-  res.json({ message: "Marks updated", student });
+  student.weeklyMarks.push({
+    week,
+    date: new Date(),
+    biologyMarks,
+    physicsMarks,
+    chemistryMarks,
+    totalMarks,
+  });
+
+  // Also store latest total for dashboard
+  student.biologyMarks = biologyMarks;
+  student.physicsMarks = physicsMarks;
+  student.chemistryMarks = chemistryMarks;
+  student.totalMarks = totalMarks;
+
+  await student.save();
+
+  res.json({ message: "Weekly marks added", student });
 });
 
 
@@ -304,6 +313,21 @@ app.post("/reset-password/:token", async (req: Request, res: Response) => {
     console.error("Reset password error:", err);
     res.status(500).json({ message: "Server error" });
   }
+});
+
+//Admin 
+app.post("/make-admin", async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOneAndUpdate(
+    { email },
+    { role: "admin" },
+    { new: true }
+  );
+
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  res.json({ message: "User promoted to admin", user });
 });
 
 
