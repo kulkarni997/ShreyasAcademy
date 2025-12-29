@@ -65,7 +65,7 @@ const SignUp = () => {
       const message = res.data.message || "Signup successful 🎉";
       alert(message);
       // Redirect to login after successful signup
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (err: any) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
     } finally {

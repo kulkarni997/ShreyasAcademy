@@ -130,7 +130,7 @@ const Dashboard = () => {
           </button>
         </div>
 
-        {user.email === "shreaysacademy2025@gmail.com" && (
+        {user.email === "shreyasacademy2025@gmail.com" && (
   <div style={{ marginBottom: "20px" }}>
     <button
       onClick={makeMeAdmin}

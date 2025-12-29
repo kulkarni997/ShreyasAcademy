@@ -180,9 +180,14 @@ const AdminDashboard = () => {
         </div>
         <div className="stat-card">
           <h3>Active Courses</h3>
-          <p className="stat-number">
-            {new Set(students.map(s => s.courseName).filter(Boolean)).size}
-          </p>
+         <p className="stat-number">
+  {
+    new Set(
+      students.flatMap(s => s.weeklyMarks?.map(w => w.week) || [])
+    ).size
+  }
+</p>
+
         </div>
         <div className="stat-card">
           <h3>Total Weekly Tests</h3>

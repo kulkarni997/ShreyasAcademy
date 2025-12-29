@@ -188,16 +188,24 @@ app.get("/admin/students", verifyToken, isAdmin, async (req, res) => {
   const students = await User.find({ role: "student" }).select("-password");
   res.json({ students });
 });
-
 /* ================= ADMIN: UPDATE MARKS ================= */
 app.post("/admin/students/:id/marks", verifyToken, isAdmin, async (req, res) => {
-  const { week, biologyMarks, physicsMarks, chemistryMarks } = req.body;
+  const { biologyMarks, physicsMarks, chemistryMarks } = req.body;
 
   const totalMarks =
     Number(biologyMarks) + Number(physicsMarks) + Number(chemistryMarks);
 
   const student = await User.findById(req.params.id);
   if (!student) return res.status(404).json({ message: "Student not found" });
+
+  // 🔥 Get GLOBAL current week
+  const allStudents = await User.find();
+  const allWeeks = allStudents.flatMap(u => u.weeklyMarks.map(w => w.week));
+  const currentWeek = allWeeks.length === 0 ? 1 : Math.max(...allWeeks);
+
+  // If this student already has marks for this week → move to next week
+  const studentHasThisWeek = student.weeklyMarks.some(w => w.week === currentWeek);
+  const week = studentHasThisWeek ? currentWeek + 1 : currentWeek;
 
   student.weeklyMarks.push({
     week,
@@ -208,7 +216,7 @@ app.post("/admin/students/:id/marks", verifyToken, isAdmin, async (req, res) => 
     totalMarks,
   });
 
-  // Also store latest total for dashboard
+  // store latest totals
   student.biologyMarks = biologyMarks;
   student.physicsMarks = physicsMarks;
   student.chemistryMarks = chemistryMarks;
@@ -216,7 +224,7 @@ app.post("/admin/students/:id/marks", verifyToken, isAdmin, async (req, res) => 
 
   await student.save();
 
-  res.json({ message: "Weekly marks added", student });
+  res.json({ message: `Week ${week} marks added`, student });
 });
 
 
