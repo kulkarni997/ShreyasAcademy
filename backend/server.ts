@@ -173,12 +173,88 @@ app.get("/profile", verifyToken, async (req: Request, res: Response) => {
 /* ================= FORGOT PASSWORD ================= */
 console.log("📝 Registering forgot-password route...");
 app.post("/forgot-password", async (req: Request, res: Response) => {
-  console.log("🚨 FORGOT PASSWORD ROUTE CALLED DIRECTLY");
-  console.log("Raw request body:", req.body);
-  console.log("Request headers:", req.headers);
+  console.log("🚨 FORGOT PASSWORD ROUTE CALLED");
+  try {
+    const { email } = req.body;
 
-  // Temporary simple response
-  return res.json({ message: "Route is working", receivedBody: req.body });
+    if (!email || typeof email !== "string" || !email.includes("@")) {
+      return res.status(400).json({ message: "Valid email is required" });
+    }
+
+    const emailLower = email.trim().toLowerCase();
+
+    console.log("🔍 Looking for user with email:", emailLower);
+
+    const user = await User.findOne({ email: emailLower }).select('+password');
+    if (!user) {
+      // For security, don't reveal if email exists
+      console.log("❌ User not found, but returning success for security");
+      return res.json({ message: "If an account with that email exists, a reset link has been sent." });
+    }
+
+    console.log("✅ Found user:", user.email);
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+
+    console.log("🔑 Generated reset token:", resetToken.substring(0, 10) + "...");
+    console.log("🔒 Hashed token:", hashedToken.substring(0, 10) + "...");
+
+    // Set reset fields
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    console.log("💾 Saving user with reset fields...");
+    try {
+      await user.save();
+      console.log("✅ User saved successfully");
+    } catch (saveError: any) {
+      console.error("❌ Error saving user:", saveError.message);
+      console.error("❌ Error stack:", saveError.stack);
+      return res.status(500).json({ message: "Failed to save reset token. Please try again." });
+    }
+
+    // Create reset link
+    const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+
+    // Send email if transporter is configured
+    if (transporter) {
+      try {
+        await transporter.sendMail({
+          from: `"Shreyas Academy" <${process.env.EMAIL}>`,
+          to: user.email,
+          subject: "Password Reset Request",
+          text: `You requested a password reset. Click this link to reset your password: ${resetLink}\n\nThis link expires in 10 minutes.\n\nIf you didn't request this, please ignore this email.`,
+          html: `
+            <h2>Password Reset Request</h2>
+            <p>You requested a password reset for your Shreyas Academy account.</p>
+            <p>Click the link below to reset your password:</p>
+            <a href="${resetLink}" style="background-color: #6366f1; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Reset Password</a>
+            <p>This link expires in 10 minutes.</p>
+            <p>If you didn't request this reset, please ignore this email.</p>
+          `,
+        });
+        console.log("✅ Reset email sent to:", user.email);
+      } catch (emailError: any) {
+        console.error("❌ Failed to send reset email:", emailError.message);
+        return res.status(500).json({ message: "Failed to send reset email. Please try again." });
+      }
+    } else {
+      console.log("⚠️ Email not configured. Reset link:", resetLink);
+    }
+
+    // Response
+    const response: any = { message: "If an account with that email exists, a reset link has been sent." };
+    if (!transporter && process.env.NODE_ENV !== "production") {
+      response.resetLink = resetLink;
+    }
+
+    res.json(response);
+  } catch (err: any) {
+    console.error("❌ Forgot password error:", err);
+    res.status(500).json({ message: "Server error. Please try again." });
+  }
 });
 console.log("✅ Forgot-password route registered");
 
@@ -197,10 +273,11 @@ app.post("/reset-password/:token", async (req: Request, res: Response) => {
     }
 
     // Validate token
-    if (!token || typeof token !== "string" || token.length !== 64) {
-      console.log("❌ Token validation failed");
-      return res.status(400).json({ message: "Invalid reset token" });
-    }
+     if (!token || typeof token !== "string") {
+  console.log("❌ Token missing or invalid type");
+  return res.status(400).json({ message: "Invalid reset token" });
+}
+
 
     // Hash token to compare with DB
     const hashedToken = crypto

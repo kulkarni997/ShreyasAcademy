@@ -73,32 +73,32 @@ const userSchema = new Schema<IUser>(
 
     resetPasswordToken: {
       type: String,
+      default: undefined,
     },
+
     resetPasswordExpire: {
       type: Date,
+      default: undefined,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 /* ================= PASSWORD HASH ================= */
-userSchema.pre("save", function(next: any) {
-  // Only hash if password was changed
+userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
 
-  // Hash password with bcrypt
-  bcrypt.hash(this.password, 10, (err, hash) => {
-    if (err) {
-      return next(err);
-    }
+  try {
+    const hash = await bcrypt.hash(this.password, 10);
     this.password = hash;
     next();
-  });
+  } catch (err) {
+    next(err);
+  }
 });
 
 const User = mongoose.model<IUser>("User", userSchema);
 export default User;
+
