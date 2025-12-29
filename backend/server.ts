@@ -180,8 +180,29 @@ const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 app.get("/profile", verifyToken, async (req: Request, res: Response) => {
   const user = await User.findById((req as any).user.userId).select("-password");
   if (!user) return res.status(404).json({ message: "User not found" });
-  res.json({ user });
+
+  let biology = 0;
+  let physics = 0;
+  let chemistry = 0;
+  let total = 0;
+
+  if (user.weeklyMarks && user.weeklyMarks.length > 0) {
+    user.weeklyMarks.forEach((week) => {
+      biology += week.biologyMarks || 0;
+      physics += week.physicsMarks || 0;
+      chemistry += week.chemistryMarks || 0;
+      total += week.totalMarks || 0;
+    });
+  }
+
+ res.json({
+  user: {
+    ...user.toObject(),
+    weeklyMarks: user.weeklyMarks
+  }
 });
+});
+
 
 /* ================= ADMIN: GET ALL STUDENTS ================= */
 app.get("/admin/students", verifyToken, isAdmin, async (req, res) => {
@@ -215,12 +236,67 @@ app.post("/admin/students/:id/marks", verifyToken, isAdmin, async (req, res) => 
     chemistryMarks,
     totalMarks,
   });
+  // Add this endpoint after the existing /admin/students/:id/marks endpoint
+app.put("/admin/students/:id/mentor", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { mentorName, mentorContactNumber } = req.body;
+    const student = await User.findByIdAndUpdate(
+      req.params.id,
+      { 
+        mentorName: mentorName || undefined,
+        mentorContactNumber: mentorContactNumber || undefined
+      },
+      { new: true }
+    ).select("-password");
 
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    res.json({ 
+      message: "Mentor details updated successfully",
+      student 
+    });
+  } catch (error) {
+    console.error("Error updating mentor details:", error);
+    res.status(500).json({ message: "Error updating mentor details" });
+  }
+});
+app.put("/admin/students/:id/mentor", verifyToken, isAdmin, async (req, res) => {
+  try {
+    console.log("Updating mentor details for student:", req.params.id);
+    console.log("New mentor data:", req.body);
+    
+    const { mentorName, mentorContactNumber } = req.body;
+    const student = await User.findByIdAndUpdate(
+      req.params.id,
+      { 
+        mentorName: mentorName || undefined,
+        mentorContactNumber: mentorContactNumber || undefined
+      },
+      { new: true }
+    ).select("-password");
+
+    console.log("Updated student:", student);
+    
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    res.json({ 
+      message: "Mentor details updated successfully",
+      student 
+    });
+  } catch (error) {
+    console.error("Error updating mentor details:", error);
+    res.status(500).json({ message: "Error updating mentor details" });
+  }
+});
   // store latest totals
-  student.biologyMarks = biologyMarks;
-  student.physicsMarks = physicsMarks;
-  student.chemistryMarks = chemistryMarks;
-  student.totalMarks = totalMarks;
+  // student.biologyMarks = biologyMarks;
+  // student.physicsMarks = physicsMarks;
+  // student.chemistryMarks = chemistryMarks;
+  // student.totalMarks = totalMarks;
 
   await student.save();
 
@@ -373,6 +449,40 @@ app.post("/reset-password/:token", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+/* ================= ADMIN: UPDATE MENTOR ================= */
+app.put(
+  "/admin/students/:id/mentor",
+  verifyToken,
+  isAdmin,
+  async (req: Request, res: Response) => {
+    try {
+      const { mentorName, mentorContactNumber } = req.body;
+
+      const student = await User.findById(req.params.id);
+      if (!student) {
+        return res.status(404).json({ message: "Student not found" });
+      }
+
+      student.mentorName = mentorName;
+      student.mentorContactNumber = mentorContactNumber;
+
+      await student.save();
+
+      return res.json({
+        message: "Mentor updated successfully",
+        student: {
+          _id: student._id,
+          mentorName: student.mentorName,
+          mentorContactNumber: student.mentorContactNumber,
+        },
+      });
+    } catch (error) {
+      console.error("Mentor update error:", error);
+      return res.status(500).json({ message: "Failed to update mentor" });
+    }
+  }
+);
+
 
 /* ================= MAKE ADMIN (SECURE) ================= */
 app.post("/make-admin", verifyToken, async (req, res) => {

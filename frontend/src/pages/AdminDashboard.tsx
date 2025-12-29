@@ -2,82 +2,104 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/AdminDashboard.css";
 
+/* ================= TYPES ================= */
+
+interface WeeklyMark {
+  week: number;
+  date: string;
+  biologyMarks: number;
+  physicsMarks: number;
+  chemistryMarks: number;
+  totalMarks: number;
+}
+
 interface Student {
   _id: string;
   name: string;
-  email: string;
-  phone: string;
   rollNumber?: string;
-  courseName?: string;
   plan?: "1 Month" | "6 Months" | "16 Months";
-  biologyMarks?: number;
-  physicsMarks?: number;
-  chemistryMarks?: number;
-  totalMarks?: number;
-  weeklyMarks?: Array<{
-    week: number;
-    date: Date;
-    biologyMarks: number;
-    physicsMarks: number;
-    chemistryMarks: number;
-    totalMarks: number;
-    
-
-  }>;
+  mentorName?: string;
+  mentorContactNumber?: string;
+  weeklyMarks?: WeeklyMark[];
 }
 
+/* ================= COMPONENT ================= */
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
+
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [showMarksModal, setShowMarksModal] = useState(false);
+
+  const [showMentorModal, setShowMentorModal] = useState(false);
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
+
+  const [mentorForm, setMentorForm] = useState({
+    mentorName: "",
+    mentorContactNumber: "",
+  });
+
   const [marksForm, setMarksForm] = useState({
     week: 1,
     biologyMarks: 0,
     physicsMarks: 0,
     chemistryMarks: 0,
+    totalMarks: 0,
   });
+
+  const [stats, setStats] = useState({
+    totalStudents: 0,
+    activeCourses: 0,
+    totalWeeklyTests: 0,
+  });
+
+  /* ================= FETCH ================= */
+
+  const fetchStudents = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/admin/students", {
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        navigate("/login");
+        return;
+      }
+
+      const data = await res.json();
+      setStudents(data.students);
+      setLoading(false);
+    } catch {
+      navigate("/login");
+    }
+  };
 
   useEffect(() => {
     fetchStudents();
   }, []);
 
-  const fetchStudents = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/admin/students", {
-        credentials: "include",
-      });
+  /* ================= STATS ================= */
 
-      if (!response.ok) {
-        navigate("/login");
-        return;
-      }
+  useEffect(() => {
+    const totalStudents = students.length;
 
-      const data = await response.json();
-      setStudents(data.students);
-      setLoading(false);
-    } catch (error) {
-      console.error("Failed to fetch students", error);
-      navigate("/login");
-    }
-  };
+    const allWeeks = students.flatMap(
+      (s) => s.weeklyMarks?.map((w) => w.week) || []
+    );
 
-  const deleteStudent = async (id: string) => {
-  if (!confirm("Delete this student permanently?")) return;
+    const uniqueWeeks = new Set(allWeeks).size;
 
-  const response = await fetch(`http://localhost:5000/admin/students/${id}`, {
-    method: "DELETE",
-    credentials: "include",
-  });
+    setStats({
+      totalStudents,
+      activeCourses: uniqueWeeks,
+      totalWeeklyTests: uniqueWeeks,
+    });
+  }, [students]);
 
-  if (response.ok) {
-    fetchStudents();
-  } else {
-    alert("Delete failed");
-  }
-};
+  /* ================= LOGOUT ================= */
 
   const handleLogout = async () => {
     await fetch("http://localhost:5000/logout", {
@@ -87,307 +109,367 @@ const AdminDashboard = () => {
     navigate("/login");
   };
 
+  /* ================= MARKS ================= */
+
   const openMarksModal = (student: Student) => {
     setSelectedStudent(student);
-    
-    // Calculate next week number based on existing weekly marks
-    const nextWeek = student.weeklyMarks && student.weeklyMarks.length > 0
-      ? Math.max(...student.weeklyMarks.map(m => m.week)) + 1
-      : 1;
-    
+
+    const nextWeek =
+      student.weeklyMarks?.length
+        ? Math.max(...student.weeklyMarks.map((m) => m.week)) + 1
+        : 1;
+
     setMarksForm({
       week: nextWeek,
       biologyMarks: 0,
       physicsMarks: 0,
       chemistryMarks: 0,
+      totalMarks: 0,
     });
     setShowMarksModal(true);
   };
 
-  const getRankForWeek = (week: number, studentId: string) => {
-  const studentsWithWeek = students.filter(s =>
-    s.weeklyMarks?.some(w => w.week === week)
-  );
-
-  const sorted = studentsWithWeek.sort((a, b) => {
-    const aMarks = a.weeklyMarks?.find(w => w.week === week)?.totalMarks || 0;
-    const bMarks = b.weeklyMarks?.find(w => w.week === week)?.totalMarks || 0;
-    return bMarks - aMarks;
-  });
-
-  return sorted.findIndex(s => s._id === studentId) + 1;
-};
-
-
   const handleMarksSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!selectedStudent) return;
 
-    try {
-      const response = await fetch(
-        `http://localhost:5000/admin/students/${selectedStudent._id}/marks`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(marksForm),
-        }
-      );
-
-      if (response.ok) {
-        alert(`✅ Week ${marksForm.week} marks added successfully!`);
-        setShowMarksModal(false);
-        fetchStudents(); // Refresh list
-      } else {
-        const data = await response.json();
-        alert(data.message || "Failed to update marks");
+    const res = await fetch(
+      `http://localhost:5000/admin/students/${selectedStudent._id}/marks`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(marksForm),
       }
-    } catch (error) {
-      console.error(error);
-      alert("Error updating marks");
+    );
+
+    if (res.ok) {
+      setShowMarksModal(false);
+      fetchStudents();
+    } else {
+      alert("Failed to save marks");
     }
   };
 
-  if (loading) {
+  const renderMarksModal = () => {
+    if (!selectedStudent) return null;
+
+    const nextWeek = selectedStudent.weeklyMarks?.length
+      ? Math.max(...selectedStudent.weeklyMarks.map((m) => m.week)) + 1
+      : 1;
+
+    const getRankForWeek = (week: number) => {
+      if (!students.length) return 0;
+
+      const weekMarks = students
+        .map((s) => ({
+          id: s._id,
+          total: s.weeklyMarks?.find((m) => m.week === week)?.totalMarks || 0,
+        }))
+        .sort((a, b) => b.total - a.total);
+
+      return weekMarks.findIndex((m) => m.id === selectedStudent._id) + 1;
+    };
+
     return (
-      <div className="admin-loading">
-        <div style={{ textAlign: 'center', padding: '50px' }}>
-          <h2>Loading Mentor Dashboard...</h2>
+      <div
+        className="modal-overlay"
+        onClick={() => setShowMarksModal(false)}
+      >
+        <div
+          className="marks-modal"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h2>
+            Add Week {nextWeek} Marks for {selectedStudent.name}
+          </h2>
+          <p className="test-count">
+            Total tests completed: {selectedStudent.weeklyMarks?.length || 0} weeks
+          </p>
+
+          {selectedStudent.weeklyMarks?.length ? (
+            <div className="marks-history">
+              <table className="marks-table">
+                <thead>
+                  <tr>
+                    <th>Week</th>
+                    <th>Biology</th>
+                    <th>Physics</th>
+                    <th>Chemistry</th>
+                    <th>Total</th>
+                    <th>Rank</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...(selectedStudent.weeklyMarks || [])]
+                    .sort((a, b) => b.week - a.week)
+                    .map((week) => {
+                      const rank = getRankForWeek(week.week);
+                      return (
+                        <tr key={week.week}>
+                          <td>Week {week.week}</td>
+                          <td>{week.biologyMarks}/360</td>
+                          <td>{week.physicsMarks}/180</td>
+                          <td>{week.chemistryMarks}/180</td>
+                          <td>{week.totalMarks}/720</td>
+                          <td>{rank === 1 ? "🏆 " : ""}{rank}</td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="no-marks">No tests recorded yet</div>
+          )}
+
+          <form onSubmit={handleMarksSubmit} className="marks-form">
+            <h3>Add New Test</h3>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Week Number</label>
+                <input
+                  type="number"
+                  value={marksForm.week}
+                  onChange={(e) =>
+                    setMarksForm((prev) => ({
+                      ...prev,
+                      week: +e.target.value,
+                    }))
+                  }
+                  min={nextWeek}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Biology (out of 360)</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={360}
+                  value={marksForm.biologyMarks}
+                  onChange={(e) => {
+                    const bio = +e.target.value;
+                    setMarksForm((prev) => ({
+                      ...prev,
+                      biologyMarks: bio,
+                      totalMarks:
+                        bio + prev.physicsMarks + prev.chemistryMarks,
+                    }));
+                  }}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Physics (out of 180)</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={180}
+                  value={marksForm.physicsMarks}
+                  onChange={(e) => {
+                    const phy = +e.target.value;
+                    setMarksForm((prev) => ({
+                      ...prev,
+                      physicsMarks: phy,
+                      totalMarks:
+                        prev.biologyMarks + phy + prev.chemistryMarks,
+                    }));
+                  }}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Chemistry (out of 180)</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={180}
+                  value={marksForm.chemistryMarks}
+                  onChange={(e) => {
+                    const chem = +e.target.value;
+                    setMarksForm((prev) => ({
+                      ...prev,
+                      chemistryMarks: chem,
+                      totalMarks:
+                        prev.biologyMarks + prev.physicsMarks + chem,
+                    }));
+                  }}
+                  required
+                />
+              </div>
+              <div className="form-group total-display">
+                <label>Total</label>
+                <div className="total-value">
+                  {marksForm.totalMarks}/720
+                </div>
+              </div>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="submit-btn">
+                Save Week {marksForm.week} Marks
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowMarksModal(false)}
+                className="cancel-btn"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     );
-  }
+  };
+
+  /* ================= MENTOR ================= */
+
+  const openMentorModal = (student: Student) => {
+    setSelectedStudentId(student._id);
+    setMentorForm({
+      mentorName: student.mentorName || "",
+      mentorContactNumber: student.mentorContactNumber || "",
+    });
+    setShowMentorModal(true);
+  };
+
+  const handleMentorSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedStudentId) return;
+
+    const res = await fetch(
+      `http://localhost:5000/admin/students/${selectedStudentId}/mentor`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(mentorForm),
+      }
+    );
+
+    if (res.ok) {
+      setShowMentorModal(false);
+      fetchStudents();
+    } else {
+      alert("Failed to update mentor");
+    }
+  };
+
+  if (loading) return <h2>Loading...</h2>;
+
+  /* ================= UI ================= */
 
   return (
     <div className="admin-dashboard">
       <div className="admin-header">
-        <div>
-          <h1>🎓 Mentor Dashboard - Shreyas Academy</h1>
-          <p style={{ color: '#666', margin: '5px 0 0 0' }}>
-            Manage your students and track their weekly progress
-          </p>
-        </div>
+        <h1>Mentor Dashboard</h1>
         <button onClick={handleLogout} className="admin-logout-btn">
           Logout
         </button>
       </div>
 
+      {/* STAT CARDS */}
       <div className="admin-stats">
         <div className="stat-card">
           <h3>Total Students</h3>
-          <p className="stat-number">{students.length}</p>
+          <p>{stats.totalStudents}</p>
         </div>
         <div className="stat-card">
           <h3>Active Courses</h3>
-         <p className="stat-number">
-  {
-    new Set(
-      students.flatMap(s => s.weeklyMarks?.map(w => w.week) || [])
-    ).size
-  }
-</p>
-
+          <p>{stats.activeCourses}</p>
         </div>
         <div className="stat-card">
           <h3>Total Weekly Tests</h3>
-          <p className="stat-number">
-            {students.reduce((sum, s) => sum + (s.weeklyMarks?.length || 0), 0)}
-          </p>
+          <p>{stats.totalWeeklyTests}</p>
         </div>
       </div>
 
-      <div className="students-table-container">
-        <h2>📊 Student Performance Overview</h2>
-        <table className="students-table">
-          <thead>
-            <tr>
-              <th>Roll No</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Course</th>
-              <th>Plan</th>
-              <th>Biology</th>
-              <th>Physics</th>
-              <th>Chemistry</th>
-              <th>Total</th>
-              <th>Tests Taken</th>
-              <th>Actions</th>
+      {/* STUDENTS TABLE */}
+      <table className="students-table">
+        <thead>
+          <tr>
+            <th>Roll</th>
+            <th>Name</th>
+            <th>Mentor</th>
+            <th>Plan</th>
+            <th>Bio</th>
+            <th>Phy</th>
+            <th>Chem</th>
+            <th>Total</th>
+            <th>Tests</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {students.map((s) => (
+            <tr key={s._id}>
+              <td>{s.rollNumber || "N/A"}</td>
+              <td>{s.name}</td>
+              <td>
+                {s.mentorName || "Not assigned"}
+                <button onClick={() => openMentorModal(s)} className="edit-mentor-btn">
+                  ✏️
+                </button>
+              </td>
+              <td>{s.plan || "1 Month"}</td>
+              <td>{s.weeklyMarks?.slice(-1)[0]?.biologyMarks || 0}/360</td>
+              <td>{s.weeklyMarks?.slice(-1)[0]?.physicsMarks || 0}/180</td>
+              <td>{s.weeklyMarks?.slice(-1)[0]?.chemistryMarks || 0}/180</td>
+              <td>
+                <b>{s.weeklyMarks?.slice(-1)[0]?.totalMarks || 0}/720</b>
+              </td>
+              <td>{s.weeklyMarks?.length || 0}</td>
+              <td>
+                <button onClick={() => openMarksModal(s)}>Add Marks</button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {students.length === 0 ? (
-              <tr>
-                <td colSpan={10} style={{ textAlign: 'center', padding: '30px' }}>
-                  No students enrolled yet
-                </td>
-              </tr>
-            ) : (
-              students.map((student) => (
-                <tr key={student._id}>
-                  <td>{student.rollNumber || "N/A"}</td>
-                  <td>{student.name}</td>
-                  <td>{student.email}</td>
-                  <td>{student.courseName || "Not enrolled"}</td>
-                  <td>{student.plan || "1 Month"}</td>
-                  {/* <td>{student.biologyMarks || 0}/360</td>
-                  <td>{student.physicsMarks || 0}/180</td>
-                  <td>{student.chemistryMarks || 0}/180</td>
-                  <td><strong>{student.totalMarks || 0}/720</strong></td> */}
+          ))}
+        </tbody>
+      </table>
 
-                  <td>{student.weeklyMarks?.slice(-1)[0]?.biologyMarks || 0}/360</td>
-<td>{student.weeklyMarks?.slice(-1)[0]?.physicsMarks || 0}/180</td>
-<td>{student.weeklyMarks?.slice(-1)[0]?.chemistryMarks || 0}/180</td>
-<td>
-  <strong>
-    {student.weeklyMarks?.slice(-1)[0]?.totalMarks || 0}/720
-  </strong>
-</td>
+      {/* MARKS MODAL */}
+      {showMarksModal && renderMarksModal()}
 
-                  <td>{student.weeklyMarks?.length || 0} weeks</td>
-                  <td>
-                    <button
-                      onClick={() => openMarksModal(student)}
-                      className="update-btn"
-                    >
-                      📝 Add Weekly Marks
-                    </button>
-
-                    <button
-  onClick={() => deleteStudent(student._id)}
-  className="delete-btn"
->
-  🗑 Remove
-</button>
-
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {showMarksModal && selectedStudent && (
-        <div className="modal-overlay" onClick={() => setShowMarksModal(false)}>
+      {/* MENTOR MODAL */}
+      {showMentorModal && (
+        <div className="modal-overlay" onClick={() => setShowMentorModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>📝 Add Week {marksForm.week} Marks for {selectedStudent.name}</h2>
-            <p style={{ color: '#666', marginBottom: '20px' }}>
-              Total tests completed: <strong>{selectedStudent.weeklyMarks?.length || 0} weeks</strong>
-            </p>
-
-            <table className="weekly-table">
-  <thead>
-    <tr>
-      <th>Week</th>
-      <th>Biology</th>
-      <th>Physics</th>
-      <th>Chemistry</th>
-      <th>Total</th>
-      <th>Rank</th>
-    </tr>
-  </thead>
-  <tbody>
-    {selectedStudent.weeklyMarks?.map((w) => (
-      <tr key={w.week}>
-        <td>{w.week}</td>
-        <td>{w.biologyMarks}</td>
-        <td>{w.physicsMarks}</td>
-        <td>{w.chemistryMarks}</td>
-        <td><strong>{w.totalMarks}</strong></td>
-        <td>{getRankForWeek(w.week, selectedStudent._id)}</td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-
-            {selectedStudent.weeklyMarks?.map(w => (
-  <p key={w.week}>
-    Week {w.week} Rank: <strong>{getRankForWeek(w.week, selectedStudent._id)}</strong>
-  </p>
-))}
-
-            <form onSubmit={handleMarksSubmit}>
+            <form onSubmit={handleMentorSubmit}>
+              <h3>Update Mentor</h3>
               <div className="form-group">
-                <label>Week Number</label>
+                <label>Mentor Name</label>
                 <input
-                  type="number"
-                  min="1"
-                  value={marksForm.week}
+                  placeholder="Mentor Name"
+                  value={mentorForm.mentorName}
                   onChange={(e) =>
-                    setMarksForm({
-                      ...marksForm,
-                      week: Number(e.target.value),
+                    setMentorForm({ ...mentorForm, mentorName: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Contact</label>
+                <input
+                  placeholder="Contact"
+                  value={mentorForm.mentorContactNumber}
+                  onChange={(e) =>
+                    setMentorForm({
+                      ...mentorForm,
+                      mentorContactNumber: e.target.value,
                     })
                   }
                   required
                 />
               </div>
-
-              <div className="form-group">
-                <label>Biology Marks (out of 360)</label>
-                <input
-                  type="number"
-                  min="0"
-                  max="360"
-                  value={marksForm.biologyMarks}
-                  onChange={(e) =>
-                    setMarksForm({
-                      ...marksForm,
-                      biologyMarks: Number(e.target.value),
-                    })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Physics Marks (out of 180)</label>
-                <input
-                  type="number"
-                  min="0"
-                  max="180"
-                  value={marksForm.physicsMarks}
-                  onChange={(e) =>
-                    setMarksForm({
-                      ...marksForm,
-                      physicsMarks: Number(e.target.value),
-                    })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Chemistry Marks (out of 180)</label>
-                <input
-                  type="number"
-                  min="0"
-                  max="180"
-                  value={marksForm.chemistryMarks}
-                  onChange={(e) =>
-                    setMarksForm({
-                      ...marksForm,
-                      chemistryMarks: Number(e.target.value),
-                    })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label style={{ fontWeight: 'bold', fontSize: '18px' }}>
-                  Total: {marksForm.biologyMarks + marksForm.physicsMarks + marksForm.chemistryMarks} / 720
-                </label>
-              </div>
-
               <div className="modal-actions">
                 <button type="submit" className="submit-btn">
-                  ✅ Save Week {marksForm.week} Marks
+                  Save
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowMarksModal(false)}
+                  onClick={() => setShowMentorModal(false)}
                   className="cancel-btn"
                 >
                   Cancel
