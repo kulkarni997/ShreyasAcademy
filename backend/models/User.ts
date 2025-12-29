@@ -8,6 +8,8 @@ export interface IUser extends Document {
   phone: string;
   password: string;
   role: "student" | "admin";
+  plan?: "1 Month" | "6 Months" | "16 Months";
+
 
   rollNumber?: string;
   courseName?: string;
@@ -16,12 +18,7 @@ export interface IUser extends Document {
   mentorName?: string;
   mentorContactNumber?: string;
 
-  biologyMarks?: number;
-  physicsMarks?: number;
-  chemistryMarks?: number;
-  totalMarks?: number;
-
-  weeklyMarks?: Array<{
+  weeklyMarks: Array<{
     week: number;
     date: Date;
     biologyMarks: number;
@@ -30,6 +27,12 @@ export interface IUser extends Document {
     totalMarks: number;
   }>;
 
+  biologyMarks?: number;
+  physicsMarks?: number;
+  chemistryMarks?: number;
+  totalMarks?: number;
+
+  // 🔐 password reset
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
 }
@@ -40,13 +43,8 @@ const userSchema = new Schema<IUser>(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     phone: { type: String, required: true },
-
     password: { type: String, required: true, select: false },
-    role: {
-      type: String,
-      enum: ["student", "admin"],
-      default: "student",
-    },
+    role: { type: String, enum: ["student", "admin"], default: "student" },
 
     rollNumber: String,
     courseName: String,
@@ -54,6 +52,12 @@ const userSchema = new Schema<IUser>(
     courseEndDate: String,
     mentorName: String,
     mentorContactNumber: String,
+    plan: {
+    type: String,
+    enum: ["1 Month", "6 Months", "16 Months"],
+    default: "1 Month",
+},
+
 
     weeklyMarks: [
       {
@@ -71,34 +75,24 @@ const userSchema = new Schema<IUser>(
     chemistryMarks: { type: Number, default: 0 },
     totalMarks: { type: Number, default: 0 },
 
-    resetPasswordToken: {
-      type: String,
-      default: undefined,
-    },
-
-    resetPasswordExpire: {
-      type: Date,
-      default: undefined,
-    },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
   },
   { timestamps: true }
 );
 
 /* ================= PASSWORD HASH ================= */
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function () {
+  // Only hash the password if it has been modified (or is new)
   if (!this.isModified("password")) {
-    return next();
+    return;
   }
 
-  try {
-    const hash = await bcrypt.hash(this.password, 10);
-    this.password = hash;
-    next();
-  } catch (err) {
-    next(err);
-  }
+  // Generate salt and hash password
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
+/* ================= EXPORT ================= */
 const User = mongoose.model<IUser>("User", userSchema);
 export default User;
-

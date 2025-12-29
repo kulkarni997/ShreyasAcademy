@@ -4,6 +4,8 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Mentors from "./pages/Mentors";
 import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 
@@ -26,10 +28,20 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
   },
-
-  // 🔐 Forgot Password Routes
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute adminOnly>
+        <AdminDashboard />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/forgot-password",
     element: <ForgotPassword />,

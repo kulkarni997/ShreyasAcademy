@@ -221,6 +221,21 @@
   color: #ef4444;
 }
 
+.delete-btn {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.delete-btn:hover {
+  background: #d9363e;
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-page {
@@ -283,3 +298,4 @@
     font-size: 20px;
   }
 }
+
