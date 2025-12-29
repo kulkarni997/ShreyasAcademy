@@ -50,7 +50,14 @@ if (process.env.EMAIL && process.env.EMAIL_PASS) {
 }
 
 /* ================= MIDDLEWARE ================= */
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://YOUR_FRONTEND_DOMAIN.vercel.app"
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -534,13 +541,18 @@ app.post("/make-admin", verifyToken, async (req, res) => {
   }
 });
 
-app.post("/logout", (_req: Request, res: Response) => {
+app.post("/logout", (_req, res) => {
+  const isProd = process.env.NODE_ENV === "production";
+
   res.clearCookie("student_token", {
     httpOnly: true,
-    sameSite: "lax",
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
   });
+
   res.json({ message: "Logged out successfully" });
 });
+
 
 /* ================= ADMIN: DELETE STUDENT ================= */
 app.delete("/admin/students/:id", verifyToken, isAdmin, async (req, res) => {
