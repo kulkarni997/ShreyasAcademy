@@ -19,6 +19,8 @@ mongoose
 
 /* ================= APP ================= */
 const app = express();
+app.set("trust proxy", 1);
+
 const port = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
 
@@ -144,10 +146,20 @@ app.post("/login", async (req: Request, res: Response) => {
       expiresIn: "7d",
     });
 
-    res.cookie("student_token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-    });
+    // res.cookie("student_token", token, {
+    //   httpOnly: true,
+    //   sameSite: "lax",
+    // });
+
+    const isProd = process.env.NODE_ENV === "production";
+
+res.cookie("student_token", token, {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
+  path: "/",
+});
+
 
     console.log("✅ Login successful for:", email, "Role:", user.role);
 
@@ -338,7 +350,7 @@ app.post("/forgot-password", async (req: Request, res: Response) => {
     await user.save();
 
     // Default to common Vite dev server port
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const frontendUrl = process.env.FRONTEND_URL;
     const resetLink = `${frontendUrl}/reset-password/${token}`;
 
     console.log(`\n🔗 RESET LINK: ${resetLink}\n`);
@@ -542,11 +554,20 @@ app.post("/make-admin", verifyToken, async (req, res) => {
 app.post("/logout", (_req, res) => {
   const isProd = process.env.NODE_ENV === "production";
 
+  // res.clearCookie("student_token", {
+  //   httpOnly: true,
+  //   secure: isProd,
+  //   sameSite: isProd ? "none" : "lax",
+  // });
+
   res.clearCookie("student_token", {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "none" : "lax",
-  });
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
+  path: "/",
+});
+
+
 
   res.json({ message: "Logged out successfully" });
 });
