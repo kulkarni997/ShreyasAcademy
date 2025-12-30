@@ -46,7 +46,7 @@ const App = () => {
 
   // 🔐 Check login status
   useEffect(() => {
-    fetch("http://localhost:5000/profile", {
+    fetch("https://shreyasacademy-pd3b.onrender.com/profile", {
       credentials: "include",
     })
       .then((res) => {

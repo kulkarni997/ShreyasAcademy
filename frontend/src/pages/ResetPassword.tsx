@@ -48,7 +48,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await axios.post(`http://localhost:5000/reset-password/${token}`, {
+      const response = await axios.post(`https://shreyasacademy-pd3b.onrender.com/reset-password/${token}`, {
         password,
       });
       

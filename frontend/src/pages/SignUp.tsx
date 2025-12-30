@@ -55,7 +55,7 @@ const SignUp = () => {
     const name = `${firstName.trim()} ${lastName.trim()}`.trim();
 
     try {
-      const res = await axios.post("http://localhost:5000/signup", {
+      const res = await axios.post("https://shreyasacademy-pd3b.onrender.com/signup", {
         name,
         email: email.trim().toLowerCase(),
         phone: phone.trim(),

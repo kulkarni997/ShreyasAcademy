@@ -22,7 +22,7 @@ const ForgotPassword = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/forgot-password",
+        "https://shreyasacademy-pd3b.onrender.com/forgot-password",
         { email: email.trim().toLowerCase() }
       );
 

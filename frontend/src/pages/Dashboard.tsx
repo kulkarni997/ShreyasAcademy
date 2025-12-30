@@ -43,7 +43,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/profile", {
+        const response = await fetch("https://shreyasacademy-pd3b.onrender.com/profile", {
           credentials: "include",
         });
 
@@ -62,7 +62,7 @@ const Dashboard = () => {
   }, []);
 
   const handleLogout = async () => {
-    await fetch("http://localhost:5000/logout", {
+    await fetch("https://shreyasacademy-pd3b.onrender.com/logout", {
       method: "POST",
       credentials: "include",
     });

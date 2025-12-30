@@ -27,7 +27,7 @@ const Login = () => {
     console.log('Password length:', loginData.password.length);
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch('https://shreyasacademy-pd3b.onrender.com/login', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

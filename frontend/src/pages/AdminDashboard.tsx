@@ -17,7 +17,7 @@ interface Student {
   _id: string;
   name: string;
   rollNumber?: string;
-  plan?: "1 Month" | "6 Months" | "16 Months";
+  plan?: "1 Month" | "6 Months" | "16 Months" | "One on One";
   mentorName?: string;
   mentorContactNumber?: string;
   weeklyMarks?: WeeklyMark[];
@@ -60,7 +60,7 @@ const AdminDashboard = () => {
 
   const fetchStudents = async () => {
     try {
-      const res = await fetch("http://localhost:5000/admin/students", {
+      const res = await fetch("https://shreyasacademy-pd3b.onrender.com/admin/students", {
         credentials: "include",
       });
 
@@ -102,7 +102,7 @@ const AdminDashboard = () => {
   /* ================= LOGOUT ================= */
 
   const handleLogout = async () => {
-    await fetch("http://localhost:5000/logout", {
+    await fetch("https://shreyasacademy-pd3b.onrender.com/logout", {
       method: "POST",
       credentials: "include",
     });
@@ -134,7 +134,7 @@ const AdminDashboard = () => {
     if (!selectedStudent) return;
 
     const res = await fetch(
-      `http://localhost:5000/admin/students/${selectedStudent._id}/marks`,
+      `https://shreyasacademy-pd3b.onrender.com/admin/students/${selectedStudent._id}/marks`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -339,7 +339,7 @@ const AdminDashboard = () => {
     if (!selectedStudentId) return;
 
     const res = await fetch(
-      `http://localhost:5000/admin/students/${selectedStudentId}/mentor`,
+      `https://shreyasacademy-pd3b.onrender.com/admin/students/${selectedStudentId}/mentor`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
