@@ -56,9 +56,13 @@ app.use(
       "http://localhost:5173",
       "https://shreyas-academy-uggx.vercel.app"
     ],
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
+app.options("*", cors());
+
 
 app.use(express.json());
 app.use(cookieParser());
