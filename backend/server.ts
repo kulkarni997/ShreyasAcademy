@@ -13,7 +13,7 @@ dotenv.config();
 
 /* ================= DB ================= */
 mongoose
-  .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/shreyas")
+  .connect(process.env.MONGO_URI as string)
   .then(() => console.log("MongoDB connected 🟢"))
   .catch(console.error);
 
@@ -52,8 +52,8 @@ if (process.env.EMAIL && process.env.EMAIL_PASS) {
 /* ================= MIDDLEWARE ================= */
 app.use(cors({
   origin: [
-    "http://localhost:5173",
-    "https://YOUR_FRONTEND_DOMAIN.vercel.app"
+    process.env.FRONTEND_URL,
+    "https://shreyas-academy-uggx.vercel.app/"
   ],
   credentials: true
 }));
