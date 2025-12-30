@@ -50,19 +50,12 @@ if (process.env.EMAIL && process.env.EMAIL_PASS) {
 }
 
 /* ================= MIDDLEWARE ================= */
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://shreyas-academy-uggx.vercel.app"
-    ],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-  })
-);
-app.options("/*", cors());
-
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 
 app.use(express.json());
