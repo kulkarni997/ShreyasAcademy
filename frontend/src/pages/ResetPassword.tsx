@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from '../config/api';
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -48,7 +49,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await axios.post(`https://shreyasacademy-pd3b.onrender.com/reset-password/${token}`, {
+      const response = await axios.post(`${API_URL}/reset-password/${token}`, {
         password,
       });
       

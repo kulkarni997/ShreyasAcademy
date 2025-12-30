@@ -1,6 +1,8 @@
+import { API_URL } from '../config/api';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/AdminDashboard.css";
+
 
 /* ================= TYPES ================= */
 
@@ -60,7 +62,7 @@ const AdminDashboard = () => {
 
   const fetchStudents = async () => {
     try {
-      const res = await fetch("https://shreyasacademy-pd3b.onrender.com/admin/students", {
+      const res = await fetch(`${API_URL}/admin/students`, {
         credentials: "include",
       });
 
@@ -101,13 +103,13 @@ const AdminDashboard = () => {
 
   /* ================= LOGOUT ================= */
 
-  const handleLogout = async () => {
-    await fetch("https://shreyasacademy-pd3b.onrender.com/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-    navigate("/login");
-  };
+ const handleLogout = async () => {
+  await fetch(`${API_URL}/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+  navigate("/login");
+};
 
   /* ================= MARKS ================= */
 
@@ -134,7 +136,7 @@ const AdminDashboard = () => {
     if (!selectedStudent) return;
 
     const res = await fetch(
-      `https://shreyasacademy-pd3b.onrender.com/admin/students/${selectedStudent._id}/marks`,
+      `${API_URL}/admin/students/${selectedStudent._id}/marks`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -339,7 +341,7 @@ const AdminDashboard = () => {
     if (!selectedStudentId) return;
 
     const res = await fetch(
-      `https://shreyasacademy-pd3b.onrender.com/admin/students/${selectedStudentId}/mentor`,
+     `${API_URL}/admin/students/${selectedStudentId}/mentor`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

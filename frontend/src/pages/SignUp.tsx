@@ -1,5 +1,6 @@
 import { type FormEvent, useState } from "react";
 import axios from "axios";
+import { API_URL } from '../config/api';
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -55,7 +56,7 @@ const SignUp = () => {
     const name = `${firstName.trim()} ${lastName.trim()}`.trim();
 
     try {
-      const res = await axios.post("https://shreyasacademy-pd3b.onrender.com/signup", {
+      const res = await axios.post(`${API_URL}/signup`, {
         name,
         email: email.trim().toLowerCase(),
         phone: phone.trim(),

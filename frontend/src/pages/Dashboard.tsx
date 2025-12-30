@@ -1,6 +1,7 @@
  import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Dashboard.css";
+import { API_URL } from '../config/api'; 
 
 interface WeeklyMark {
   week: number;
@@ -43,7 +44,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await fetch("https://shreyasacademy-pd3b.onrender.com/profile", {
+        const response = await fetch(`${API_URL}/profile`, {
           credentials: "include",
         });
 
@@ -62,7 +63,7 @@ const Dashboard = () => {
   }, []);
 
   const handleLogout = async () => {
-    await fetch("https://shreyasacademy-pd3b.onrender.com/logout", {
+    await fetch(`${API_URL}/logout`, {
       method: "POST",
       credentials: "include",
     });

@@ -46,7 +46,7 @@ const App = () => {
 
   // 🔐 Check login status
   useEffect(() => {
-    fetch("https://shreyasacademy-pd3b.onrender.com/profile", {
+    fetch(`${import.meta.env.VITE_API_URL}/profile`, {
       credentials: "include",
     })
       .then((res) => {

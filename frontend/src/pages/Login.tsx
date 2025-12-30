@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_URL } from '../config/api'; 
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Login = () => {
     console.log('Password length:', loginData.password.length);
 
     try {
-      const response = await fetch('https://shreyasacademy-pd3b.onrender.com/login', {
+      const response = await fetch('${API_URL}/login', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

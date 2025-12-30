@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { API_URL } from '../config/api'; 
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -22,7 +23,7 @@ const ForgotPassword = () => {
 
     try {
       const res = await axios.post(
-        "https://shreyasacademy-pd3b.onrender.com/forgot-password",
+        `${API_URL}/forgot-password`,
         { email: email.trim().toLowerCase() }
       );
 
