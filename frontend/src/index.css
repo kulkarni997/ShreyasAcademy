@@ -96,8 +96,12 @@ nav.navbar.elevated {
   width: 50px;
   height: 50px;
   object-fit: contain;
+  display: block;
   border-radius: 50%;
-  mix-blend-mode: normal; /* Back to normal for white background */
+  /* This removes the white background from the JPG */
+  mix-blend-mode: multiply; 
+  filter: contrast(1.1);
+  background: transparent; /* Ensure no background interference */
 }
 
 .logo-text {
