@@ -235,6 +235,48 @@
   background: #d9363e;
 }
 
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 15px;
+}
+
+.weekly-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.weekly-table th {
+  background-color: #f8fafc;
+  color: #64748b;
+  text-align: left;
+  padding: 12px 15px;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.weekly-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1e293b;
+}
+
+.weekly-table tr:hover {
+  background-color: #f1f5f9;
+}
+
+.bold-text {
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.rank-cell {
+  font-weight: bold;
+  color: #f59e0b; /* Golden color for rank */
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

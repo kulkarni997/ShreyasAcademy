@@ -23,6 +23,7 @@ interface Student {
   mentorName?: string;
   mentorContactNumber?: string;
   weeklyMarks?: WeeklyMark[];
+  rank:string | number
 }
 
 /* ================= COMPONENT ================= */
@@ -50,6 +51,7 @@ const AdminDashboard = () => {
     physicsMarks: 0,
     chemistryMarks: 0,
     totalMarks: 0,
+    rank:""
   });
 
   const [stats, setStats] = useState({
@@ -127,6 +129,7 @@ const AdminDashboard = () => {
       physicsMarks: 0,
       chemistryMarks: 0,
       totalMarks: 0,
+      rank:""
     });
     setShowMarksModal(true);
   };

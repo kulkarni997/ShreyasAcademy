@@ -113,7 +113,7 @@ const total = latestTest?.totalMarks || 0;
 
         {/* Marks */}
         <div className="dashboard-card">
-          <h2>Marks</h2>
+          <h2>Recent Test Marks</h2>
           <p>Biology: {biology}/360</p>
           <p>Physics: {physics}/180</p>
           <p>Chemistry: {chemistry}/180</p>
@@ -122,34 +122,43 @@ const total = latestTest?.totalMarks || 0;
 
         {/* Weekly History */}
       {/* Weekly History */}
+{/* Weekly History Table */}
 <div className="dashboard-card">
-  <h2>Weekly Tests</h2>
-  <table className="weekly-table">
-    <thead>
-      <tr>
-        <th>Week</th>
-        <th>Bio</th>
-        <th>Phy</th>
-        <th>Chem</th>
-        <th>Total</th>
-        <th>Rank</th> {/* Added Rank Column */}
-      </tr>
-    </thead>
-    <tbody>
-      {user.weeklyMarks?.map((w, index) => (
-        <tr key={index}>
-          <td>Week {w.week}</td>
-          <td>{w.biologyMarks}</td>
-          <td>{w.physicsMarks}</td>
-          <td>{w.chemistryMarks}</td>
-          <td>{w.totalMarks}</td>
-          <td>{w.rank || "N/A"}</td> {/* Display the rank */}
+  <h2>Weekly Tests History</h2>
+  <div className="table-wrapper">
+    <table className="weekly-table">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Biology</th>
+          <th>Physics</th>
+          <th>Chemistry</th>
+          <th>Total</th>
+          <th>Rank</th>
         </tr>
-      )) || (
-        <tr><td colSpan={6}>No tests yet</td></tr>
-      )}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {user.weeklyMarks && user.weeklyMarks.length > 0 ? (
+          user.weeklyMarks.map((w, index) => (
+            <tr key={index}>
+              <td>Week {w.week}</td>
+              <td>{w.biologyMarks}/360</td>
+              <td>{w.physicsMarks}/180</td>
+              <td>{w.chemistryMarks}/180</td>
+              <td className="bold-text">{w.totalMarks}/720</td>
+              <td className="rank-cell">{w.rank || "N/A"}</td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={6} style={{ textAlign: "center", padding: "20px" }}>
+              No test history found.
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
 </div>
       </div>
     </div>
