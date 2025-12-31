@@ -115,7 +115,7 @@ const App = () => {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, showPrivacy]);
 
   useEffect(() => {
     const elements = document.querySelectorAll('.reveal-on-scroll');
