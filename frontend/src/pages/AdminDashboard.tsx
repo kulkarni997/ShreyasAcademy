@@ -284,6 +284,7 @@ const AdminDashboard = () => {
                   required
                 />
               </div>
+              
               <div className="form-group">
                 <label>Chemistry (out of 180)</label>
                 <input
@@ -322,6 +323,7 @@ const AdminDashboard = () => {
                 Cancel
               </button>
             </div>
+            
           </form>
         </div>
       </div>
@@ -358,6 +360,32 @@ const AdminDashboard = () => {
       fetchStudents();
     } else {
       alert("Failed to update mentor");
+    }
+  };
+
+  /* ================= DELETE STUDENT ================= */
+  const handleDeleteStudent = async (studentId: string, studentName: string) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to permanently remove ${studentName}? This action cannot be undone.`
+    );
+
+    if (confirmDelete) {
+      try {
+        const res = await fetch(`${API_URL}/admin/students/${studentId}`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+
+        if (res.ok) {
+          setStudents((prev) => prev.filter((s) => s._id !== studentId));
+          alert("Student removed successfully");
+        } else {
+          const errorData = await res.json();
+          alert(errorData.message || "Failed to remove student");
+        }
+      } catch (err) {
+        console.error("Delete error:", err);
+      }
     }
   };
 
@@ -408,30 +436,39 @@ const AdminDashboard = () => {
         </thead>
 
         <tbody>
-          {students.map((s) => (
-            <tr key={s._id}>
-              <td>{s.rollNumber || "N/A"}</td>
-              <td>{s.name}</td>
-              <td>
-                {s.mentorName || "Not assigned"}
-                <button onClick={() => openMentorModal(s)} className="edit-mentor-btn">
-                  ✏️
-                </button>
-              </td>
-              <td>{s.plan || "1 Month"}</td>
-              <td>{s.weeklyMarks?.slice(-1)[0]?.biologyMarks || 0}/360</td>
-              <td>{s.weeklyMarks?.slice(-1)[0]?.physicsMarks || 0}/180</td>
-              <td>{s.weeklyMarks?.slice(-1)[0]?.chemistryMarks || 0}/180</td>
-              <td>
-                <b>{s.weeklyMarks?.slice(-1)[0]?.totalMarks || 0}/720</b>
-              </td>
-              <td>{s.weeklyMarks?.length || 0}</td>
-              <td>
-                <button onClick={() => openMarksModal(s)}>Add Marks</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+  {students.map((s) => (
+    <tr key={s._id}>
+      <td>{s.rollNumber || "N/A"}</td>
+      <td>{s.name}</td>
+      <td>
+        {s.mentorName || "Not assigned"}
+        <button onClick={() => openMentorModal(s)} className="edit-mentor-btn">
+          ✏️
+        </button>
+      </td>
+      <td>{s.plan || "1 Month"}</td>
+      <td>{s.weeklyMarks?.slice(-1)[0]?.biologyMarks || 0}/360</td>
+      <td>{s.weeklyMarks?.slice(-1)[0]?.physicsMarks || 0}/180</td>
+      <td>{s.weeklyMarks?.slice(-1)[0]?.chemistryMarks || 0}/180</td>
+      <td>
+        <b>{s.weeklyMarks?.slice(-1)[0]?.totalMarks || 0}/720</b>
+      </td>
+      <td>{s.weeklyMarks?.length || 0}</td>
+      <td className="actions-cell">
+        <button onClick={() => openMarksModal(s)} className="add-marks-btn">
+          Add Marks
+        </button>
+        {/* Trash Icon Button - Line 324 */}
+        <button 
+          onClick={() => handleDeleteStudent(s._id, s.name)} 
+          className="remove-student-btn"
+        >
+          🗑️
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
       </table>
 
       {/* MARKS MODAL */}

@@ -421,6 +421,61 @@
   color: #94a3b8;
 }
 
+/* Container for the buttons in the Action column */
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+/* Style for the Trash Icon Button */
+.remove-student-btn {
+  background: none;
+  border: 1px solid #ff4d4d;
+  color: #ff4d4d;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover effect: turns solid red */
+.remove-student-btn:hover {
+  background-color: #ff4d4d;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Ensure the Add Marks button remains consistent */
+.add-marks-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-marks-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.students-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.students-table td {
+  vertical-align: middle;
+  padding: 12px 15px;
+}
+
 /* ================== Responsive Design ================== */
 @media (max-width: 768px) {
   .admin-dashboard {
