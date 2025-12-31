@@ -19,7 +19,7 @@ interface Student {
   _id: string;
   name: string;
   rollNumber?: string;
-  plan?: "1 Month" | "6 Months" | "16 Months" | "One on One";
+  plan?: string;
   mentorName?: string;
   mentorContactNumber?: string;
   weeklyMarks?: WeeklyMark[];
@@ -43,6 +43,8 @@ const AdminDashboard = () => {
   const [mentorForm, setMentorForm] = useState({
     mentorName: "",
     mentorContactNumber: "",
+    rollNumber: "", // New field
+    plan: "", // New field
   });
 
   const [marksForm, setMarksForm] = useState({
@@ -332,14 +334,16 @@ const AdminDashboard = () => {
 
   /* ================= MENTOR ================= */
 
-  const openMentorModal = (student: Student) => {
-    setSelectedStudentId(student._id);
-    setMentorForm({
-      mentorName: student.mentorName || "",
-      mentorContactNumber: student.mentorContactNumber || "",
-    });
-    setShowMentorModal(true);
-  };
+ const openMentorModal = (student: Student) => {
+  setSelectedStudentId(student._id);
+  setMentorForm({
+    mentorName: student.mentorName || "",
+    mentorContactNumber: student.mentorContactNumber || "",
+    rollNumber: student.rollNumber || "", // Load existing roll no
+    plan: student.plan || "1 Month", // Load existing plan
+  });
+  setShowMentorModal(true);
+};
 
   const handleMentorSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -492,19 +496,26 @@ const AdminDashboard = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Contact</label>
-                <input
-                  placeholder="Contact"
-                  value={mentorForm.mentorContactNumber}
-                  onChange={(e) =>
-                    setMentorForm({
-                      ...mentorForm,
-                      mentorContactNumber: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </div>
+  <label>Roll Number</label>
+  <input
+    value={mentorForm.rollNumber}
+    onChange={(e) => setMentorForm({ ...mentorForm, rollNumber: e.target.value })}
+    placeholder="e.g. SA-2025-01"
+  />
+</div>
+
+<div className="form-group">
+  <label>Subscription Plan</label>
+  <select 
+    value={mentorForm.plan} 
+    onChange={(e) => setMentorForm({ ...mentorForm, plan: e.target.value })}
+  >
+    <option value="1 Month">1 Month</option>
+    <option value="6 Months">6 Months</option>
+    <option value="16 Months">16 Months</option>
+    <option value="One on One">One on One</option>
+  </select>
+</div>
               <div className="modal-actions">
                 <button type="submit" className="submit-btn">
                   Save

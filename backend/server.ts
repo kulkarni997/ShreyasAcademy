@@ -278,22 +278,24 @@ app.post("/admin/students/:id/marks", verifyToken, isAdmin, async (req, res) => 
   // Add this endpoint after the existing /admin/students/:id/marks endpoint
 app.put("/admin/students/:id/mentor", verifyToken, isAdmin, async (req, res) => {
   try {
-    const { mentorName, mentorContactNumber } = req.body;
+    const { mentorName, mentorContactNumber, rollNumber, plan } = req.body;
+    
     const student = await User.findByIdAndUpdate(
       req.params.id,
       { 
-        mentorName: mentorName || undefined,
-        mentorContactNumber: mentorContactNumber || undefined
+        mentorName,
+        mentorContactNumber,
+        rollNumber, // Save new roll number
+        plan // Save new plan
       },
       { new: true }
     ).select("-password");
 
     if (!student) return res.status(404).json({ message: "Student not found" });
 
-    res.json({ message: "Mentor details updated successfully", student });
+    res.json({ message: "Student details updated", student });
   } catch (error) {
-    console.error("Error updating mentor details:", error);
-    res.status(500).json({ message: "Error updating mentor details" });
+    res.status(500).json({ message: "Error updating student details" });
   }
 });
 
