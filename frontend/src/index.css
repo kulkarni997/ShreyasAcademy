@@ -44,30 +44,30 @@ button {
   font-family: 'Inter', sans-serif;
 }
 
-/* ===== UPDATED MODERN NAVBAR ===== */
+/* ===== RESTORED WHITE NAVBAR ===== */
 nav.navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  /* Force transparency and blur */
-  background: rgba(15, 23, 42, 0.05) !important; 
+  background: #ffffff !important; /* Restored white background */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-bottom: 1px solid #e2e8f0 !important; /* Light gray border */
   z-index: 1000;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   height: 80px;
   display: flex;
   align-items: center;
-  box-shadow: none; /* Remove shadow on transparent state */
+  color: #1e293b !important;
 }
 
 nav.navbar.elevated {
-  background: rgba(15, 23, 42, 0.95) !important;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.3) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05) !important;
 }
 
 .nav-container {
@@ -96,11 +96,8 @@ nav.navbar.elevated {
   width: 50px;
   height: 50px;
   object-fit: contain;
-  display: block;
-  flex-shrink: 0;
   border-radius: 50%;
-  /* Modern blending */
-  mix-blend-mode: screen; 
+  mix-blend-mode: normal; /* Back to normal for white background */
 }
 
 .logo-text {
@@ -112,49 +109,21 @@ nav.navbar.elevated {
   white-space: nowrap;
 }
 
-/* ===== UPDATED NAV LINKS FOR DARK THEME ===== */
 nav.navbar .nav-links a,
 nav.navbar .nav-link {
-  color: #f1f5f9 !important; /* High-contrast light gray for readability */
+  color: #1e293b !important; /* Dark text for white background */
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   position: relative;
   padding: 0.5rem 0.75rem;
   font-family: 'Inter', sans-serif;
   text-decoration: none;
-  white-space: nowrap;
 }
 
 nav.navbar .nav-links a:hover,
 nav.navbar .nav-link:hover {
-  color: #60a5fa !important; /* Modern Elite Blue on hover */
-}
-
-/* Updated Underline Animation for Dark Background */
-.nav-links a::after,
-.nav-link::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  /* Glowing gradient underline */
-  background: linear-gradient(90deg, #60a5fa, #8b5cf6);
-  transition: width 0.3s ease;
-  border-radius: 2px;
-  box-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
-}
-
-.nav-links a:hover::after,
-.nav-link:hover::after {
-  width: 100%;
-}
-
-.nav-links a.active {
-  color: #60a5fa !important;
-  font-weight: 700;
+  color: #1e40af !important; /* Navy blue hover */
 }
 .mobile-menu-btn {
   display: none;
