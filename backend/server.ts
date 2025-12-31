@@ -444,40 +444,6 @@ app.post("/reset-password/:token", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-/* ================= ADMIN: UPDATE MENTOR ================= */
-// app.put(
-//   "/admin/students/:id/mentor",
-//   verifyToken,
-//   isAdmin,
-//   async (req: Request, res: Response) => {
-//     try {
-//       const { mentorName, mentorContactNumber } = req.body;
-
-//       const student = await User.findById(req.params.id);
-//       if (!student) {
-//         return res.status(404).json({ message: "Student not found" });
-//       }
-
-//       student.mentorName = mentorName;
-//       student.mentorContactNumber = mentorContactNumber;
-
-//       await student.save();
-
-//       return res.json({
-//         message: "Mentor updated successfully",
-//         student: {
-//           _id: student._id,
-//           mentorName: student.mentorName,
-//           mentorContactNumber: student.mentorContactNumber,
-//         },
-//       });
-//     } catch (error) {
-//       console.error("Mentor update error:", error);
-//       return res.status(500).json({ message: "Failed to update mentor" });
-//     }
-//   }
-// );
-
 
 /* ================= MAKE ADMIN (SECURE) ================= */
 app.post("/make-admin", verifyToken, async (req, res) => {

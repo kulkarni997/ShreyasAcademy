@@ -442,33 +442,34 @@ const AdminDashboard = () => {
         <tbody>
   {students.map((s) => (
     <tr key={s._id}>
-      <td>{s.rollNumber || "N/A"}</td>
+      {/* Roll Number Column with Edit Button */}
+      <td>
+        {s.rollNumber || "N/A"}
+        <button onClick={() => openMentorModal(s)} className="column-edit-btn"> ✏️ </button>
+      </td>
+      
       <td>{s.name}</td>
+      
       <td>
         {s.mentorName || "Not assigned"}
-        <button onClick={() => openMentorModal(s)} className="edit-mentor-btn">
-          ✏️
-        </button>
+        <button onClick={() => openMentorModal(s)} className="column-edit-btn"> ✏️ </button>
       </td>
-      <td>{s.plan || "1 Month"}</td>
+
+      {/* Plan Column with Edit Button */}
+      <td>
+        {s.plan || "1 Month"}
+        <button onClick={() => openMentorModal(s)} className="column-edit-btn"> ✏️ </button>
+      </td>
+
       <td>{s.weeklyMarks?.slice(-1)[0]?.biologyMarks || 0}/360</td>
       <td>{s.weeklyMarks?.slice(-1)[0]?.physicsMarks || 0}/180</td>
       <td>{s.weeklyMarks?.slice(-1)[0]?.chemistryMarks || 0}/180</td>
-      <td>
-        <b>{s.weeklyMarks?.slice(-1)[0]?.totalMarks || 0}/720</b>
-      </td>
+      <td><b>{s.weeklyMarks?.slice(-1)[0]?.totalMarks || 0}/720</b></td>
       <td>{s.weeklyMarks?.length || 0}</td>
+      
       <td className="actions-cell">
-        <button onClick={() => openMarksModal(s)} className="add-marks-btn">
-          Add Marks
-        </button>
-        {/* Trash Icon Button - Line 324 */}
-        <button 
-          onClick={() => handleDeleteStudent(s._id, s.name)} 
-          className="remove-student-btn"
-        >
-          🗑️
-        </button>
+        <button onClick={() => openMarksModal(s)} className="add-marks-btn">Add Marks</button>
+        <button onClick={() => handleDeleteStudent(s._id, s.name)} className="remove-student-btn">🗑️</button>
       </td>
     </tr>
   ))}
