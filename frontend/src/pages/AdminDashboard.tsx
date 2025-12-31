@@ -482,53 +482,49 @@ const AdminDashboard = () => {
       {showMentorModal && (
         <div className="modal-overlay" onClick={() => setShowMentorModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <form onSubmit={handleMentorSubmit}>
-              <h3>Update Mentor</h3>
-              <div className="form-group">
-                <label>Mentor Name</label>
-                <input
-                  placeholder="Mentor Name"
-                  value={mentorForm.mentorName}
-                  onChange={(e) =>
-                    setMentorForm({ ...mentorForm, mentorName: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div className="form-group">
-  <label>Roll Number</label>
-  <input
-    value={mentorForm.rollNumber}
-    onChange={(e) => setMentorForm({ ...mentorForm, rollNumber: e.target.value })}
-    placeholder="e.g. SA-2025-01"
-  />
-</div>
-
-<div className="form-group">
-  <label>Subscription Plan</label>
-  <select 
-    value={mentorForm.plan} 
-    onChange={(e) => setMentorForm({ ...mentorForm, plan: e.target.value })}
-  >
-    <option value="1 Month">1 Month</option>
-    <option value="6 Months">6 Months</option>
-    <option value="16 Months">16 Months</option>
-    <option value="One on One">One on One</option>
-  </select>
-</div>
-              <div className="modal-actions">
-                <button type="submit" className="submit-btn">
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowMentorModal(false)}
-                  className="cancel-btn"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+           <form onSubmit={handleMentorSubmit}>
+  <h3>Update Student Details</h3>
+  <div className="form-group">
+    <label>Roll Number</label>
+    <input
+      placeholder="Roll Number"
+      value={mentorForm.rollNumber}
+      onChange={(e) => setMentorForm({ ...mentorForm, rollNumber: e.target.value })}
+    />
+  </div>
+  <div className="form-group">
+    <label>Subscription Plan</label>
+    <select 
+      value={mentorForm.plan} 
+      onChange={(e) => setMentorForm({ ...mentorForm, plan: e.target.value })}
+    >
+      <option value="1 Month">1 Month</option>
+      <option value="6 Months">6 Months</option>
+      <option value="16 Months">16 Months</option>
+      <option value="One on One">One on One</option>
+    </select>
+  </div>
+  <div className="form-group">
+    <label>Mentor Name</label>
+    <input
+      placeholder="Mentor Name"
+      value={mentorForm.mentorName}
+      onChange={(e) => setMentorForm({ ...mentorForm, mentorName: e.target.value })}
+    />
+  </div>
+  <div className="form-group">
+    <label>Mentor Contact</label>
+    <input
+      placeholder="Contact"
+      value={mentorForm.mentorContactNumber}
+      onChange={(e) => setMentorForm({ ...mentorForm, mentorContactNumber: e.target.value })}
+    />
+  </div>
+  <div className="modal-actions">
+    <button type="submit" className="submit-btn">Save All Changes</button>
+    <button type="button" onClick={() => setShowMentorModal(false)} className="cancel-btn">Cancel</button>
+  </div>
+</form>
           </div>
         </div>
       )}

@@ -445,38 +445,38 @@ app.post("/reset-password/:token", async (req: Request, res: Response) => {
   }
 });
 /* ================= ADMIN: UPDATE MENTOR ================= */
-app.put(
-  "/admin/students/:id/mentor",
-  verifyToken,
-  isAdmin,
-  async (req: Request, res: Response) => {
-    try {
-      const { mentorName, mentorContactNumber } = req.body;
+// app.put(
+//   "/admin/students/:id/mentor",
+//   verifyToken,
+//   isAdmin,
+//   async (req: Request, res: Response) => {
+//     try {
+//       const { mentorName, mentorContactNumber } = req.body;
 
-      const student = await User.findById(req.params.id);
-      if (!student) {
-        return res.status(404).json({ message: "Student not found" });
-      }
+//       const student = await User.findById(req.params.id);
+//       if (!student) {
+//         return res.status(404).json({ message: "Student not found" });
+//       }
 
-      student.mentorName = mentorName;
-      student.mentorContactNumber = mentorContactNumber;
+//       student.mentorName = mentorName;
+//       student.mentorContactNumber = mentorContactNumber;
 
-      await student.save();
+//       await student.save();
 
-      return res.json({
-        message: "Mentor updated successfully",
-        student: {
-          _id: student._id,
-          mentorName: student.mentorName,
-          mentorContactNumber: student.mentorContactNumber,
-        },
-      });
-    } catch (error) {
-      console.error("Mentor update error:", error);
-      return res.status(500).json({ message: "Failed to update mentor" });
-    }
-  }
-);
+//       return res.json({
+//         message: "Mentor updated successfully",
+//         student: {
+//           _id: student._id,
+//           mentorName: student.mentorName,
+//           mentorContactNumber: student.mentorContactNumber,
+//         },
+//       });
+//     } catch (error) {
+//       console.error("Mentor update error:", error);
+//       return res.status(500).json({ message: "Failed to update mentor" });
+//     }
+//   }
+// );
 
 
 /* ================= MAKE ADMIN (SECURE) ================= */
