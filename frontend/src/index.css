@@ -29,7 +29,7 @@ body {
   color: var(--black);
   line-height: 1.6;
   overflow-x: hidden;
-  background: var(--white);
+  background: #0f172a;;
 }
 
 #root {
@@ -44,29 +44,30 @@ button {
   font-family: 'Inter', sans-serif;
 }
 
+/* ===== UPDATED MODERN NAVBAR ===== */
 nav.navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  background: #ffffff !important;
+  /* Force transparency and blur */
+  background: rgba(15, 23, 42, 0.05) !important; 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid #e2e8f0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
   z-index: 1000;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   height: 80px;
   display: flex;
   align-items: center;
-  color: #1e293b !important;
+  box-shadow: none; /* Remove shadow on transparent state */
 }
 
 nav.navbar.elevated {
-  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05) !important;
-  border-bottom: 1px solid #e2e8f0 !important;
-  background: #ffffff !important;
+  background: rgba(15, 23, 42, 0.95) !important;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.3) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
 }
 
 .nav-container {
@@ -98,6 +99,8 @@ nav.navbar.elevated {
   display: block;
   flex-shrink: 0;
   border-radius: 50%;
+  /* Modern blending */
+  mix-blend-mode: screen; 
 }
 
 .logo-text {
@@ -109,36 +112,13 @@ nav.navbar.elevated {
   white-space: nowrap;
 }
 
-.nav-links {
-  display: flex;
-  list-style: none;
-  margin: 0 0 0 auto; /* Push nav links to the right */
-  padding: 0;
-  gap: 2.5rem; /* Slightly increased gap between nav items */
-  align-items: center;
-  flex: 0 1 auto; /* Don't let nav links take up all available space */
-}
-
-.nav-links.active {
-  display: flex;
-}
-
-.nav-links li {
-  width: 100%;
-  text-align: center;
-}
-
-.nav-links a {
-  display: block;
-  padding: 0.75rem 1rem;
-}
-
+/* ===== UPDATED NAV LINKS FOR DARK THEME ===== */
 nav.navbar .nav-links a,
 nav.navbar .nav-link {
-  color: #1e293b !important;
+  color: #f1f5f9 !important; /* High-contrast light gray for readability */
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   padding: 0.5rem 0.75rem;
   font-family: 'Inter', sans-serif;
@@ -148,9 +128,10 @@ nav.navbar .nav-link {
 
 nav.navbar .nav-links a:hover,
 nav.navbar .nav-link:hover {
-  color: #1e40af !important;
+  color: #60a5fa !important; /* Modern Elite Blue on hover */
 }
 
+/* Updated Underline Animation for Dark Background */
 .nav-links a::after,
 .nav-link::after {
   content: '';
@@ -159,14 +140,11 @@ nav.navbar .nav-link:hover {
   height: 2px;
   bottom: 0;
   left: 0;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  /* Glowing gradient underline */
+  background: linear-gradient(90deg, #60a5fa, #8b5cf6);
   transition: width 0.3s ease;
   border-radius: 2px;
-}
-
-.nav-links a:hover,
-.nav-link:hover {
-  color: #3b82f6;
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
 }
 
 .nav-links a:hover::after,
@@ -175,14 +153,9 @@ nav.navbar .nav-link:hover {
 }
 
 .nav-links a.active {
-  color: #3b82f6;
+  color: #60a5fa !important;
   font-weight: 700;
 }
-
-.nav-links a.active::after {
-  width: 100%;
-}
-
 .mobile-menu-btn {
   display: none;
   background: none;
@@ -193,7 +166,8 @@ nav.navbar .nav-link:hover {
 }
 
 .hero {
-  margin-top: 80px;
+  margin-top: 0;
+  padding-top: 80px;
   min-height: 90vh;
   background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
   position: relative;
