@@ -194,30 +194,45 @@ const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 
 
 /* ================= PROFILE ================= */
+// app.get("/profile", verifyToken, async (req: Request, res: Response) => {
+//   const user = await User.findById((req as any).user.userId).select("-password");
+//   if (!user) return res.status(404).json({ message: "User not found" });
+
+//   let biology = 0;
+//   let physics = 0;
+//   let chemistry = 0;
+//   let total = 0;
+
+//   if (user.weeklyMarks && user.weeklyMarks.length > 0) {
+//     user.weeklyMarks.forEach((week) => {
+//       biology += week.biologyMarks || 0;
+//       physics += week.physicsMarks || 0;
+//       chemistry += week.chemistryMarks || 0;
+//       total += week.totalMarks || 0;
+//     });
+//   }
+
+//  res.json({
+//   user: {
+//     ...user.toObject(),
+//     weeklyMarks: user.weeklyMarks
+//   }
+// });
+// });
+
 app.get("/profile", verifyToken, async (req: Request, res: Response) => {
-  const user = await User.findById((req as any).user.userId).select("-password");
-  if (!user) return res.status(404).json({ message: "User not found" });
+  try {
+    const user = await User.findById((req as any).user.userId).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-  let biology = 0;
-  let physics = 0;
-  let chemistry = 0;
-  let total = 0;
-
-  if (user.weeklyMarks && user.weeklyMarks.length > 0) {
-    user.weeklyMarks.forEach((week) => {
-      biology += week.biologyMarks || 0;
-      physics += week.physicsMarks || 0;
-      chemistry += week.chemistryMarks || 0;
-      total += week.totalMarks || 0;
+    // Simply return the user object. 
+    // The weeklyMarks array contains everything the student needs.
+    res.json({
+      user: user.toObject()
     });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching profile" });
   }
-
- res.json({
-  user: {
-    ...user.toObject(),
-    weeklyMarks: user.weeklyMarks
-  }
-});
 });
 
 
@@ -228,31 +243,38 @@ app.get("/admin/students", verifyToken, isAdmin, async (req, res) => {
 });
 /* ================= ADMIN: UPDATE MARKS ================= */
 app.post("/admin/students/:id/marks", verifyToken, isAdmin, async (req, res) => {
-  const { biologyMarks, physicsMarks, chemistryMarks } = req.body;
+  try {
+    const { biologyMarks, physicsMarks, chemistryMarks, rank } = req.body;
+    const totalMarks = Number(biologyMarks) + Number(physicsMarks) + Number(chemistryMarks);
 
-  const totalMarks =
-    Number(biologyMarks) + Number(physicsMarks) + Number(chemistryMarks);
+    const student = await User.findById(req.params.id);
+    if (!student) return res.status(404).json({ message: "Student not found" });
 
-  const student = await User.findById(req.params.id);
-  if (!student) return res.status(404).json({ message: "Student not found" });
+    const nextWeek = student.weeklyMarks.length + 1;
 
-  // 🔥 Get GLOBAL current week
-  const allStudents = await User.find();
-  const allWeeks = allStudents.flatMap(u => u.weeklyMarks.map(w => w.week));
-  const currentWeek = allWeeks.length === 0 ? 1 : Math.max(...allWeeks);
+    student.weeklyMarks.push({
+      week: nextWeek,
+      date: new Date(),
+      biologyMarks: Number(biologyMarks),
+      physicsMarks: Number(physicsMarks),
+      chemistryMarks: Number(chemistryMarks),
+      totalMarks,
+      rank: rank || 0 
+    });
 
-  // If this student already has marks for this week → move to next week
-  const studentHasThisWeek = student.weeklyMarks.some(w => w.week === currentWeek);
-  const week = studentHasThisWeek ? currentWeek + 1 : currentWeek;
+    // Update latest summary totals
+    student.biologyMarks = biologyMarks;
+    student.physicsMarks = physicsMarks;
+    student.chemistryMarks = chemistryMarks;
+    student.totalMarks = totalMarks;
 
-  student.weeklyMarks.push({
-    week,
-    date: new Date(),
-    biologyMarks,
-    physicsMarks,
-    chemistryMarks,
-    totalMarks,
-  });
+    await student.save();
+    res.json({ message: `Week ${nextWeek} marks added`, student });
+  } catch (error) {
+    console.error("Error adding marks:", error);
+    res.status(500).json({ message: "Server error adding marks" });
+  }
+});
   // Add this endpoint after the existing /admin/students/:id/marks endpoint
 app.put("/admin/students/:id/mentor", verifyToken, isAdmin, async (req, res) => {
   try {
@@ -266,60 +288,14 @@ app.put("/admin/students/:id/mentor", verifyToken, isAdmin, async (req, res) => 
       { new: true }
     ).select("-password");
 
-    if (!student) {
-      return res.status(404).json({ message: "Student not found" });
-    }
+    if (!student) return res.status(404).json({ message: "Student not found" });
 
-    res.json({ 
-      message: "Mentor details updated successfully",
-      student 
-    });
+    res.json({ message: "Mentor details updated successfully", student });
   } catch (error) {
     console.error("Error updating mentor details:", error);
     res.status(500).json({ message: "Error updating mentor details" });
   }
 });
-app.put("/admin/students/:id/mentor", verifyToken, isAdmin, async (req, res) => {
-  try {
-    console.log("Updating mentor details for student:", req.params.id);
-    console.log("New mentor data:", req.body);
-    
-    const { mentorName, mentorContactNumber } = req.body;
-    const student = await User.findByIdAndUpdate(
-      req.params.id,
-      { 
-        mentorName: mentorName || undefined,
-        mentorContactNumber: mentorContactNumber || undefined
-      },
-      { new: true }
-    ).select("-password");
-
-    console.log("Updated student:", student);
-    
-    if (!student) {
-      return res.status(404).json({ message: "Student not found" });
-    }
-
-    res.json({ 
-      message: "Mentor details updated successfully",
-      student 
-    });
-  } catch (error) {
-    console.error("Error updating mentor details:", error);
-    res.status(500).json({ message: "Error updating mentor details" });
-  }
-});
-  // store latest totals
-  // student.biologyMarks = biologyMarks;
-  // student.physicsMarks = physicsMarks;
-  // student.chemistryMarks = chemistryMarks;
-  // student.totalMarks = totalMarks;
-
-  await student.save();
-
-  res.json({ message: `Week ${week} marks added`, student });
-});
-
 
 /* ================= FORGOT PASSWORD ================= */
 app.post("/forgot-password", async (req: Request, res: Response) => {

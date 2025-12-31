@@ -10,6 +10,8 @@ interface WeeklyMark {
   physicsMarks: number;
   chemistryMarks: number;
   totalMarks: number;
+  rank?: number | string; // 👈 Add this line to fix the red error
+  plan: string;
 }
 
 interface StudentUser {
@@ -22,6 +24,7 @@ interface StudentUser {
   courseEndDate?: string;
   mentorName?: string;
   mentorContactNumber?: string;
+  plan?: string; // 👈 Add this so user.plan doesn't cause errors
 
   biologyMarks?: number;
   physicsMarks?: number;
@@ -75,10 +78,15 @@ const Dashboard = () => {
 
   const user = studentData?.user || {};
 
-  const biology = user.biologyMarks || 0;
-  const physics = user.physicsMarks || 0;
-  const chemistry = user.chemistryMarks || 0;
-  const total = user.totalMarks || biology + physics + chemistry;
+// Get the latest test from the weeklyMarks array
+const latestTest = user.weeklyMarks && user.weeklyMarks.length > 0 
+  ? user.weeklyMarks[user.weeklyMarks.length - 1] 
+  : null;
+
+const biology = latestTest?.biologyMarks || 0;
+const physics = latestTest?.physicsMarks || 0;
+const chemistry = latestTest?.chemistryMarks || 0;
+const total = latestTest?.totalMarks || 0;
 
   return (
     <div className="dashboard-page">
@@ -93,6 +101,7 @@ const Dashboard = () => {
           <h2>Hello {user.name || "Student"}</h2>
           <p>Roll No: {user.rollNumber || "Not assigned"}</p>
           <p>Course: {user.courseName || "Not enrolled"}</p>
+          <p>Plan: {user.plan || "Not selected"}</p>
         </div>
 
         {/* Mentor */}
@@ -112,33 +121,36 @@ const Dashboard = () => {
         </div>
 
         {/* Weekly History */}
-        <div className="dashboard-card">
-          <h2>Weekly Tests</h2>
-          <table className="weekly-table">
-            <thead>
-              <tr>
-                <th>Week</th>
-                <th>Bio</th>
-                <th>Phy</th>
-                <th>Chem</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {user.weeklyMarks?.map(w => (
-                <tr key={w.week}>
-                  <td>Week {w.week}</td>
-                  <td>{w.biologyMarks}</td>
-                  <td>{w.physicsMarks}</td>
-                  <td>{w.chemistryMarks}</td>
-                  <td>{w.totalMarks}</td>
-                </tr>
-              )) || (
-                <tr><td colSpan={5}>No tests yet</td></tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+      {/* Weekly History */}
+<div className="dashboard-card">
+  <h2>Weekly Tests</h2>
+  <table className="weekly-table">
+    <thead>
+      <tr>
+        <th>Week</th>
+        <th>Bio</th>
+        <th>Phy</th>
+        <th>Chem</th>
+        <th>Total</th>
+        <th>Rank</th> {/* Added Rank Column */}
+      </tr>
+    </thead>
+    <tbody>
+      {user.weeklyMarks?.map((w, index) => (
+        <tr key={index}>
+          <td>Week {w.week}</td>
+          <td>{w.biologyMarks}</td>
+          <td>{w.physicsMarks}</td>
+          <td>{w.chemistryMarks}</td>
+          <td>{w.totalMarks}</td>
+          <td>{w.rank || "N/A"}</td> {/* Display the rank */}
+        </tr>
+      )) || (
+        <tr><td colSpan={6}>No tests yet</td></tr>
+      )}
+    </tbody>
+  </table>
+</div>
       </div>
     </div>
   );
