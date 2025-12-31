@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { API_URL } from '../config/api'; 
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  const handleGoHome = () => navigate("/");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,104 +18,55 @@ const ForgotPassword = () => {
     setMessage("");
     setError("");
 
-    if (!email || !email.includes("@")) {
-      setError("Please enter a valid email address");
-      setLoading(false);
-      return;
-    }
-
     try {
-      const res = await axios.post(
-        `${API_URL}/forgot-password`,
-        { email: email.trim().toLowerCase() }
-      );
-
-      if (res.data.message) {
-        let displayMessage = res.data.message;
-        
-        // In development, show the reset link if provided
-        if (res.data.resetLink && import.meta.env.DEV) {
-          displayMessage += `\n\nReset Link (Development):\n${res.data.resetLink}`;
-        }
-        
-        setMessage(displayMessage);
-      }
+      const res = await axios.post(`${API_URL}/forgot-password`, { 
+        email: email.trim().toLowerCase() 
+      });
+      setMessage(res.data.message);
     } catch (err: any) {
-      console.error("FORGOT PASSWORD FRONTEND ERROR:", err);
-      
-      // Handle network errors
-      if (!err.response) {
-        setError("Network error. Please check your connection and try again.");
-        return;
-      }
-      
-      // Handle server errors with specific messages
-      if (err.response?.status === 500) {
-        setError(err.response?.data?.message || "Server error. Please try again later.");
-      } else if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else {
-        setError("Something went wrong. Please try again later.");
-      }
+      setError(err.response?.data?.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className="contact" style={{ minHeight: "100vh" }}>
+    <section className="contact" style={{ minHeight: "100vh", position: "relative" }}>
+      {/* GO BACK BUTTON */}
+      <button onClick={handleGoHome} style={backButtonStyle}>← Go Back</button>
+      
       <div className="section-container">
         <div className="contact-content">
           <div className="contact-info">
             <h2>Forgot Password</h2>
             <p>Enter your registered email to receive a reset link</p>
           </div>
-
           <div className="contact-form">
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>Email Address</label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
-
-              {message && (
-                <div style={{ 
-                  color: "green", 
-                  fontWeight: 600,
-                  whiteSpace: "pre-line",
-                  wordBreak: "break-all",
-                  padding: "10px",
-                  backgroundColor: "#f0f9ff",
-                  borderRadius: "4px",
-                  marginBottom: "10px",
-                  fontSize: "14px"
-                }}>
-                  {message}
-                </div>
-              )}
-
-              {error && (
-                <p style={{ color: "red", fontWeight: 600 }}>{error}</p>
-              )}
-
+              {message && <div style={{ color: "green", marginBottom: "10px" }}>{message}</div>}
+              {error && <p style={{ color: "red" }}>{error}</p>}
               <button className="btn btn-primary" disabled={loading}>
                 {loading ? "Sending..." : "Send Reset Link"}
               </button>
             </form>
-
             <p style={{ marginTop: "20px", textAlign: "center" }}>
-              <Link to="/login">Back to Login</Link>
+              <Link to="/login" style={{ color: "#667eea" }}>Back to Login</Link>
             </p>
           </div>
         </div>
       </div>
     </section>
   );
+};
+
+const backButtonStyle: React.CSSProperties = {
+  position: 'absolute', top: '20px', right: '20px', padding: '10px 20px',
+  background: 'rgba(102, 126, 234, 0.1)', color: '#667eea', border: '1px solid #667eea',
+  borderRadius: '5px', cursor: 'pointer', fontWeight: '600', zIndex: 10
 };
 
 export default ForgotPassword;

@@ -25,66 +25,28 @@ const port = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
 
 /* ================= MAIL ================= */
-let transporter: nodemailer.Transporter | null = null;
+// let transporter: nodemailer.Transporter | null = null;
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, 
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS, // This MUST be a 16-character App Password
+  },
+  tls: {
+    // This critical setting prevents handshake timeouts on cloud servers
+    rejectUnauthorized: false 
+  }
+});
 
-// Only create transporter if email credentials are provided
-if (process.env.EMAIL && process.env.EMAIL_PASS) {
-  transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  // Verify transporter configuration
-  transporter.verify((error) => {
-    if (error) {
-      console.warn("⚠️ Email transporter verification failed:", error.message);
-      console.warn("⚠️ Password reset emails will not be sent, but reset links will be generated.");
-    } else {
-      console.log("✅ Email transporter configured successfully");
-    }
-  });
-} else {
-  console.warn("⚠️ EMAIL or EMAIL_PASS not configured. Password reset emails will not be sent.");
-  console.warn("⚠️ Reset links will be logged to console in development mode.");
-}
-
-/* ================= MIDDLEWARE ================= */
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true
-}));
-
-
-app.use(express.json());
-app.use(cookieParser());
-
-/* ================= HEALTH ================= */
-app.get("/", (_req, res) => res.send("Backend running 🚀"));
-
-/* ================= SIGNUP ================= */
-app.post("/signup", async (req: Request, res: Response) => {
-  try {
-    let { name, email, phone, password } = req.body;
-
-    if (!name || !email || !phone || !password) {
-      return res.status(400).json({ message: "All fields required" });
-    }
-
-    email = email.trim().toLowerCase();
-
-    if (await User.findOne({ email })) {
-      return res.status(400).json({ message: "Email already registered" });
-    }
-
-    await User.create({ name, email, phone, password });
-
-    res.status(201).json({ message: "Signup successful 🎉" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Signup failed" });
+// Verify the connection once on startup
+transporter.verify((error) => {
+  if (error) {
+    console.error("❌ Email SMTP Error:", error.message);
+  } else {
+    console.log("✅ Email Server is ready to send messages");
   }
 });
 
@@ -191,34 +153,6 @@ const isAdmin = (req: Request, res: Response, next: NextFunction) => {
   }
   next();
 };
-
-
-/* ================= PROFILE ================= */
-// app.get("/profile", verifyToken, async (req: Request, res: Response) => {
-//   const user = await User.findById((req as any).user.userId).select("-password");
-//   if (!user) return res.status(404).json({ message: "User not found" });
-
-//   let biology = 0;
-//   let physics = 0;
-//   let chemistry = 0;
-//   let total = 0;
-
-//   if (user.weeklyMarks && user.weeklyMarks.length > 0) {
-//     user.weeklyMarks.forEach((week) => {
-//       biology += week.biologyMarks || 0;
-//       physics += week.physicsMarks || 0;
-//       chemistry += week.chemistryMarks || 0;
-//       total += week.totalMarks || 0;
-//     });
-//   }
-
-//  res.json({
-//   user: {
-//     ...user.toObject(),
-//     weeklyMarks: user.weeklyMarks
-//   }
-// });
-// });
 
 app.get("/profile", verifyToken, async (req: Request, res: Response) => {
   try {
