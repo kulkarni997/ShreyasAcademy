@@ -336,6 +336,77 @@
   font-size: 14px;
 }
 
+/* --- Legal Modal Styles --- */
+.legal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(10, 15, 26, 0.98); /* Deep dark background */
+  z-index: 10000; /* Ensure it is above the navbar */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto; /* Allows scrolling inside the modal */
+  padding: 40px 20px;
+}
+
+.legal-container {
+  background: #161b2a;
+  width: 100%;
+  max-width: 900px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  color: #e2e8f0;
+  position: relative;
+}
+
+.legal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  background: #161b2a;
+  border-radius: 16px 16px 0 0;
+  z-index: 2;
+}
+
+.legal-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #fff;
+}
+
+.legal-close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.legal-close-btn:hover {
+  background: #ef4444; /* Turns red on hover */
+}
+
+.legal-content {
+  padding: 32px;
+  line-height: 1.7;
+}
+
+.legal-content h3 {
+  color: #fff;
+  margin-top: 24px;
+}
+
 /* ===== Responsive Design ===== */
 @media (max-width: 992px) {
   .mentor-grid {

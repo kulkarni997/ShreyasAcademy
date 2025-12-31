@@ -2,32 +2,34 @@ import { motion } from "framer-motion";
 
 const RefundPolicy = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/95 overflow-y-auto">
+    <div className="legal-overlay">
       <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        className="w-full max-w-5xl mx-auto px-6 py-16 text-white"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="legal-container"
       >
-        <div className="flex justify-between items-center mb-10 sticky top-0 bg-black/80 backdrop-blur-md py-4 z-10 border-b border-white/10">
-          <h1 className="text-3xl font-bold">Refund Policy</h1>
-          <button onClick={onClose} className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">✕ Close</button>
+        <div className="legal-header">
+          <h2>Refund Policy</h2>
+          <button onClick={onClose} className="legal-close-btn">✕ Close</button>
         </div>
-        
-        <div className="space-y-8 text-gray-300">
-          <div className="bg-yellow-500/10 border border-yellow-500/20 p-6 rounded-xl text-yellow-200">
-            <p className="font-medium">Important: Please review our policy before enrolling in any mentorship program.</p>
-          </div>
-          <section>
-            <h2 className="text-xl text-white font-semibold mb-3">Enrollment Refunds</h2>
-            <p>Refund requests must be submitted within 48 hours of enrollment. A processing fee of 10% will be deducted from the total amount.</p>
-          </section>
-          <section>
-            <h2 className="text-xl text-white font-semibold mb-3">Non-Refundable Items</h2>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>Fees are non-refundable once the first mentorship session has been attended.</li>
-              <li>Fees for printed materials and physical books are non-refundable once dispatched.</li>
-            </ul>
-          </section>
+        <div className="legal-content">
+          <h3>General Policy</h3>
+          <p>We aim to provide the highest quality NEET mentorship. Please review our refund criteria below.</p>
+
+          <h3>Eligibility for Refund</h3>
+          <ul>
+            <li>Refund requests must be submitted within 48 hours of purchase.</li>
+            <li>A 10% processing fee is applicable on all valid refunds.</li>
+          </ul>
+
+          <h3>Non-Refundable Cases</h3>
+          <ul>
+            <li>Once a mentorship session has been attended, the fee becomes non-refundable.</li>
+            <li>Physical books or digital topper-notes are non-refundable once dispatched or accessed.</li>
+          </ul>
+
+          <h3>Process</h3>
+          <p>To initiate a refund, please email <strong>support@shreyasacademy.in</strong> with your payment receipt.</p>
         </div>
       </motion.div>
     </div>

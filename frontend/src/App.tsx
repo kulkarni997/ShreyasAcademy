@@ -106,13 +106,21 @@ const [showRefund, setShowRefund] = useState(false);
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setNavbarElevated(window.scrollY > 100);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+ // 🚫 Fixed Scroll Lock Logic
+useEffect(() => {
+  const isAnyModalOpen = showPrivacy || showTerms || showRefund;
+  if (isAnyModalOpen) {
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = '15px'; // Prevents layout shift
+  } else {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+  return () => {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  };
+}, [showPrivacy, showTerms, showRefund]);
 
 useEffect(() => {
   const isAnyModalOpen = isMenuOpen || showPrivacy || showTerms || showRefund;

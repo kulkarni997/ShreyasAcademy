@@ -2,30 +2,28 @@ import { motion } from "framer-motion";
 
 const TermsOfService = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/95 overflow-y-auto">
+    <div className="legal-overlay">
       <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        className="w-full max-w-5xl mx-auto px-6 py-16 text-white"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="legal-container"
       >
-        <div className="flex justify-between items-center mb-10 sticky top-0 bg-black/80 backdrop-blur-md py-4 z-10 border-b border-white/10">
-          <h1 className="text-3xl font-bold">Terms of Service</h1>
-          <button onClick={onClose} className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">✕ Close</button>
+        <div className="legal-header">
+          <h2>Terms of Service</h2>
+          <button onClick={onClose} className="legal-close-btn">✕ Close</button>
         </div>
-        
-        <div className="space-y-8 text-gray-300 leading-relaxed">
-          <section>
-            <h2 className="text-xl text-white font-semibold mb-3">1. Services Provided</h2>
-            <p>Shreyas Academy provides NEET mentorship services, including strategy sessions, study plans, and access to curated academic materials.</p>
-          </section>
-          <section>
-            <h2 className="text-xl text-white font-semibold mb-3">2. User Responsibilities</h2>
-            <p>Users must provide accurate information during registration. Sharing account credentials or academy-exclusive materials with third parties is strictly prohibited.</p>
-          </section>
-          <section>
-            <h2 className="text-xl text-white font-semibold mb-3">3. Intellectual Property</h2>
-            <p>All content provided, including books and topper notes, are the intellectual property of Shreyas Academy and are protected by copyright laws.</p>
-          </section>
+        <div className="legal-content">
+          <h3>1. Acceptance of Terms</h3>
+          <p>By using Shreyas Academy, you agree to comply with these terms. If you do not agree, please do not use our services.</p>
+
+          <h3>2. Mentorship Rules</h3>
+          <p>Our mentorship is for personal use only. Recording sessions or sharing topper-exclusive study materials with non-enrolled students is strictly prohibited.</p>
+
+          <h3>3. Account Integrity</h3>
+          <p>You are responsible for maintaining the confidentiality of your account login details.</p>
+
+          <h3>4. Intellectual Property</h3>
+          <p>All books, strategy guides, and videos are the exclusive property of Shreyas Academy and are protected by copyright laws.</p>
         </div>
       </motion.div>
     </div>
