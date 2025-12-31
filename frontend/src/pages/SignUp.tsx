@@ -1,8 +1,10 @@
 import { type FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Added for navigation
 import axios from "axios";
 import { API_URL } from '../config/api';
 
 const SignUp = () => {
+  const navigate = useNavigate(); // Initialize navigation
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,6 +13,11 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  /* Redirects to the home page */
+  const handleGoHome = () => {
+    navigate("/"); 
+  };
 
   const validate = () => {
     const errs: Record<string, string> = {};
@@ -66,7 +73,7 @@ const SignUp = () => {
       const message = res.data.message || "Signup successful 🎉";
       alert(message);
       // Redirect to login after successful signup
-      window.location.href = "/";
+      navigate("/login"); 
     } catch (err: any) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
     } finally {
@@ -75,7 +82,42 @@ const SignUp = () => {
   };
 
   return (
-    <section className="contact" style={{ minHeight: "100vh" }}>
+    <section className="contact" style={{ 
+      minHeight: "100vh", 
+      position: "relative", // Required for absolute positioning
+      display: "flex",
+      alignItems: "center"
+    }}>
+      
+      {/* GO BACK BUTTON */}
+      <button 
+        onClick={handleGoHome}
+        style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          padding: '10px 20px',
+          background: 'rgba(102, 126, 234, 0.1)',
+          color: '#667eea',
+          border: '1px solid #667eea',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          fontWeight: '600',
+          transition: 'all 0.3s ease',
+          zIndex: 10
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = '#667eea';
+          e.currentTarget.style.color = 'white';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(102, 126, 234, 0.1)';
+          e.currentTarget.style.color = '#667eea';
+        }}
+      >
+        ← Go Back
+      </button>
+
       <div className="section-container">
         <div className="contact-content">
           <div className="contact-info">
@@ -97,7 +139,7 @@ const SignUp = () => {
                   required
                 />
                 {fieldErrors.firstName && (
-                  <span className="error-message">{fieldErrors.firstName}</span>
+                  <span className="error-message" style={{ color: "red", fontSize: "12px" }}>{fieldErrors.firstName}</span>
                 )}
               </div>
 
@@ -110,7 +152,7 @@ const SignUp = () => {
                   required
                 />
                 {fieldErrors.lastName && (
-                  <span className="error-message">{fieldErrors.lastName}</span>
+                  <span className="error-message" style={{ color: "red", fontSize: "12px" }}>{fieldErrors.lastName}</span>
                 )}
               </div>
 
@@ -123,7 +165,7 @@ const SignUp = () => {
                   required
                 />
                 {fieldErrors.email && (
-                  <span className="error-message">{fieldErrors.email}</span>
+                  <span className="error-message" style={{ color: "red", fontSize: "12px" }}>{fieldErrors.email}</span>
                 )}
               </div>
 
@@ -136,7 +178,7 @@ const SignUp = () => {
                   required
                 />
                 {fieldErrors.phone && (
-                  <span className="error-message">{fieldErrors.phone}</span>
+                  <span className="error-message" style={{ color: "red", fontSize: "12px" }}>{fieldErrors.phone}</span>
                 )}
               </div>
 
@@ -149,7 +191,7 @@ const SignUp = () => {
                   required
                 />
                 {fieldErrors.password && (
-                  <span className="error-message">{fieldErrors.password}</span>
+                  <span className="error-message" style={{ color: "red", fontSize: "12px" }}>{fieldErrors.password}</span>
                 )}
               </div>
 
@@ -161,6 +203,7 @@ const SignUp = () => {
                 className="btn btn-primary"
                 type="submit"
                 disabled={loading}
+                style={{ width: "100%", marginTop: "10px" }}
               >
                 {loading ? "Creating account..." : "Sign Up"}
               </button>
@@ -173,4 +216,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
