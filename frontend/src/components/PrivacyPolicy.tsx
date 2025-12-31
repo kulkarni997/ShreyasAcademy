@@ -6,7 +6,7 @@ type Props = {
 
 const PrivacyPolicy = ({ onClose }: Props) => {
   return (
-    <div className="fixed inset-0 bg-black/95 z-[9999] flex justify-center items-start overflow-y-auto">
+    <div className="fixed inset-0 z-[9999] bg-black/95 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}

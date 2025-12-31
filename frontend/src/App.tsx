@@ -114,12 +114,11 @@ const [showRefund, setShowRefund] = useState(false);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isMenuOpen, showPrivacy,showTerms, showRefund]);
+useEffect(() => {
+  const isAnyModalOpen = isMenuOpen || showPrivacy || showTerms || showRefund;
+  document.body.style.overflow = isAnyModalOpen ? 'hidden' : '';
+  return () => { document.body.style.overflow = ''; };
+}, [isMenuOpen, showPrivacy, showTerms, showRefund]);
 
   useEffect(() => {
     const elements = document.querySelectorAll('.reveal-on-scroll');
@@ -532,8 +531,7 @@ Get Started
               </a>
 
               <a href="#" onClick={(e) => { e.preventDefault(); setShowTerms(true); }}>Terms of Service</a>
-              <a href="#" onClick={(e) => { e.preventDefault(); setShowRefund(true); }}>Refund Policy</a>
-              
+              <a href="#" onClick={(e) => { e.preventDefault(); setShowRefund(true); }}>Refund Policy</a>              
             </div>
           </div>
           <div className="footer-bottom">
@@ -541,12 +539,9 @@ Get Started
           </div>
         </footer>
       </main>
-      {showPrivacy && (
-        <PrivacyPolicy onClose={() => setShowPrivacy(false)} />
-        
-      )}
+      {showPrivacy && (<PrivacyPolicy onClose={() => setShowPrivacy(false)} />)}
       {showTerms && (<TermsOfService onClose={() => setShowTerms(false)} />)}
-{showRefund && <RefundPolicy onClose={() => setShowRefund(false)} />}
+      {showRefund && (<RefundPolicy onClose={() => setShowRefund(false)} />)}
     </div>
   );
 };
