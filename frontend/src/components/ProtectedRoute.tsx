@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { API_URL } from '../config/api';
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -19,7 +20,7 @@ const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) =>
         console.log("📍 Current path:", location.pathname);
         console.log("🎭 Admin only route?", adminOnly);
         
-        const res = await fetch("http://localhost:5000/profile", {
+        const res = await fetch(`${API_URL}/profile`, {
           credentials: "include",
         });
 
