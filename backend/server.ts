@@ -21,6 +21,18 @@ mongoose
 const app = express();
 app.set("trust proxy", 1);
 
+// 1. CORS Configuration
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}));
+
+// 2. Body Parser
+app.use(express.json());
+
+// 3. COOKIE PARSER (MUST BE BEFORE ROUTES)
+app.use(cookieParser());
+
 const port = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
 
@@ -108,11 +120,6 @@ app.post("/login", async (req: Request, res: Response) => {
       expiresIn: "7d",
     });
 
-    // res.cookie("student_token", token, {
-    //   httpOnly: true,
-    //   sameSite: "lax",
-    // });
-
     const isProd = process.env.NODE_ENV === "production";
 
 res.cookie("student_token", token, {
@@ -136,7 +143,9 @@ res.cookie("student_token", token, {
 });
 /* ================= AUTH ================= */
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.cookies.student_token;
+  // Use optional chaining (?.) to prevent crashes if cookies are missing
+  const token = req.cookies?.student_token; 
+  
   if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {
