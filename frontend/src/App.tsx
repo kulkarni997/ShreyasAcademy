@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import StudentProblems from './components/StudentProblems';
 import AboutAcademy from './components/AboutAcademy';
 import PrivacyPolicy from "./components/PrivacyPolicy.tsx";
+import TermsOfService from './components/TermsOfService'; 
+import RefundPolicy from './components/RefundPolicy';
 import { API_URL } from './config/api';
 import {
   contactDetails,
@@ -40,8 +42,10 @@ const App = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showGate, setShowGate] = useState(false);
+  // const [showGate, setShowGate] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+const [showRefund, setShowRefund] = useState(false);  
 
 
   // 🔐 Check login status
@@ -115,7 +119,7 @@ const App = () => {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isMenuOpen, showPrivacy]);
+  }, [isMenuOpen, showPrivacy,showTerms, showRefund]);
 
   useEffect(() => {
     const elements = document.querySelectorAll('.reveal-on-scroll');
@@ -527,9 +531,9 @@ Get Started
                 Privacy Policy
               </a>
 
-              <a href="#">Terms of Service</a>
-              <a href="#">Refund Policy</a>
-              <a href="#">Academic Integrity</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setShowTerms(true); }}>Terms of Service</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setShowRefund(true); }}>Refund Policy</a>
+              
             </div>
           </div>
           <div className="footer-bottom">
@@ -539,7 +543,10 @@ Get Started
       </main>
       {showPrivacy && (
         <PrivacyPolicy onClose={() => setShowPrivacy(false)} />
+        
       )}
+      {showTerms && (<TermsOfService onClose={() => setShowTerms(false)} />)}
+{showRefund && <RefundPolicy onClose={() => setShowRefund(false)} />}
     </div>
   );
 };
