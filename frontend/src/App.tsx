@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import StudentProblems from './components/StudentProblems';
 import AboutAcademy from './components/AboutAcademy';
 import PrivacyPolicy from "./components/PrivacyPolicy.tsx";
-
+import { API_URL } from './config/api';
 import {
   contactDetails,
   faqs,
@@ -46,7 +46,7 @@ const App = () => {
 
   // 🔐 Check login status
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/profile`, {
+    fetch(`${API_URL}/profile`, {
       credentials: "include",
     })
       .then((res) => {
