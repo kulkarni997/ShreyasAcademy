@@ -8,6 +8,11 @@ const Login = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  /* Redirects to the root/home page */
+  const handleGoHome = () => {
+    navigate("/"); 
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -17,15 +22,10 @@ const Login = () => {
     setError('');
     setIsLoading(true);
 
-    // Trim email but DON'T trim password (in case it has intentional spaces)
     const loginData = {
       email: formData.email.trim().toLowerCase(),
-      password: formData.password, // Keep password as-is
+      password: formData.password, 
     };
-
-    console.log('🔵 Frontend: Sending login data');
-    console.log('Email:', loginData.email);
-    console.log('Password length:', loginData.password.length);
 
     try {
       const response = await fetch(`${API_URL}/login`, {
@@ -37,33 +37,22 @@ const Login = () => {
         body: JSON.stringify(loginData),
       });
 
-      console.log('📡 Response status:', response.status);
-
       const data = await response.json();
-      console.log('📦 Response data:', data);
 
       if (response.ok) {
-        console.log('✅ Login successful! Role:', data.role);
-
-         window.location.href = data.role === 'admin' ? '/admin' : '/dashboard';
-        
         // Small delay to ensure cookie is set
         await new Promise(resolve => setTimeout(resolve, 100));
         
         // Redirect based on role
         if (data.role === 'admin') {
-          console.log('🎯 Redirecting to /admin');
           navigate('/admin', { replace: true });
         } else {
-          console.log('🎯 Redirecting to /dashboard');
           navigate('/dashboard', { replace: true });
         }
       } else {
-        console.log('❌ Login failed:', data.message);
         setError(data.message || 'Invalid email or password');
       }
     } catch (err) {
-      console.error('❌ Login error:', err);
       setError('Network error. Please check if the backend server is running.');
     } finally {
       setIsLoading(false);
@@ -77,8 +66,40 @@ const Login = () => {
       alignItems: 'center',
       justifyContent: 'center',
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      padding: '20px'
+      padding: '20px',
+      position: 'relative'
     }}>
+      
+      {/* GO BACK BUTTON */}
+      <button 
+        onClick={handleGoHome}
+        style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          padding: '10px 20px',
+          background: 'rgba(255, 255, 255, 0.2)',
+          color: 'white',
+          border: '1px solid white',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          fontWeight: '600',
+          transition: 'all 0.3s ease',
+          backdropFilter: 'blur(5px)',
+          zIndex: 10
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'white';
+          e.currentTarget.style.color = '#667eea';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+          e.currentTarget.style.color = 'white';
+        }}
+      >
+        ← Go Back
+      </button>
+
       <div style={{
         background: 'white',
         padding: '40px',
