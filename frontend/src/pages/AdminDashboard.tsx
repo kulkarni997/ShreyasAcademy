@@ -438,28 +438,19 @@ const AdminDashboard = () => {
             <th>Actions</th>
           </tr>
         </thead>
-
-        <tbody>
+<tbody>
   {students.map((s) => (
     <tr key={s._id}>
-      {/* Roll Number Column with Edit Button */}
-      <td>
-        {s.rollNumber || "N/A"}
-        <button onClick={() => openMentorModal(s)} className="column-edit-btn"> ✏️ </button>
-      </td>
+      {/* 1. Roll Number - Clean Display */}
+      <td>{s.rollNumber || "N/A"}</td>
       
       <td>{s.name}</td>
       
-      <td>
-        {s.mentorName || "Not assigned"}
-        <button onClick={() => openMentorModal(s)} className="column-edit-btn"> ✏️ </button>
-      </td>
+      {/* 2. Mentor - Clean Display */}
+      <td>{s.mentorName || "Not assigned"}</td>
 
-      {/* Plan Column with Edit Button */}
-      <td>
-        {s.plan || "1 Month"}
-        <button onClick={() => openMentorModal(s)} className="column-edit-btn"> ✏️ </button>
-      </td>
+      {/* 3. Plan - Clean Display */}
+      <td>{s.plan || "1 Month"}</td>
 
       <td>{s.weeklyMarks?.slice(-1)[0]?.biologyMarks || 0}/360</td>
       <td>{s.weeklyMarks?.slice(-1)[0]?.physicsMarks || 0}/180</td>
@@ -468,8 +459,22 @@ const AdminDashboard = () => {
       <td>{s.weeklyMarks?.length || 0}</td>
       
       <td className="actions-cell">
-        <button onClick={() => openMarksModal(s)} className="add-marks-btn">Add Marks</button>
-        <button onClick={() => handleDeleteStudent(s._id, s.name)} className="remove-student-btn">🗑️</button>
+        {/* Consolidated Edit Button for Roll, Plan, and Mentor */}
+        <button 
+          onClick={() => openMentorModal(s)} 
+          className="edit-details-btn"
+          title="Edit Roll, Plan, & Mentor"
+        >
+          ✏️ Edit Details
+        </button>
+
+        <button onClick={() => openMarksModal(s)} className="add-marks-btn">
+           Add Marks
+        </button>
+
+        <button onClick={() => handleDeleteStudent(s._id, s.name)} className="remove-student-btn">
+           🗑️
+        </button>
       </td>
     </tr>
   ))}
