@@ -528,30 +528,38 @@
 }
 
 /* ===== ELITE LOGOUT BUTTON ===== */
+/* ===== ELITE LOGOUT BUTTON FIXED ===== */
 .admin-logout-btn, 
 .dashboard-logout-btn {
-  background: rgba(255, 255, 255, 0.05) !important;
+  /* Using a darker blue-tinted glass instead of pure white glass */
+  background: rgba(30, 41, 59, 0.6) !important;
+  /* Keeping the text light for readability */
   color: #f8fafc !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  /* Adding a clear border so you can see the button shape */
+  border: 1px solid rgba(96, 165, 250, 0.3) !important;
+  
   padding: 0.6rem 1.5rem !important;
   border-radius: 12px !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   font-family: 'Inter', sans-serif !important;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 0.8rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .admin-logout-btn:hover, 
 .dashboard-logout-btn:hover {
-  background: #ef4444 !important; /* Professional Danger Red */
+  /* Vibrant red only on hover to signal an "Exit" action */
+  background: #ef4444 !important;
   color: white !important;
   border-color: #ef4444 !important;
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
 }
 
 .admin-logout-btn:active, 
