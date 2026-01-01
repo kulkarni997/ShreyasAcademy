@@ -102,7 +102,7 @@ const Login = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                placeholder="••••••••"
+                placeholder="Enter your password"
               />
             </div>
 
@@ -117,11 +117,12 @@ const Login = () => {
 
           {/* Support contacts moved inside the white card for a clean look */}
           <div className="login-support-box">
-            <p className="support-title">Forgot Password?</p>
+            <p className="support-title">Forgot Password? Contact our support to team to reset password.</p>
             <div className="contact-numbers">
               <div className="contact-row">
-                <span>Admin:</span>
-                <a href="tel:+919876543210">+91 98765 43210</a>
+                <span>Support Team:</span>
+                <a href="tel:+919876543210">+91 9972737380</a>
+                <a href="tel:+919876543210">+91 8618158884</a>
               </div>
             </div>
             <Link to="/signup" className="signup-link">
