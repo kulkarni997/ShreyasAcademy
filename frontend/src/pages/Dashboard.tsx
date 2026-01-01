@@ -100,23 +100,32 @@ return (
 
       {/* Profile Section: Replaces the bland Student Info card */}
       <div className="student-profile-section">
-        <div className="profile-info-block">
-          <span className="label-text">Student Name</span>
-          <span className="value-text">{user.name || "Student"}</span>
-        </div>
-        <div className="profile-info-block">
-          <span className="label-text">Roll Number</span>
-          <span className="value-text">{user.rollNumber || "N/A"}</span>
-        </div>
-        <div className="profile-info-block">
-          <span className="label-text">Current Plan</span>
-          <span className="value-text">{user.plan || "Not selected"}</span>
-        </div>
-        <div className="profile-info-block">
-          <span className="label-text">Assigned Mentor</span>
-          <span className="value-text">{user.mentorName || "Assigning..."}</span>
-        </div>
-      </div>
+  <div className="profile-info-block">
+    <span className="label-text">Student Name</span>
+    <span className="value-text">{user.name || "Student"}</span>
+  </div>
+  <div className="profile-info-block">
+    <span className="label-text">Roll Number</span>
+    <span className="value-text">{user.rollNumber || "N/A"}</span>
+  </div>
+  <div className="profile-info-block">
+    <span className="label-text">Assigned Mentor</span>
+    <span className="value-text">{user.mentorName || "Assigning..."}</span>
+  </div>
+  {/* NEW CONTACT BLOCK */}
+  <div className="profile-info-block">
+    <span className="label-text">Mentor Contact</span>
+    <span className="value-text">
+      {user.mentorContactNumber ? (
+        <a href={`tel:${user.mentorContactNumber}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+          {user.mentorContactNumber}
+        </a>
+      ) : (
+        "Not available"
+      )}
+    </span>
+  </div>
+</div>
 
       {/* Marks Analysis Cards */}
       <div className="marks-grid">
