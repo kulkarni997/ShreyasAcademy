@@ -152,7 +152,7 @@ export const mentors: Mentor[] = [
   },
   {
     rank: '',
-    name: 'Sri Laxmi',
+    name: 'Sai Laxminarayan',
     state: 'Karnataka',
     speciality: 'Mentor',
     achievements: [],
@@ -167,15 +167,6 @@ export const mentors: Mentor[] = [
     achievements: [],
     college: '',
     image: '/images/mentors/two.png',
-  },
-  {
-    rank: '',
-    name: 'Shadjay',
-    state: 'Karnataka',
-    speciality: 'Mentor',
-    achievements: [],
-    college: '',
-    image: '/images/mentors/shadjay(2).png',
   },
 
 ];
