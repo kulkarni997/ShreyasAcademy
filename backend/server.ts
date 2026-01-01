@@ -91,25 +91,29 @@ app.post("/login", async (req: Request, res: Response) => {
 });
 
 // SIGNUP
+// SIGNUP - FIXED FOR ELITE FORM
 app.post("/signup", async (req: Request, res: Response) => {
   try {
-    const { name, email, password, contactNumber } = req.body;
+    // Destructure firstName and lastName from your new form
+    const { firstName, lastName, email, password, phone } = req.body;
 
-    if (!name || !email || !password) {
+    if (!firstName || !email || !password) {
       return res.status(400).json({ message: "Required fields missing" });
     }
 
     const normalizedEmail = email.trim().toLowerCase();
     const existingUser = await User.findOne({ email: normalizedEmail });
+    
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
     }
 
     const newUser = new User({
-      name: name.trim(),
+      // Combine names for the database
+      name: `${firstName.trim()} ${lastName?.trim() || ""}`.trim(), 
       email: normalizedEmail,
       password,
-      contactNumber: contactNumber || "",
+      contactNumber: phone || "", // Using 'phone' from your new form
       role: "student",
       weeklyMarks: []
     });
@@ -117,10 +121,10 @@ app.post("/signup", async (req: Request, res: Response) => {
     await newUser.save();
     res.status(201).json({ message: "Account created successfully! Please login." });
   } catch (error) {
-    res.status(500).json({ message: "Registration failed" });
+    console.error("Signup Error Detail:", error); // Log the actual error to your terminal
+    res.status(500).json({ message: "Registration failed. Please try again." });
   }
 });
-
 // LOGOUT
 app.post("/logout", (_req, res) => {
   const isProd = process.env.NODE_ENV === "production";
@@ -197,6 +201,26 @@ app.put("/admin/students/:id/mentor", verifyToken, isAdmin, async (req, res) => 
     res.json({ message: "Student details updated", student });
   } catch (error) {
     res.status(500).json({ message: "Error updating student details" });
+  }
+});
+
+// MANUAL PASSWORD RESET BY ADMIN
+app.put("/admin/students/:id/reset-password", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { password } = req.body;
+    if (!password || password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
+    const student = await User.findById(req.params.id);
+    if (!student) return res.status(404).json({ message: "Student not found" });
+
+    student.password = password; // The User model pre-save hook will hash this
+    await student.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating password" });
   }
 });
 
