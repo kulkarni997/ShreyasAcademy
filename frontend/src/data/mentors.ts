@@ -122,7 +122,7 @@ export const mentors: Mentor[] = [
     speciality: 'Mentor',
     achievements: ['Karnataka NEET Rank 228', 'JEE 96'],
     college: 'MBBS at BMC',
-    image: '/images/mentors/nuthan.png',
+    image: '/images/mentors/nutan.png',
   },
   {
     rank: 'AIR 47803',
