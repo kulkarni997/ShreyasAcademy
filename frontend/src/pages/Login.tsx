@@ -59,64 +59,68 @@ const Login = () => {
     }
   };
 
-  return (<div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent), #0f172a', // Matching your dashboard theme
-      padding: '20px',
-      position: 'relative'
-    }}>
+ return (
+  <div className="login-page">
+    <button onClick={handleGoHome} className="go-home-btn">
+      ← Go Back
+    </button>
+
+    <div className="login-card">
+      <h2 className="login-title">Shreyas Academy</h2>
       
-      {/* GO BACK BUTTON */}
-      <button 
-        onClick={handleGoHome}
-        className="go-home-btn" // Move styling to CSS for better control
-      >
-        ← Go Back
-      </button>
-
-      <div className="login-card">
-        <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#fff', fontFamily: 'Poppins' }}>
-          Shreyas Academy
-        </h2>
+      <form onSubmit={handleSubmit} className="login-form">
+        {error && <div className="error-alert">{error}</div>}
         
-        <form onSubmit={handleSubmit}>
-          {/* ... existing form fields (Email/Password) ... */}
-          
-          <button 
-            type="submit" 
-            disabled={isLoading}
-            className="login-submit-btn"
-          >
-            {isLoading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-        {/* REPLACED: Manual Reset Support Section */}
-        <div className="login-support-box">
-          <p className="support-title">Having trouble logging in?</p>
-          <div className="contact-numbers">
-            <div className="contact-row">
-              <span>Admin:</span>
-              <a href="tel:+919876543210">+91 98765 43210</a>
-            </div>
-            <div className="contact-row">
-              <span>Support:</span>
-              <a href="tel:+919876543211">+91 98765 43211</a>
-            </div>
-          </div>
-          <p className="support-note">
-            Call us to verify your identity and manually reset your password.
-          </p>
-          
-          <Link to="/signup" className="signup-redirect">
-            Don't have an account? Sign up
-          </Link>
+        <div className="input-group">
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            placeholder="Enter your email"
+          />
         </div>
+
+        <div className="input-group">
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            placeholder="••••••••"
+          />
+        </div>
+
+        <button type="submit" disabled={isLoading} className="login-submit-btn">
+          {isLoading ? 'Logging in...' : 'Login'}
+        </button>
+      </form>
+
+      <div className="login-support-box">
+        <p className="support-title">Having trouble logging in?</p>
+        <div className="contact-numbers">
+          <div className="contact-row">
+            <span>Admin:</span>
+            <a href="tel:+919876543210">+91 98765 43210</a>
+          </div>
+          <div className="contact-row">
+            <span>Support:</span>
+            <a href="tel:+919876543211">+91 98765 43211</a>
+          </div>
+        </div>
+        <p className="support-note">
+          Call us to verify your identity and manually reset your password.
+        </p>
+        <Link to="/signup" className="signup-link">
+          Don't have an account? Sign up
+        </Link>
       </div>
     </div>
-  );
+  </div>
+);
 };
 export default Login;

@@ -1,27 +1,38 @@
+/* ===== CONSOLIDATED ELITE LOGIN CSS ===== */
+
 .login-page {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Premium Navy Depth */
+  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.2), transparent), #0f172a;
   padding: 20px;
+  font-family: 'Inter', sans-serif;
 }
 
-.login-container {
-  background: white;
+.login-card {
+  background: rgba(30, 41, 59, 0.7); /* Translucent Slate */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   width: 100%;
   max-width: 400px;
 }
 
-.login-container h2 {
+.login-card h2 {
   margin-bottom: 30px;
   text-align: center;
-  color: #333;
+  color: #ffffff; /* Fix for white-on-white */
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
 }
 
+/* Form Styling */
 .form-group {
   margin-bottom: 20px;
 }
@@ -29,88 +40,64 @@
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  font-weight: 500;
-  color: #555;
+  font-weight: 600;
+  color: #94a3b8; /* Muted Slate */
+  font-size: 0.85rem;
 }
 
 .form-group input {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 6px;
+  padding: 12px 16px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #ffffff;
   font-size: 16px;
-  transition: border-color 0.3s;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #3b82f6; /* Electric Blue */
+  background: rgba(15, 23, 42, 0.8);
 }
 
+/* Error Alert */
 .error-message {
-  background: #fee;
-  color: #c33;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
   padding: 12px;
-  border-radius: 6px;
+  border-radius: 10px;
   margin-bottom: 20px;
-  border-left: 4px solid #c33;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  font-size: 0.85rem;
 }
 
+/* Submit Button */
 button[type="submit"] {
   width: 100%;
   padding: 14px;
-  background: #667eea;
+  background: #3b82f6;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 button[type="submit"]:hover {
-  background: #5568d3;
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
 }
 
-button[type="submit"]:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.login-links {
-  margin-top: 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.login-links a {
-  color: #667eea;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.login-links a:hover {
-  text-decoration: underline;
-}
-
-/* Login Container Styling */
-.login-card {
-  background: rgba(30, 41, 59, 0.8);
-  backdrop-filter: blur(12px);
-  padding: 40px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  max-width: 400px;
-}
-
-/* Support Box Styling */
+/* Support Section */
 .login-support-box {
-  margin-top: 25px;
+  margin-top: 30px;
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
@@ -148,24 +135,26 @@ button[type="submit"]:disabled {
 }
 
 .contact-row a:hover {
-  color: #f59e0b; /* Gold transition on hover */
+  color: #f59e0b; /* Gold Accent */
 }
 
-.support-note {
-  font-size: 0.75rem;
-  color: #64748b;
-  font-style: italic;
-  margin-bottom: 15px;
+/* Go Back Button Styling */
+.go-home-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
 }
 
-.signup-redirect {
-  color: #94a3b8;
-  text-decoration: none;
-  font-size: 0.85rem;
-  display: block;
-  margin-top: 10px;
-}
-
-.signup-redirect:hover {
-  color: #fff;
+.go-home-btn:hover {
+  background: #ffffff;
+  color: #0f172a;
 }
