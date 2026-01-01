@@ -120,11 +120,13 @@ return (
 
       {/* Marks Analysis Cards */}
       <div className="marks-grid">
+        <h3>Recent Weekly Performance</h3>
         <div className="mark-item">
           <span className="mark-label">Biology</span>
           <div className="mark-value">{biology}/360</div>
         </div>
         <div className="mark-item">
+          <span className="mark-icon">⚛️</span>
           <span className="mark-label">Physics</span>
           <div className="mark-value">{physics}/180</div>
         </div>
