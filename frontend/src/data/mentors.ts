@@ -10,31 +10,7 @@ export interface Mentor {
 
 // All image paths are served from the public folder: /images/mentors/...
 export const mentors: Mentor[] = [
-  {
-    rank: 'AIR 214',
-    name: 'Shreyas M',
-    state: 'Karnataka',
-    achievements: ['Karnataka NEET Rank 14', 'JEE 98.66'],
-    college: 'MBBS at JIPMER Pondicherry',
-    image: '/images/mentors/shreyas.png',
-  },
-  {
-    rank: 'AIR 29',
-    name: 'Srujan S',
-    state: 'Karnataka',
-    achievements: [],
-    college: 'MBBS at JIPMER Pondicherry',
-    image: '/images/mentors/srujan.png',
-  },
-  // {
-  //   rank: 'AIR 985',
-  //   name: 'Srujan D',
-  //   state: 'Karnataka',
-  //   achievements: ['Karnataka NEET Rank 71', 'JEE 98.52'],
-  //   college: 'MBBS at JIPMER Pondicherry',
-  //   image: '/images/mentors/srujann.png',
-  // },
-  {
+    {
     rank: 'AIR 17',
     name: 'Nikhil Sonnad',
     state: 'Karnataka',
@@ -42,7 +18,15 @@ export const mentors: Mentor[] = [
     college: 'MBBS at AIIMS Delhi',
     image: '/images/mentors/chaitanya.png',
   },
-   {
+  {
+    rank: 'AIR 80',
+    name: 'Diganth',
+    state: 'Karnataka',
+    achievements: ['Karnataka NEET Rank 6', 'JEE 99.32', 'KCET Rank 4'],
+    college: 'MBBS at JIPMER Pondicherry',
+    image: '/images/mentors/diganth(2).png',
+  },
+  {
     rank: 'AIR 159',
     name: 'Saish Pandit',
     state: 'Karnataka',
@@ -51,14 +35,13 @@ export const mentors: Mentor[] = [
     image: '/images/mentors/saish.png',
   },
   {
-    rank: 'AIR 80',
-    name: 'Diganth',
+    rank: 'AIR 214',
+    name: 'Shreyas M',
     state: 'Karnataka',
-    achievements: ['Karnataka NEET Rank 6', 'JEE 99.32', 'KCET Rank 4'],
+    achievements: ['Karnataka NEET Rank 14', 'JEE 98.66'],
     college: 'MBBS at JIPMER Pondicherry',
-    image: '/images/mentors/diganth.png',
+    image: '/images/mentors/shreyas.png',
   },
-
   {
     rank: 'AIR 256',
     name: 'Harish Raj D V',
@@ -99,13 +82,13 @@ export const mentors: Mentor[] = [
     college: 'MBBS at JIPMER Pondicherry',
     image: '/images/mentors/viswajit.png',
   },
-  {
-    rank: 'AIR 2591',
-    name: 'Balaji Tejas',
+   {
+    rank: 'AIR 985',
+    name: 'Srujan D',
     state: 'Karnataka',
-    achievements: ['Karnataka NEET Rank 185', 'JEE 98', 'IISER AIR 521'],
+    achievements: ['Karnataka NEET Rank 71', 'JEE 99'],
     college: 'MBBS at JIPMER Pondicherry',
-    image: '/images/mentors/balaji-tejas.png',
+    image: '/images/mentors/one.png',
   },
   {
     rank: 'AIR 2213',
@@ -116,12 +99,21 @@ export const mentors: Mentor[] = [
     image: '/images/mentors/shadjay.png',
   },
   {
+    rank: 'AIR 2591',
+    name: 'Balaji Tejas',
+    state: 'Karnataka',
+    achievements: ['Karnataka NEET Rank 185', 'JEE 98', 'IISER AIR 521'],
+    college: 'MBBS at JIPMER Pondicherry',
+    image: '/images/mentors/balaji-tejas.png',
+  },
+  
+  {
     rank: 'AIR 2877',
     name: 'Preetam S Kori',
     state: 'Karnataka',
     achievements: ['Karnataka NEET Rank 194', 'JEE 97.16'],
     college: 'MBBS at BMC',
-    image: '/images/mentors/samrudh.png.PNG',
+    image: '/images/mentors/preetam.png',
   },
   {
     rank: 'AIR 3359',
@@ -130,7 +122,7 @@ export const mentors: Mentor[] = [
     speciality: 'Mentor',
     achievements: ['Karnataka NEET Rank 228', 'JEE 96'],
     college: 'MBBS at BMC',
-    image: '/images/mentors/nuthan.png.jpeg',
+    image: '/images/mentors/nuthan.png',
   },
   {
     rank: 'AIR 47803',
@@ -139,17 +131,53 @@ export const mentors: Mentor[] = [
     speciality: 'Mentor',
     achievements: ['Karnataka NEET Rank 2462', 'JEE 98.06'],
     college: 'MBBS at BRIMS',
-    image: '/images/mentors/venkanagowda.png.jpeg',
+    image: '/images/mentors/venkanagowda.png',
+  },
+   {
+    rank: 'AIR 29',
+    name: 'Srujan Sakpal',
+    state: 'Karnataka',
+    achievements: [],
+    college: 'MBBS at JIPMER Pondicherry',
+    image: '/images/mentors/srujan.png',
   },
   {
-    rank: 'Mentor',
+    rank: '',
     name: 'Kishor V',
-    state: '',
+    state: 'Karnataka',
     speciality: 'Motivational Coach',
     achievements: [],
     college: '',
-    image: '/images/mentors/lakshya-pujar.png.png',
+    image: '/images/mentors/kishor.png',
   },
+  {
+    rank: '',
+    name: 'Sri Laxmi',
+    state: 'Karnataka',
+    speciality: 'Mentor',
+    achievements: [],
+    college: '',
+    image: '/images/mentors/sri-laxmi.png',
+  },
+  {
+    rank: '',
+    name: 'Samruddh',
+    state: 'Karnataka',
+    speciality: 'Mentor',
+    achievements: [],
+    college: '',
+    image: '/images/mentors/two.png',
+  },
+  {
+    rank: '',
+    name: 'Shadjay',
+    state: 'Karnataka',
+    speciality: 'Mentor',
+    achievements: [],
+    college: '',
+    image: '/images/mentors/shadjay(2).png',
+  },
+
 ];
 
 
