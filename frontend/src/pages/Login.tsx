@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { API_URL } from '../config/api'; 
+import { API_URL } from '../config/api';
+import './login.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -59,73 +60,78 @@ const Login = () => {
     }
   };
 
- return (
-  <div className="login-page">
-    <button onClick={handleGoHome} className="go-home-btn">
-      ← Go Back
-    </button>
+  return (
+    <div className="login-page">
+      <button onClick={handleGoHome} className="go-home-btn">
+        ← Go Back
+      </button>
 
-    <div className="login-container">
-      {/* LEFT SIDE: Branding Section */}
-      <div className="login-branding">
-        <h1 className="branding-title">Welcome Back</h1>
-        <p className="branding-subtitle">
-          Log in to your Shreyas Academy account to track your NEET performance, 
-          connect with your mentor, and view your weekly test results.
-        </p>
-      </div>
+      <div className="login-container">
+        {/* LEFT SIDE: Branding Section */}
+        <div className="login-branding">
+          <h1 className="branding-title">Welcome Back</h1>
+          <p className="branding-subtitle">
+            Log in to your Shreyas Academy account to track your NEET performance, 
+            connect with your mentor, and view your weekly test results.
+          </p>
+        </div>
 
-      {/* RIGHT SIDE: White Form Card */}
-      <div className="login-card">
-        <h2 className="form-title">Login</h2>
-        <form onSubmit={handleSubmit} className="login-form">
-          {error && <div className="error-alert">{error}</div>}
-          
-          <div className="input-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div className="input-group">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              placeholder="••••••••"
-            />
-          </div>
-
-          <button type="submit" disabled={isLoading} className="login-submit-btn">
-            {isLoading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-        {/* Support contacts moved inside the white card for a clean look */}
-        <div className="login-support-box">
-          <p className="support-title">Forgot Password?</p>
-          <div className="contact-numbers">
-            <div className="contact-row">
-              <span>Admin:</span>
-              <a href="tel:+919876543210">+91 98765 43210</a>
+        {/* RIGHT SIDE: White Form Card */}
+        <div className="login-card">
+          <h2 className="form-title">Login</h2>
+          <div className="login-form">
+            {error && <div className="error-alert">{error}</div>}
+            
+            <div className="input-group">
+              <label>Email Address</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder="Enter your email"
+              />
             </div>
+
+            <div className="input-group">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                placeholder="••••••••"
+              />
+            </div>
+
+            <button 
+              onClick={handleSubmit} 
+              disabled={isLoading} 
+              className="login-submit-btn"
+            >
+              {isLoading ? 'Logging in...' : 'Login'}
+            </button>
           </div>
-          <Link to="/signup" className="signup-link">
-            Don't have an account? Sign up
-          </Link>
+
+          {/* Support contacts moved inside the white card for a clean look */}
+          <div className="login-support-box">
+            <p className="support-title">Forgot Password?</p>
+            <div className="contact-numbers">
+              <div className="contact-row">
+                <span>Admin:</span>
+                <a href="tel:+919876543210">+91 98765 43210</a>
+              </div>
+            </div>
+            <Link to="/signup" className="signup-link">
+              Don't have an account? Sign up
+            </Link>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
+
 export default Login;
