@@ -89,42 +89,54 @@ app.post("/login", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Login failed" });
   }
 });
-
-// SIGNUP
-// SIGNUP - FIXED FOR ELITE FORM
+// SIGNUP ROUTE - SYNCED WITH SIGNUP.TSX
 app.post("/signup", async (req: Request, res: Response) => {
   try {
-    // Destructure firstName and lastName from your new form
-    const { firstName, lastName, email, password, phone } = req.body;
+    // Destructure exactly what your frontend sends: { name, email, phone, password }
+    const { name, email, phone, password } = req.body;
 
-    if (!firstName || !email || !password) {
-      return res.status(400).json({ message: "Required fields missing" });
+    // 1. Validation
+    if (!name || !email || !password || !phone) {
+      return res.status(400).json({ message: "All fields are required" });
     }
 
+    if (password.length < 8) {
+      return res.status(400).json({ message: "Password must be at least 8 characters" });
+    }
+
+    // 2. Normalize email
     const normalizedEmail = email.trim().toLowerCase();
+
+    // 3. Check for existing user
     const existingUser = await User.findOne({ email: normalizedEmail });
-    
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
     }
 
+    // 4. Create new user (Mapping 'phone' to 'contactNumber' for your DB schema)
     const newUser = new User({
-      // Combine names for the database
-      name: `${firstName.trim()} ${lastName?.trim() || ""}`.trim(), 
+      name: name.trim(),
       email: normalizedEmail,
-      password,
-      contactNumber: phone || "", // Using 'phone' from your new form
+      password, // Hashed by User model pre-save hook
+      contactNumber: phone.trim(),
       role: "student",
-      weeklyMarks: []
+      weeklyMarks: [],
+      biologyMarks: 0,
+      physicsMarks: 0,
+      chemistryMarks: 0,
+      totalMarks: 0
     });
 
     await newUser.save();
+    console.log("✅ Student registered successfully:", normalizedEmail);
+
     res.status(201).json({ message: "Account created successfully! Please login." });
   } catch (error) {
-    console.error("Signup Error Detail:", error); // Log the actual error to your terminal
+    console.error("❌ Signup error:", error);
     res.status(500).json({ message: "Registration failed. Please try again." });
   }
 });
+
 // LOGOUT
 app.post("/logout", (_req, res) => {
   const isProd = process.env.NODE_ENV === "production";
