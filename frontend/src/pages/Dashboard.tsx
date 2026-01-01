@@ -160,6 +160,13 @@ const total = latestTest?.totalMarks || 0;
     </table>
   </div>
 </div>
+
+        {/* Logout Button */}
+        <div className="dashboard-header">
+          <button className="dashboard-logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );

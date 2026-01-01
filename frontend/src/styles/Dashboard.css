@@ -55,6 +55,7 @@
   margin: 0;
 }
 
+/* --- ENHANCED LOGOUT BUTTON --- */
 .dashboard-logout-btn {
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
@@ -62,15 +63,29 @@
   padding: 0.6rem 1.5rem;
   border-radius: 12px;
   font-weight: 600;
+  font-family: 'Inter', sans-serif;
   backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  /* Ensure it doesn't shrink in flexbox */
+  flex-shrink: 0; 
 }
 
 .dashboard-logout-btn:hover {
-  background: #ef4444;
+  background: #ef4444; /* Standard medical danger red */
   border-color: #ef4444;
+  color: white;
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
+  /* Added a red outer glow for "Elite" feel */
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4); 
+}
+
+.dashboard-logout-btn:active {
+  transform: translateY(0);
 }
 
 /* --- Glassmorphism Cards --- */
