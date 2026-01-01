@@ -92,7 +92,7 @@ return (
     <div className="dashboard-container">
       {/* Header with Styled Title and Logout */}
       <div className="dashboard-header">
-        <h1 className="dashboard-title">Student Academy 🎓</h1>
+        <h1 className="dashboard-title">Welcome to Shreyas Academy 🎓</h1>
         <button className="dashboard-logout-btn" onClick={handleLogout}>
           Logout
         </button>
