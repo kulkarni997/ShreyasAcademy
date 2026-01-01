@@ -19,9 +19,15 @@ mongoose
 const app = express();
 app.set("trust proxy", 1);
 
+// Replace your current app.use(cors(...)) with this:
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true
+  origin: [
+    "https://shreyas-academy.vercel.app", // Your exact Vercel URL
+    process.env.FRONTEND_URL || ""         // Your env variable
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
