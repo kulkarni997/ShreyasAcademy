@@ -92,10 +92,8 @@ app.post("/login", async (req: Request, res: Response) => {
 // SIGNUP ROUTE - SYNCED WITH SIGNUP.TSX
 app.post("/signup", async (req: Request, res: Response) => {
   try {
-    // Destructure exactly what your frontend sends: { name, email, phone, password }
     const { name, email, phone, password } = req.body;
 
-    // 1. Validation
     if (!name || !email || !password || !phone) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -104,21 +102,18 @@ app.post("/signup", async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Password must be at least 8 characters" });
     }
 
-    // 2. Normalize email
     const normalizedEmail = email.trim().toLowerCase();
 
-    // 3. Check for existing user
     const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    // 4. Create new user (Mapping 'phone' to 'contactNumber' for your DB schema)
     const newUser = new User({
       name: name.trim(),
       email: normalizedEmail,
-      password, // Hashed by User model pre-save hook
-      contactNumber: phone.trim(),
+      password,
+      phone: phone.trim(), // ✅ FIXED: Changed from contactNumber to phone
       role: "student",
       weeklyMarks: [],
       biologyMarks: 0,
