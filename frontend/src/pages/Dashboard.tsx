@@ -93,7 +93,7 @@ const total = latestTest?.totalMarks || 0;
       <div className="dashboard-container">
         <div className="dashboard-header">
           <h1>Welcome to Shreyas Academy 🎓</h1>
-          <button onClick={handleLogout}>Logout</button>
+          <button className="dashboard-logout-btn" onClick={handleLogout}>Logout</button>
         </div>
 
         {/* Student Info */}
@@ -160,13 +160,6 @@ const total = latestTest?.totalMarks || 0;
     </table>
   </div>
 </div>
-
-        {/* Logout Button */}
-        <div className="dashboard-header">
-          <button className="dashboard-logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
       </div>
     </div>
   );
