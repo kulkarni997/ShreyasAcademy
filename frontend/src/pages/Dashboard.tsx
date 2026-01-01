@@ -87,82 +87,100 @@ const biology = latestTest?.biologyMarks || 0;
 const physics = latestTest?.physicsMarks || 0;
 const chemistry = latestTest?.chemistryMarks || 0;
 const total = latestTest?.totalMarks || 0;
+return (
+  <div className="dashboard-page">
+    <div className="dashboard-container">
+      {/* Header with Styled Title and Logout */}
+      <div className="dashboard-header">
+        <h1 className="dashboard-title">Student Academy 🎓</h1>
+        <button className="dashboard-logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
 
-  return (
-    <div className="dashboard-page">
-      <div className="dashboard-container">
-        <div className="dashboard-header">
-          <h1>Welcome to Shreyas Academy 🎓</h1>
-          <button className="dashboard-logout-btn" onClick={handleLogout}>Logout</button>
+      {/* Profile Section: Replaces the bland Student Info card */}
+      <div className="student-profile-section">
+        <div className="profile-info-block">
+          <span className="label-text">Student Name</span>
+          <span className="value-text">{user.name || "Student"}</span>
         </div>
-
-        {/* Student Info */}
-        <div className="dashboard-card">
-          <h2>Hello {user.name || "Student"}</h2>
-          <p>Roll No: {user.rollNumber || "Not assigned"}</p>
-          <p>Course: {user.courseName || "Not enrolled"}</p>
-          <p>Plan: {user.plan || "Not selected"}</p>
+        <div className="profile-info-block">
+          <span className="label-text">Roll Number</span>
+          <span className="value-text">{user.rollNumber || "N/A"}</span>
         </div>
-
-        {/* Mentor */}
-        <div className="dashboard-card">
-          <h2>Mentor</h2>
-          <p>{user.mentorName || "Not assigned"}</p>
-          <p>{user.mentorContactNumber || "Not available"}</p>
+        <div className="profile-info-block">
+          <span className="label-text">Current Plan</span>
+          <span className="value-text">{user.plan || "Not selected"}</span>
         </div>
-
-        {/* Marks */}
-        <div className="dashboard-card">
-          <h2>Recent Test Marks</h2>
-          <p>Biology: {biology}/360</p>
-          <p>Physics: {physics}/180</p>
-          <p>Chemistry: {chemistry}/180</p>
-          <h3>Total: {total}/720</h3>
+        <div className="profile-info-block">
+          <span className="label-text">Assigned Mentor</span>
+          <span className="value-text">{user.mentorName || "Assigning..."}</span>
         </div>
+      </div>
 
-        {/* Weekly History */}
-      {/* Weekly History */}
-{/* Weekly History Table */}
-<div className="dashboard-card">
-  <h2>Weekly Tests History</h2>
-  <div className="table-wrapper">
-    <table className="weekly-table">
-      <thead>
-        <tr>
-          <th>Week</th>
-          <th>Biology</th>
-          <th>Physics</th>
-          <th>Chemistry</th>
-          <th>Total</th>
-          <th>Rank</th>
-        </tr>
-      </thead>
-      <tbody>
-        {user.weeklyMarks && user.weeklyMarks.length > 0 ? (
-          user.weeklyMarks.map((w, index) => (
-            <tr key={index}>
-              <td>Week {w.week}</td>
-              <td>{w.biologyMarks}/360</td>
-              <td>{w.physicsMarks}/180</td>
-              <td>{w.chemistryMarks}/180</td>
-              <td className="bold-text">{w.totalMarks}/720</td>
-              <td className="rank-cell">{w.rank || "N/A"}</td>
-            </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan={6} style={{ textAlign: "center", padding: "20px" }}>
-              No test history found.
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
-  </div>
-</div>
+      {/* Marks Analysis Cards */}
+      <div className="marks-grid">
+        <div className="mark-item">
+          <span className="mark-label">Biology</span>
+          <div className="mark-value">{biology}/360</div>
+        </div>
+        <div className="mark-item">
+          <span className="mark-label">Physics</span>
+          <div className="mark-value">{physics}/180</div>
+        </div>
+        <div className="mark-item">
+          <span className="mark-label">Chemistry</span>
+          <div className="mark-value">{chemistry}/180</div>
+        </div>
+        <div className="mark-item mark-total">
+          <span className="mark-label">Overall Total</span>
+          <div className="mark-value">{total}/720</div>
+        </div>
+      </div>
+
+      {/* Weekly History Table */}
+      <div className="dashboard-card">
+        <h2 className="section-heading">Weekly Performance History</h2>
+        <div className="table-wrapper">
+          <table className="weekly-table">
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>Biology</th>
+                <th>Physics</th>
+                <th>Chemistry</th>
+                <th>Total Score</th>
+                <th>Global Rank</th>
+              </tr>
+            </thead>
+            <tbody>
+              {user.weeklyMarks && user.weeklyMarks.length > 0 ? (
+                user.weeklyMarks.map((w, index) => (
+                  <tr key={index}>
+                    <td className="bold-text">Week {w.week}</td>
+                    <td><span className="subject-badge badge-bio">{w.biologyMarks}/360</span></td>
+                    <td><span className="subject-badge badge-phy">{w.physicsMarks}/180</span></td>
+                    <td><span className="subject-badge badge-chem">{w.chemistryMarks}/180</span></td>
+                    <td className="bold-text">{w.totalMarks}/720</td>
+                    <td className="rank-cell">
+                        {w.rank === 1 ? "🏆 1" : w.rank || "N/A"}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} style={{ textAlign: "center", padding: "40px" }}>
+                    No test history found. Your performance metrics will appear here.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Dashboard;
