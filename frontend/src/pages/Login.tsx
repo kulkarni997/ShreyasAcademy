@@ -65,59 +65,64 @@ const Login = () => {
       ← Go Back
     </button>
 
-    <div className="login-card">
-      <h2 className="login-title">Shreyas Academy</h2>
-      
-      <form onSubmit={handleSubmit} className="login-form">
-        {error && <div className="error-alert">{error}</div>}
-        
-        <div className="input-group">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            placeholder="Enter your email"
-          />
-        </div>
-
-        <div className="input-group">
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            placeholder="••••••••"
-          />
-        </div>
-
-        <button type="submit" disabled={isLoading} className="login-submit-btn">
-          {isLoading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-
-      <div className="login-support-box">
-        <p className="support-title">Having trouble logging in?</p>
-        <div className="contact-numbers">
-          <div className="contact-row">
-            <span>Admin:</span>
-            <a href="tel:+919876543210">+91 98765 43210</a>
-          </div>
-          <div className="contact-row">
-            <span>Support:</span>
-            <a href="tel:+919876543211">+91 98765 43211</a>
-          </div>
-        </div>
-        <p className="support-note">
-          Call us to verify your identity and manually reset your password.
+    <div className="login-container">
+      {/* LEFT SIDE: Branding Section */}
+      <div className="login-branding">
+        <h1 className="branding-title">Welcome Back</h1>
+        <p className="branding-subtitle">
+          Log in to your Shreyas Academy account to track your NEET performance, 
+          connect with your mentor, and view your weekly test results.
         </p>
-        <Link to="/signup" className="signup-link">
-          Don't have an account? Sign up
-        </Link>
+      </div>
+
+      {/* RIGHT SIDE: White Form Card */}
+      <div className="login-card">
+        <h2 className="form-title">Login</h2>
+        <form onSubmit={handleSubmit} className="login-form">
+          {error && <div className="error-alert">{error}</div>}
+          
+          <div className="input-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              placeholder="Enter your email"
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              placeholder="••••••••"
+            />
+          </div>
+
+          <button type="submit" disabled={isLoading} className="login-submit-btn">
+            {isLoading ? 'Logging in...' : 'Login'}
+          </button>
+        </form>
+
+        {/* Support contacts moved inside the white card for a clean look */}
+        <div className="login-support-box">
+          <p className="support-title">Forgot Password?</p>
+          <div className="contact-numbers">
+            <div className="contact-row">
+              <span>Admin:</span>
+              <a href="tel:+919876543210">+91 98765 43210</a>
+            </div>
+          </div>
+          <Link to="/signup" className="signup-link">
+            Don't have an account? Sign up
+          </Link>
+        </div>
       </div>
     </div>
   </div>
