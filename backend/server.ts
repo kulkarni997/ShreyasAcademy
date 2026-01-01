@@ -242,6 +242,68 @@ app.put("/admin/students/:id/mentor", verifyToken, isAdmin, async (req, res) => 
   }
 });
 
+/* ================= SIGNUP ================= */
+app.post("/signup", async (req: Request, res: Response) => {
+  try {
+    const { name, email, password, contactNumber } = req.body;
+
+    // Validate inputs
+    if (!name || !email || !password) {
+      return res.status(400).json({ 
+        message: "Name, email, and password are required" 
+      });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ 
+        message: "Password must be at least 6 characters" 
+      });
+    }
+
+    // Normalize email
+    const normalizedEmail = email.trim().toLowerCase();
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email: normalizedEmail });
+    if (existingUser) {
+      return res.status(400).json({ 
+        message: "Email already registered" 
+      });
+    }
+
+    // Create new user
+    const newUser = new User({
+      name: name.trim(),
+      email: normalizedEmail,
+      password, // Will be hashed by pre-save hook
+      contactNumber: contactNumber || "",
+      role: "student",
+      weeklyMarks: [],
+      biologyMarks: 0,
+      physicsMarks: 0,
+      chemistryMarks: 0,
+      totalMarks: 0
+    });
+
+    await newUser.save();
+
+    console.log("✅ New user registered:", normalizedEmail);
+
+    res.status(201).json({ 
+      message: "Account created successfully! Please login.",
+      user: {
+        name: newUser.name,
+        email: newUser.email
+      }
+    });
+  } catch (error) {
+    console.error("❌ Signup error:", error);
+    res.status(500).json({ 
+      message: "Registration failed. Please try again." 
+    });
+  }
+});
+
 /* ================= FORGOT PASSWORD ================= */
 app.post("/forgot-password", async (req: Request, res: Response) => {
   try {
