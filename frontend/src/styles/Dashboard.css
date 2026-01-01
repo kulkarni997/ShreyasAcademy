@@ -259,6 +259,49 @@
   font-size: 1.1rem;
 }
 
+/* --- PERFORMANCE TABLE --- */
+.dashboard-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.dashboard-table th {
+    padding: 1rem;
+    text-align: left;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.dashboard-table td {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.25rem 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dashboard-table tr td:first-child {
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px 0 0 12px;
+}
+
+.dashboard-table tr td:last-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 0 12px 12px 0;
+}
+
+.subject-badge {
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge-bio { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.badge-phy { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+.badge-chem { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+
 /* --- Loading State --- */
 .loading-message {
   height: 100vh;
@@ -270,6 +313,38 @@
   font-size: 24px;
   letter-spacing: 2px;
   text-transform: uppercase;
+}
+
+/* --- PROFILE CARD --- */
+.student-profile-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 2rem;
+}
+
+.profile-info-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.label-text {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
+
+.value-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f8fafc;
 }
 
 /* --- Responsive Fixes --- */
