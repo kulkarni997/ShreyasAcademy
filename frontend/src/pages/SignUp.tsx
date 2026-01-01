@@ -73,7 +73,7 @@ const SignUp = () => {
       const message = res.data.message || "Signup successful 🎉";
       alert(message);
       // Redirect to login after successful signup
-      navigate("/login"); 
+      navigate("/"); 
     } catch (err: any) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
     } finally {
