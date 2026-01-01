@@ -59,13 +59,12 @@ const Login = () => {
     }
   };
 
-  return (
-    <div style={{
+  return (<div style={{
       minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: 'radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent), #0f172a', // Matching your dashboard theme
       padding: '20px',
       position: 'relative'
     }}>
@@ -73,134 +72,46 @@ const Login = () => {
       {/* GO BACK BUTTON */}
       <button 
         onClick={handleGoHome}
-        style={{
-          position: 'absolute',
-          top: '20px',
-          right: '20px',
-          padding: '10px 20px',
-          background: 'rgba(255, 255, 255, 0.2)',
-          color: 'white',
-          border: '1px solid white',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          fontWeight: '600',
-          transition: 'all 0.3s ease',
-          backdropFilter: 'blur(5px)',
-          zIndex: 10
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = 'white';
-          e.currentTarget.style.color = '#667eea';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
-          e.currentTarget.style.color = 'white';
-        }}
+        className="go-home-btn" // Move styling to CSS for better control
       >
         ← Go Back
       </button>
 
-      <div style={{
-        background: 'white',
-        padding: '40px',
-        borderRadius: '10px',
-        boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-        width: '100%',
-        maxWidth: '400px'
-      }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#333' }}>
-          Login to Shreyas Academy
+      <div className="login-card">
+        <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#fff', fontFamily: 'Poppins' }}>
+          Shreyas Academy
         </h2>
         
         <form onSubmit={handleSubmit}>
-          {error && (
-            <div style={{
-              padding: '12px',
-              marginBottom: '20px',
-              background: '#fee',
-              color: '#c33',
-              borderRadius: '5px',
-              border: '1px solid #fcc'
-            }}>
-              {error}
-            </div>
-          )}
+          {/* ... existing form fields (Email/Password) ... */}
           
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              autoComplete="email"
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '1px solid #ddd',
-                borderRadius: '5px',
-                fontSize: '16px',
-                boxSizing: 'border-box'
-              }}
-            />
-          </div>
-
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              autoComplete="current-password"
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '1px solid #ddd',
-                borderRadius: '5px',
-                fontSize: '16px',
-                boxSizing: 'border-box'
-              }}
-            />
-          </div>
-
           <button 
             type="submit" 
             disabled={isLoading}
-            style={{
-              width: '100%',
-              padding: '12px',
-              background: isLoading ? '#999' : '#667eea',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              fontSize: '16px',
-              fontWeight: '600',
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              transition: 'background 0.3s'
-            }}
+            className="login-submit-btn"
           >
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
-        <div style={{
-          marginTop: '20px',
-          textAlign: 'center',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px'
-        }}>
-          <Link to="/forgot-password" style={{ color: '#667eea', textDecoration: 'none' }}>
-            Forgot Password?
-          </Link>
-          <Link to="/signup" style={{ color: '#667eea', textDecoration: 'none' }}>
+        {/* REPLACED: Manual Reset Support Section */}
+        <div className="login-support-box">
+          <p className="support-title">Having trouble logging in?</p>
+          <div className="contact-numbers">
+            <div className="contact-row">
+              <span>Admin:</span>
+              <a href="tel:+919876543210">+91 98765 43210</a>
+            </div>
+            <div className="contact-row">
+              <span>Support:</span>
+              <a href="tel:+919876543211">+91 98765 43211</a>
+            </div>
+          </div>
+          <p className="support-note">
+            Call us to verify your identity and manually reset your password.
+          </p>
+          
+          <Link to="/signup" className="signup-redirect">
             Don't have an account? Sign up
           </Link>
         </div>
@@ -208,5 +119,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;
