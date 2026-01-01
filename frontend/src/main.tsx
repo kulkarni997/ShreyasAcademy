@@ -10,6 +10,7 @@ import Mentors from './pages/Mentors';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
+import ScrollToTop from './components/ScrollToTop'; // Adjust path if needed
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
         v7_relativeSplatPath: true,
       }}
     >
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/login" element={<Login />} />
