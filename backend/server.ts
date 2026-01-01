@@ -262,6 +262,10 @@ app.post("/make-admin", verifyToken, async (req, res) => {
   }
 });
 
+app.get("/", (_req: Request, res: Response) => {
+  res.send("Shreyas Academy Backend is running! 🟢");
+});
+
 /* ================= START ================= */
 app.listen(port, () => {
   console.log(`Server running on port ${port} 🚀`);
