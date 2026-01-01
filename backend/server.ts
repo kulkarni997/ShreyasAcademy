@@ -17,17 +17,34 @@ mongoose
 
 /* ================= APP ================= */
 const app = express();
-app.set("trust proxy", 1);
+app.set("trust proxy", 1); // ✅ CRITICAL for Render
 
-// Replace your current app.use(cors(...)) with this:
+const isProd = process.env.NODE_ENV === "production";
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
+// ✅ FIXED CORS - More permissive for debugging
 app.use(cors({
-  origin: [
-    "https://shreyas-academy.vercel.app", // Your exact Vercel URL
-    process.env.FRONTEND_URL || ""         // Your env variable
-  ],
+  origin: function(origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, etc)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      "https://shreyas-academy.vercel.app",
+      FRONTEND_URL,
+      "http://localhost:5173" // for local testing
+    ];
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log("⚠️ Blocked origin:", origin);
+      callback(null, true); // ✅ TEMPORARY: Allow all origins for debugging
+    }
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+  exposedHeaders: ["Set-Cookie"]
 }));
 
 app.use(express.json());
@@ -39,12 +56,15 @@ const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
 /* ================= AUTH MIDDLEWARE ================= */
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies?.student_token; 
+  console.log("🔍 Token check:", { hasCookie: !!token, cookies: req.cookies });
+  
   if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {
     (req as any).user = jwt.verify(token, JWT_SECRET);
     next();
-  } catch {
+  } catch (err) {
+    console.error("❌ Token verification failed:", err);
     res.status(401).json({ message: "Invalid token" });
   }
 };
@@ -58,9 +78,20 @@ const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 
 /* ================= ROUTES ================= */
 
+// ✅ HEALTH CHECK - Add this!
+app.get("/health", (_req, res) => {
+  res.json({ 
+    status: "ok", 
+    timestamp: new Date().toISOString(),
+    env: process.env.NODE_ENV 
+  });
+});
+
 // LOGIN
 app.post("/login", async (req: Request, res: Response) => {
   try {
+    console.log("🔐 Login attempt:", { email: req.body.email, hasPassword: !!req.body.password });
+    
     let { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password required" });
@@ -70,11 +101,13 @@ app.post("/login", async (req: Request, res: Response) => {
     const user = await User.findOne({ email }).select("+password");
     
     if (!user || !user.password) {
+      console.log("❌ User not found:", email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log("❌ Password mismatch for:", email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
@@ -82,22 +115,35 @@ app.post("/login", async (req: Request, res: Response) => {
       expiresIn: "7d",
     });
 
-    const isProd = process.env.NODE_ENV === "production";
-    res.cookie("student_token", token, {
+    // ✅ FIXED: More compatible cookie settings
+    const cookieOptions = {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      secure: isProd, // true in production (HTTPS required)
+      sameSite: isProd ? "none" as const : "lax" as const,
       path: "/",
-    });
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      domain: isProd ? undefined : undefined // Let browser decide
+    };
 
-    res.json({ message: "Login successful 🎉", role: user.role });
+    console.log("✅ Setting cookie with options:", cookieOptions);
+    res.cookie("student_token", token, cookieOptions);
+
+    res.json({ 
+      message: "Login successful 🎉", 
+      role: user.role,
+      user: { id: user._id, name: user.name, email: user.email }
+    });
   } catch (error) {
-    res.status(500).json({ message: "Login failed" });
+    console.error("❌ Login error:", error);
+    res.status(500).json({ message: "Login failed", error: String(error) });
   }
 });
-// SIGNUP ROUTE - SYNCED WITH SIGNUP.TSX
+
+// SIGNUP ROUTE
 app.post("/signup", async (req: Request, res: Response) => {
   try {
+    console.log("📝 Signup attempt:", { email: req.body.email, name: req.body.name });
+    
     const { name, email, phone, password } = req.body;
 
     if (!name || !email || !password || !phone) {
@@ -112,6 +158,7 @@ app.post("/signup", async (req: Request, res: Response) => {
 
     const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
+      console.log("⚠️ Email already exists:", normalizedEmail);
       return res.status(400).json({ message: "Email already registered" });
     }
 
@@ -119,7 +166,7 @@ app.post("/signup", async (req: Request, res: Response) => {
       name: name.trim(),
       email: normalizedEmail,
       password,
-      phone: phone.trim(), // ✅ FIXED: Changed from contactNumber to phone
+      phone: phone.trim(),
       role: "student",
       weeklyMarks: [],
       biologyMarks: 0,
@@ -134,13 +181,12 @@ app.post("/signup", async (req: Request, res: Response) => {
     res.status(201).json({ message: "Account created successfully! Please login." });
   } catch (error) {
     console.error("❌ Signup error:", error);
-    res.status(500).json({ message: "Registration failed. Please try again." });
+    res.status(500).json({ message: "Registration failed. Please try again.", error: String(error) });
   }
 });
 
 // LOGOUT
 app.post("/logout", (_req, res) => {
-  const isProd = process.env.NODE_ENV === "production";
   res.clearCookie("student_token", {
     httpOnly: true,
     secure: isProd,
@@ -157,19 +203,18 @@ app.get("/profile", verifyToken, async (req: Request, res: Response) => {
     if (!user) return res.status(404).json({ message: "User not found" });
     res.json({ user: user.toObject() });
   } catch (error) {
+    console.error("❌ Profile fetch error:", error);
     res.status(500).json({ message: "Error fetching profile" });
   }
 });
 
 /* ================= ADMIN ROUTES ================= */
 
-// GET ALL STUDENTS
 app.get("/admin/students", verifyToken, isAdmin, async (req, res) => {
   const students = await User.find({ role: "student" }).select("-password");
   res.json({ students });
 });
 
-// UPDATE MARKS
 app.post("/admin/students/:id/marks", verifyToken, isAdmin, async (req, res) => {
   try {
     const { biologyMarks, physicsMarks, chemistryMarks, rank } = req.body;
@@ -200,7 +245,6 @@ app.post("/admin/students/:id/marks", verifyToken, isAdmin, async (req, res) => 
   }
 });
 
-// UPDATE STUDENT DETAILS / MENTOR
 app.put("/admin/students/:id/mentor", verifyToken, isAdmin, async (req, res) => {
   try {
     const { mentorName, mentorContactNumber, rollNumber, plan } = req.body;
@@ -217,7 +261,6 @@ app.put("/admin/students/:id/mentor", verifyToken, isAdmin, async (req, res) => 
   }
 });
 
-// MANUAL PASSWORD RESET BY ADMIN
 app.put("/admin/students/:id/reset-password", verifyToken, isAdmin, async (req, res) => {
   try {
     const { password } = req.body;
@@ -228,7 +271,7 @@ app.put("/admin/students/:id/reset-password", verifyToken, isAdmin, async (req, 
     const student = await User.findById(req.params.id);
     if (!student) return res.status(404).json({ message: "Student not found" });
 
-    student.password = password; // The User model pre-save hook will hash this
+    student.password = password;
     await student.save();
 
     res.json({ message: "Password updated successfully" });
@@ -237,7 +280,6 @@ app.put("/admin/students/:id/reset-password", verifyToken, isAdmin, async (req, 
   }
 });
 
-// DELETE STUDENT
 app.delete("/admin/students/:id", verifyToken, isAdmin, async (req, res) => {
   try {
     const student = await User.findById(req.params.id);
@@ -251,7 +293,6 @@ app.delete("/admin/students/:id", verifyToken, isAdmin, async (req, res) => {
   }
 });
 
-// PROMOTING TO ADMIN (SECURE)
 app.post("/make-admin", verifyToken, async (req, res) => {
   try {
     const { email } = req.body;
@@ -274,5 +315,7 @@ app.get("/", (_req: Request, res: Response) => {
 
 /* ================= START ================= */
 app.listen(port, () => {
-  console.log(`Server running on port ${port} 🚀`);
+  console.log(`🚀 Server running on port ${port}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV}`);
+  console.log(`🌐 Frontend URL: ${FRONTEND_URL}`);
 });
