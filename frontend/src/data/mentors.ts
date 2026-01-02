@@ -30,7 +30,7 @@ export const mentors: Mentor[] = [
     rank: 'AIR 159',
     name: 'Saish Pandit',
     state: 'Karnataka',
-    achievements: ['Karnataka NEET Rank 10', 'JEE 99.76', 'IISER AIR 66','Mathematics Olympiad International Rank 48','Science Olympiad International Rank 29', 'NDA Cleared', 'KCET Rank 2'],
+    achievements: ['Karnataka NEET Rank 10', 'JEE 99.76','KCET Rank 2','IISER AIR 66','Mathematics Olympiad International Rank 48','Science Olympiad International Rank 29', 'NDA Cleared', ],
     college: 'MBBS at JIPMER Pondicherry',
     image: '/images/mentors/saish.png',
   },
