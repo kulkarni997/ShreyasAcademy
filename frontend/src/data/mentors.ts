@@ -46,7 +46,7 @@ export const mentors: Mentor[] = [
     rank: 'AIR 256',
     name: 'Harish Raj D V',
     state: 'Karnataka',
-    achievements: ['Karnataka NEET Rank 17', 'JEE 99.10', 'KCET Top Rank'],
+    achievements: ['Karnataka NEET Rank 1', 'JEE 99.10', 'KCET Top Rank'],
     college: 'MBBS at JIPMER Pondicherry',
     image: '/images/mentors/harishraj.png',
   },
@@ -168,7 +168,6 @@ export const mentors: Mentor[] = [
     college: '',
     image: '/images/mentors/two.png',
   },
-
 ];
 
 
