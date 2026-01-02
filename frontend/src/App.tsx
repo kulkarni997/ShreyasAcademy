@@ -186,8 +186,8 @@ useEffect(() => {
                 India&apos;s Most Elite NEET Mentorship Program Guided by MBBS Toppers
               </h1>
               <p className="hero-subtitle">
-                <strong>Learn directly from</strong> NEET toppers with AIR 17, 29, 80, 159, 214, 256 and many more top ranks
-                from prestigious institutions like <strong>AIIMS Delhi</strong>, <strong>JIPMER</strong>, and <strong>BMC</strong>.
+                <strong>Learn directly from</strong> NEET toppers with <strong>AIR 17, 29, 80, 159, 214, 256</strong> & more top ranks
+                from prestigious institutions like <strong>AIIMS Delhi</strong>, <strong>JIPMER Pondicherry</strong>, and <strong>BMC</strong>.
               </p>
               <div className="hero-features">
                 📚 Personal Guidance + Topper Strategy + Daily Study Plan 
