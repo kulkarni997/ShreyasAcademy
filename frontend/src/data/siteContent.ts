@@ -147,5 +147,5 @@ export const contactDetails: ContactDetail[] = [
   { icon: '📞', label: 'Phone', value: '7411060709' },
 ];
 
-export const supportHours = 'Mon-Sat: 9AM - 5PM IST';
+export const supportHours = 'Mon-Sat: 9AM - 11PM IST';
 

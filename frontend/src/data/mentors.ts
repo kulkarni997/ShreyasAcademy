@@ -78,7 +78,7 @@ export const mentors: Mentor[] = [
     rank: 'AIR 768',
     name: 'Viswajitt R P',
     state: 'Tamil Nadu',
-    achievements: ['Tamil Nadu Rank 36', 'JEE 99', 'JEE Physics 100% (twice)'],
+    achievements: ['Tamil Nadu Rank 36', 'JEE 99', 'JEE Physics 100% (2x)'],
     college: 'MBBS at JIPMER Pondicherry',
     image: '/images/mentors/viswajit.png',
   },

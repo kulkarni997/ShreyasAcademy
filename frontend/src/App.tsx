@@ -157,7 +157,7 @@ useEffect(() => {
           <div className="nav-container">
             <Link to="/" className="logo-section">
               <img src={academyLogo} alt="Shreyas Academy Logo" className="logo-image" />
-              <span className="logo-text">Shreyas Academy</span>
+              <span className="logo-text">SHREYAS ACADEMY</span>
             </Link>
             <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
               {navLinks.map((link) => (
