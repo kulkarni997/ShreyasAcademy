@@ -29,7 +29,8 @@ app.use(cors({
     if (!origin) return callback(null, true);
     
     const allowedOrigins = [
-      "https://shreyas-academy.vercel.app",
+     "https://shreyasacademy.in",
+     "https://www.shreyasacademy.in",
       FRONTEND_URL,
       "http://localhost:5173" // for local testing
     ];
@@ -122,7 +123,7 @@ app.post("/login", async (req: Request, res: Response) => {
       sameSite: isProd ? "none" as const : "lax" as const,
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      domain: isProd ? undefined : undefined // Let browser decide
+      domain: isProd ? ".shreyasacademy.in" : undefined // Let browser decide
     };
 
     console.log("✅ Setting cookie with options:", cookieOptions);
