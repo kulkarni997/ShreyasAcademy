@@ -90,6 +90,14 @@ export const mentors: Mentor[] = [
     college: 'MBBS at JIPMER Pondicherry',
     image: '/images/mentors/one.png',
   },
+   {
+    rank: 'AIR 1198',
+    name: 'Chaitanya',
+    state: 'Karnataka',
+    achievements: ['KCET Rank 172', 'JEE 98.7'],
+    college: 'MBBS at JIPMER Pondicherry',
+    image: '/images/mentors/chaitanya.png',
+  },
   {
     rank: 'AIR 2213',
     name: 'Shadjay',
