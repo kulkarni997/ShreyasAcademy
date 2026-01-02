@@ -16,7 +16,7 @@ export const mentors: Mentor[] = [
     state: 'Karnataka',
     achievements: ['Karnataka NEET Rank 1', 'JEE 99.47', 'UPSC NDA Cleared','KCET Rank 8'],
     college: 'MBBS at AIIMS Delhi',
-    image: '/images/mentors/chaitanya.png',
+    image: '/images/mentors/nikhil.png',
   },
   {
     rank: 'AIR 80',
