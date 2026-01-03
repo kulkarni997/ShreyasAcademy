@@ -393,19 +393,39 @@
   }
 }
 
-/* Add this to your Mobile Media Query */
+/* Update your existing mobile media query */
 @media (max-width: 480px) {
-  .login-card {
-    width: 100% !important;     /* Force it to stay within the screen */
-    max-width: 100vw;           /* Ensure it never exceeds viewport width */
-    margin-left: 0 !important;  /* Remove any left margins pushing it right */
-    margin-right: 0 !important;
-    box-sizing: border-box;     /* Includes padding in the width calculation */
-    border-radius: 30px 30px 0 0; 
+  .login-card, .login-form-wrapper, [class*="login"] {
+    width: 95% !important;      /* Give some breathing room */
+    max-width: 95vw !important;
+    margin: 1rem auto !important; /* Center with auto margins */
+    padding: 1.5rem !important; /* Reduce padding if needed */
+    transform: none !important; /* Remove any transforms */
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important; /* Proper centering */
+    box-sizing: border-box;
   }
 
-  .login-wrapper, .login-page-container {
-    overflow-x: hidden;         /* Prevents horizontal shaking/scrolling */
-    width: 100%;
+  /* Fix the parent containers */
+  .login-page-container,
+  .login-wrapper,
+  body {
+    overflow-x: hidden !important;
+    width: 100vw !important;
+    max-width: 100% !important;
+  }
+
+  /* Ensure the blue background section doesn't cause overflow */
+  .login-page-container > * {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+
+  /* Fix text that might be too large */
+  .login-card h1,
+  .login-card .welcome-text {
+    font-size: 1.8rem !important;
+    line-height: 1.2;
   }
 }
