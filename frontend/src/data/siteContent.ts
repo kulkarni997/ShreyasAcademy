@@ -78,14 +78,14 @@ export const pricingPlans: PricingPlan[] = [
     ],
   },
   {
-    name: '16 Month Elite',
+    name: 'Full NEET - Until you crack NEET',
     price: '₹34,999',
     originalPrice: '₹53,999',
     duration: 'Complete NEET journey • Most recommended',
     badge: 'Few Slots Left',
     featured: true,
     features: [
-      'Everything in 6 Month plan',
+      'Premium',
       'Full syllabus coverage',
       'Daily mock tests & analysis',
       'Personalized study plan',
