@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { API_URL } from '../config/api';
-import '../styles/login.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -61,77 +60,167 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page">
-      <button onClick={handleGoHome} className="go-home-btn">
+    <section className="contact" style={{ 
+      minHeight: "100vh", 
+      position: "relative",
+      display: "flex",
+      alignItems: "center"
+    }}>
+      {/* GO BACK BUTTON */}
+      <button 
+        onClick={handleGoHome}
+        style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          padding: '10px 20px',
+          background: 'rgba(102, 126, 234, 0.1)',
+          color: 'white',
+          border: '1px solid white',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          fontWeight: '600',
+          transition: 'all 0.3s ease',
+          zIndex: 10
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = '#667eea';
+          e.currentTarget.style.color = 'white';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(102, 126, 234, 0.1)';
+          e.currentTarget.style.color = '#667eea';
+        }}
+      >
         ← Go Back
       </button>
 
-      <div className="login-container">
-        {/* LEFT SIDE: Branding Section */}
-        <div className="login-branding">
-          <h1 className="branding-title">Welcome Back</h1>
-          <p className="branding-subtitle">
-            Log in to your Shreyas Academy account to track your NEET performance, 
-            connect with your mentor, and view your weekly test results.
-          </p>
-        </div>
-
-        {/* RIGHT SIDE: White Form Card */}
-        <div className="login-card">
-          <h2 className="form-title">Login</h2>
-          <div className="login-form">
-            {error && <div className="error-alert">{error}</div>}
-            
-            <div className="input-group">
-              <label>Email Address</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="Enter your email"
-              />
-            </div>
-
-            <div className="input-group">
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                placeholder="Enter your password"
-              />
-            </div>
-
-            <button 
-              onClick={handleSubmit} 
-              disabled={isLoading} 
-              className="login-submit-btn"
-            >
-              {isLoading ? 'Logging in...' : 'Login'}
-            </button>
+      <div className="section-container">
+        <div className="contact-content">
+          <div className="contact-info">
+            <h2>Welcome Back</h2>
+            <p>
+              Log in to your Shreyas Academy account to track your NEET performance, 
+              connect with your mentor, and view your weekly test results.
+            </p>
           </div>
 
-          {/* Support contacts moved inside the white card for a clean look */}
-          <div className="login-support-box">
-            <p className="support-title">Forgot Password? Contact our support team to reset password.</p>
-            <div className="contact-numbers">
-              <div className="contact-row">
-                <span>Support Team:</span>
-                <a href="tel:+919876543210">+91 9972737380</a>
-                <a href="tel:+919876543210">+91 8618158884</a>
+          <div className="contact-form">
+            <h2 style={{ 
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: "1.75rem",
+              fontWeight: 800,
+              marginBottom: "24px",
+              textAlign: "center",
+              color: "#0f172a"
+            }}>Login</h2>
+            
+            <form onSubmit={handleSubmit}>
+              {error && (
+                <div style={{
+                  background: "#fff1f2",
+                  color: "#e11d48",
+                  padding: "14px 16px",
+                  borderRadius: "12px",
+                  marginBottom: "24px",
+                  fontSize: "0.9rem",
+                  border: "1px solid #ffe4e6",
+                  fontWeight: 500,
+                  textAlign: "center"
+                }}>{error}</div>
+              )}
+              
+              <div className="form-group">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="Enter your email"
+                />
               </div>
+
+              <div className="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  placeholder="Enter your password"
+                />
+              </div>
+
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={isLoading}
+                style={{ width: "100%", marginTop: "10px" }}
+              >
+                {isLoading ? "Logging in..." : "Login"}
+              </button>
+            </form>
+
+            {/* Support contacts */}
+            <div style={{
+              marginTop: "32px",
+              paddingTop: "24px",
+              borderTop: "1px solid #f1f5f9",
+              textAlign: "center"
+            }}>
+              <p style={{
+                color: "#64748b",
+                fontSize: "0.85rem",
+                marginBottom: "15px",
+                fontWeight: 500,
+                lineHeight: 1.5
+              }}>
+                Forgot Password? Contact our support team to reset password.
+              </p>
+              <div style={{
+                background: "#f8fafc",
+                padding: "16px",
+                borderRadius: "16px",
+                marginBottom: "20px"
+              }}>
+                <div style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                  fontSize: "0.95rem",
+                  alignItems: "center"
+                }}>
+                  <span style={{ color: "#64748b" }}>Support Team:</span>
+                  <a href="tel:+919972737380" style={{
+                    color: "#2563eb",
+                    textDecoration: "none",
+                    fontWeight: 700
+                  }}>+91 9972737380</a>
+                  <a href="tel:+918618158884" style={{
+                    color: "#2563eb",
+                    textDecoration: "none",
+                    fontWeight: 700
+                  }}>+91 8618158884</a>
+                </div>
+              </div>
+              <Link to="/signup" style={{
+                display: "block",
+                marginTop: "15px",
+                color: "#475569",
+                fontSize: "0.9rem",
+                textDecoration: "none",
+                fontWeight: 600
+              }}>
+                Don't have an account? Sign up
+              </Link>
             </div>
-            <Link to="/signup" className="signup-link">
-              Don't have an account? Sign up
-            </Link>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
