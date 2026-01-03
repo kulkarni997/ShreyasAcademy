@@ -117,7 +117,7 @@ const Login = () => {
 
           {/* Support contacts moved inside the white card for a clean look */}
           <div className="login-support-box">
-            <p className="support-title">Forgot Password? Contact our support to team to reset password.</p>
+            <p className="support-title">Forgot Password? Contact our support team to reset password.</p>
             <div className="contact-numbers">
               <div className="contact-row">
                 <span>Support Team:</span>
