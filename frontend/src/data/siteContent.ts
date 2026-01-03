@@ -78,7 +78,7 @@ export const pricingPlans: PricingPlan[] = [
     ],
   },
   {
-    name: 'Full NEET - Until you crack NEET',
+    name: 'Full NEET Course- Until you crack NEET',
     price: '₹34,999',
     originalPrice: '₹53,999',
     duration: 'Complete NEET journey • Most recommended',
