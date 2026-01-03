@@ -362,4 +362,33 @@
     color: var(--text-muted);
     font-weight: 600;
   }
+  .table-wrapper {
+    background: transparent; /* Remove double backgrounds on mobile */
+    padding: 0;
+  }
+
+ .weekly-table td {
+    display: flex; /* Use flex for better alignment than padding-left */
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    text-align: right;
+  }
+
+  .weekly-table td::before {
+    content: attr(data-label); /* Now this will work! */
+    position: static; /* Change from absolute to static for flexbox */
+    transform: none;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  /* Make the "Week X" row look like a header card */
+  .weekly-table td:first-child {
+    background: rgba(59, 130, 246, 0.15);
+    justify-content: center;
+    color: var(--electric-blue);
+    font-size: 1.1rem;
+  }
 }

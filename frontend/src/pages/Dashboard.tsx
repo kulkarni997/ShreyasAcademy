@@ -167,17 +167,31 @@ return (
             <tbody>
               {user.weeklyMarks && user.weeklyMarks.length > 0 ? (
                 user.weeklyMarks.map((w, index) => (
-                  <tr key={index}>
-                    <td className="bold-text">Week {w.week}</td>
-                    <td><span className="subject-badge badge-bio">{w.biologyMarks}/360</span></td>
-                    <td><span className="subject-badge badge-phy">{w.physicsMarks}/180</span></td>
-                    <td><span className="subject-badge badge-chem">{w.chemistryMarks}/180</span></td>
-                    <td className="bold-text">{w.totalMarks}/720</td>
-                    <td className="rank-cell">
-                        {w.rank === 1 ? "🏆 1" : w.rank || "N/A"}
-                    </td>
-                  </tr>
-                ))
+  <tr key={index}>
+    {/* No label needed for the first cell as it acts as a header */}
+    <td className="bold-text">Week {w.week}</td>
+    
+    <td data-label="Biology">
+      <span className="subject-badge badge-bio">{w.biologyMarks}/360</span>
+    </td>
+    
+    <td data-label="Physics">
+      <span className="subject-badge badge-phy">{w.physicsMarks}/180</span>
+    </td>
+    
+    <td data-label="Chemistry">
+      <span className="subject-badge badge-chem">{w.chemistryMarks}/180</span>
+    </td>
+    
+    <td data-label="Total Score" className="bold-text">
+      {w.totalMarks}/720
+    </td>
+    
+    <td data-label="Global Rank" className="rank-cell">
+      {w.rank === 1 ? "🏆 1" : w.rank || "N/A"}
+    </td>
+  </tr>
+))
               ) : (
                 <tr>
                   <td colSpan={6} style={{ textAlign: "center", padding: "40px" }}>
