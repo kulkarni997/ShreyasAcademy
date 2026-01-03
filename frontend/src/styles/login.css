@@ -14,24 +14,17 @@ html.login-active {
 
 /* 2. Global Page Layout */
 .login-page {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
   min-height: 100vh !important;
+  width: 100% !important;
+  position: relative !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
-  padding: 20px !important;
+  padding: 2rem !important;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  z-index: 9999 !important;
-  margin: 0 !important;
   box-sizing: border-box !important;
   -webkit-overflow-scrolling: touch;
 }
@@ -41,12 +34,12 @@ html.login-active {
   display: grid;
   grid-template-columns: 1fr 1fr; 
   gap: 80px;
-  max-width: 1100px;
+  max-width: 1400px;
   width: 100%;
   align-items: center;
   z-index: 2;
   position: relative;
-  padding: 0 20px;
+  padding: 0;
   box-sizing: border-box;
   overflow: visible;
 }
@@ -75,9 +68,9 @@ html.login-active {
 /* 5. Right Side: White Form Card */
 .login-card {
   background: #ffffff;
-  padding: 48px;
-  border-radius: 28px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.6s ease-out;
   position: relative;
   z-index: 3;
@@ -229,28 +222,27 @@ html.login-active {
 
 /* 9. Fixed Header Controls */
 .go-home-btn {
-  position: fixed !important;
-  top: 32px;
-  right: 32px;
-  background: rgba(255, 255, 255, 0.15);
+  position: absolute !important;
+  top: 20px;
+  right: 20px;
+  background: rgba(102, 126, 234, 0.1);
   color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  padding: 12px 24px;
-  border-radius: 12px;
+  border: 1px solid white;
+  padding: 10px 20px;
+  border-radius: 5px;
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  z-index: 10000 !important;
+  z-index: 10 !important;
   text-decoration: none;
   display: inline-block;
 }
 
 .go-home-btn:hover {
-  background: white;
-  color: #1e40af;
-  border-color: white;
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -292,11 +284,26 @@ html.login-active {
 }
 
 /* 12. Responsive Design */
+@media (max-width: 1024px) {
+  .login-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .login-branding {
+    display: none;
+  }
+  
+  .login-card {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
 @media (max-width: 968px) {
   .login-page {
-    padding: 16px !important;
-    align-items: flex-start !important;
-    padding-top: 60px !important;
+    padding: 2rem 1rem !important;
+    align-items: center !important;
   }
   
   .login-container {
@@ -306,6 +313,7 @@ html.login-active {
     max-width: 100%;
     padding: 0;
     width: 100%;
+    margin: 0 auto;
   }
   
   .login-branding {
@@ -313,8 +321,8 @@ html.login-active {
   }
   
   .login-card {
-    padding: 32px 24px;
-    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    border-radius: 16px;
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
@@ -327,33 +335,43 @@ html.login-active {
   }
   
   .go-home-btn {
-    top: 12px !important;
-    right: 12px !important;
-    padding: 8px 16px;
-    font-size: 0.85rem;
-    border-radius: 8px;
+    top: 20px !important;
+    right: 20px !important;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-page {
+    padding: 2rem 1.5rem !important;
+  }
+  
+  .login-card {
+    padding: 2rem 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .login-page {
-    padding: 10px !important;
-    padding-top: 55px !important;
-    align-items: flex-start !important;
+    padding: 1.5rem 1rem !important;
+    align-items: center !important;
   }
   
   .login-container {
     width: 100%;
     padding: 0;
-    margin: 0;
+    margin: 0 auto;
+    max-width: 100%;
   }
   
   .login-card {
-    padding: 24px 20px;
+    padding: 1.5rem;
     border-radius: 16px;
     width: 100%;
     max-width: 100%;
-    margin: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
   
   .form-title {
@@ -371,17 +389,17 @@ html.login-active {
   }
   
   .input-group input {
-    padding: 12px 14px;
+    padding: 12px;
     font-size: 0.95rem;
-    border-radius: 10px;
+    border-radius: 8px;
     width: 100%;
     box-sizing: border-box;
   }
   
   .login-submit-btn {
-    padding: 14px;
+    padding: 12px;
     font-size: 0.95rem;
-    border-radius: 40px;
+    border-radius: 50px;
     width: 100%;
   }
   
@@ -430,11 +448,11 @@ html.login-active {
   }
   
   .go-home-btn {
-    top: 10px !important;
-    right: 10px !important;
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    border-radius: 8px;
+    top: 20px !important;
+    right: 20px !important;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    border-radius: 5px;
   }
   
   .error-alert {
@@ -447,12 +465,11 @@ html.login-active {
 /* 13. Extra small devices */
 @media (max-width: 360px) {
   .login-page {
-    padding: 8px !important;
-    padding-top: 50px !important;
+    padding: 1rem !important;
   }
   
   .login-card {
-    padding: 20px 16px;
+    padding: 1.25rem;
     border-radius: 14px;
   }
   
@@ -492,9 +509,9 @@ html.login-active {
   }
   
   .go-home-btn {
-    top: 8px !important;
-    right: 8px !important;
-    padding: 5px 10px;
-    font-size: 0.75rem;
+    top: 15px !important;
+    right: 15px !important;
+    padding: 6px 12px;
+    font-size: 0.8rem;
   }
 }
