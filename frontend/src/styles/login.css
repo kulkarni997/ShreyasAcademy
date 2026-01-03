@@ -3,7 +3,16 @@
 
 /* ===== ELITE SPLIT-SCREEN LOGIN CSS ===== */
 
-/* 1. Global Page Layout - OVERRIDE EVERYTHING */
+/* 1. Reset body and html for login page */
+body.login-active,
+html.login-active {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+/* 2. Global Page Layout */
 .login-page {
   position: fixed !important;
   top: 0 !important;
@@ -16,18 +25,17 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  /* Deep Blue Branding Background */
   background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
   padding: 20px !important;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  z-index: 10001 !important;
+  z-index: 9999 !important;
   margin: 0 !important;
   box-sizing: border-box !important;
 }
 
-/* 2. Split Container */
+/* 3. Split Container */
 .login-container {
   display: grid;
   grid-template-columns: 1fr 1fr; 
@@ -41,7 +49,7 @@
   box-sizing: border-box;
 }
 
-/* 3. Left Side: Branding & Value Proposition */
+/* 4. Left Side: Branding & Value Proposition */
 .login-branding {
   color: white;
   animation: fadeIn 0.8s ease-out;
@@ -62,7 +70,7 @@
   max-width: 460px;
 }
 
-/* 4. Right Side: White Form Card */
+/* 5. Right Side: White Form Card */
 .login-card {
   background: #ffffff;
   padding: 48px;
@@ -85,7 +93,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* 5. Input Groups */
+/* 6. Input Groups */
 .input-group {
   margin-bottom: 24px;
 }
@@ -119,7 +127,7 @@
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
-/* 6. Professional Submit Button */
+/* 7. Professional Submit Button */
 .login-submit-btn {
   width: 100%;
   padding: 16px;
@@ -145,9 +153,10 @@
   background: #cbd5e1;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
-/* 7. Support & Navigation Section */
+/* 8. Support & Navigation Section */
 .login-support-box {
   margin-top: 32px;
   padding-top: 24px;
@@ -199,58 +208,78 @@
   font-size: 0.9rem;
   text-decoration: none;
   font-weight: 600;
+  transition: color 0.2s;
 }
 
 .signup-link:hover {
   color: #2563eb;
 }
 
-/* 8. Fixed Header Controls */
+/* 9. Fixed Header Controls */
 .go-home-btn {
   position: fixed !important;
   top: 32px;
   right: 32px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 10px 22px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 12px 24px;
   border-radius: 12px;
   font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
-  z-index: 10002 !important;
+  backdrop-filter: blur(10px);
+  z-index: 10000 !important;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .go-home-btn:hover {
   background: white;
   color: #1e40af;
+  border-color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* 9. Error Alert */
+/* 10. Error Alert */
 .error-alert {
   background: #fff1f2;
   color: #e11d48;
-  padding: 14px;
+  padding: 14px 16px;
   border-radius: 12px;
   margin-bottom: 24px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   border: 1px solid #ffe4e6;
   font-weight: 500;
+  text-align: center;
 }
 
-/* 10. Animations */
+/* 11. Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from { 
+    opacity: 0; 
+    transform: translateX(-20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(0); 
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { 
+    opacity: 0; 
+    transform: translateY(30px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
 }
 
-/* 11. Responsive Design */
+/* 12. Responsive Design */
 @media (max-width: 968px) {
   .login-page {
     padding: 16px !important;
@@ -269,21 +298,25 @@
   }
   
   .login-card {
-    padding: 32px 24px;
-    border-radius: 20px;
+    padding: 40px 32px;
+    border-radius: 24px;
     width: 100%;
-    max-width: 450px;
+    max-width: 480px;
     margin: 0 auto;
   }
   
   .form-title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+  }
+  
+  .branding-title {
+    font-size: 2.5rem;
   }
   
   .go-home-btn {
-    top: 16px !important;
-    right: 16px !important;
-    padding: 8px 16px;
+    top: 20px !important;
+    right: 20px !important;
+    padding: 10px 20px;
     font-size: 0.9rem;
   }
 }
@@ -299,15 +332,15 @@
   }
   
   .login-card {
-    padding: 24px 20px;
-    border-radius: 16px;
+    padding: 28px 24px;
+    border-radius: 20px;
     width: 100%;
     max-width: 100%;
   }
   
   .form-title {
-    font-size: 1.35rem;
-    margin-bottom: 24px;
+    font-size: 1.4rem;
+    margin-bottom: 28px;
   }
   
   .input-group {
@@ -320,7 +353,7 @@
   }
   
   .input-group input {
-    padding: 12px 16px;
+    padding: 13px 16px;
     font-size: 0.95rem;
     border-radius: 10px;
   }
@@ -332,26 +365,52 @@
   }
   
   .login-support-box {
-    margin-top: 24px;
+    margin-top: 28px;
     padding-top: 20px;
   }
   
   .contact-numbers {
     padding: 14px;
-    border-radius: 12px;
+    border-radius: 14px;
+    margin-bottom: 16px;
   }
   
   .contact-row {
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
     font-size: 0.9rem;
   }
   
+  .support-title {
+    font-size: 0.8rem;
+  }
+  
   .go-home-btn {
-    top: 12px !important;
-    right: 12px !important;
-    padding: 7px 14px;
+    top: 16px !important;
+    right: 16px !important;
+    padding: 8px 16px;
     font-size: 0.85rem;
     border-radius: 10px;
+  }
+}
+
+/* 13. Extra small devices */
+@media (max-width: 360px) {
+  .login-card {
+    padding: 24px 18px;
+  }
+  
+  .form-title {
+    font-size: 1.25rem;
+  }
+  
+  .input-group input {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
+  
+  .login-submit-btn {
+    padding: 13px;
+    font-size: 0.95rem;
   }
 }
