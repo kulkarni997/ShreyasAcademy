@@ -1019,6 +1019,314 @@ nav.navbar .nav-link:hover {
   opacity: 0.9;
 }
 
+/* ===== SPECIAL 100-DAY CRASH COURSE SECTION ===== */
+.crash-course-section {
+  padding: 6rem 2rem;
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.crash-course-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.crash-course-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 24px;
+  padding: 3.5rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(245, 158, 11, 0.2);
+  position: relative;
+  border: 3px solid var(--gold);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.crash-course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.4), 0 0 0 6px rgba(245, 158, 11, 0.3);
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3), 0 0 0 6px rgba(245, 158, 11, 0.35);
+  }
+}
+
+.crash-course-badge {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--gold), #f59e0b);
+  color: var(--black);
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+  animation: badge-pulse 2s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+@keyframes badge-pulse {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
+.crash-course-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--black);
+  margin-bottom: 1rem;
+  text-align: center;
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.crash-course-subtitle {
+  font-size: 1.2rem;
+  color: var(--gray);
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.crash-course-price-container {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(30, 64, 175, 0.05), rgba(59, 130, 246, 0.05));
+  border-radius: 16px;
+  border: 2px solid rgba(30, 64, 175, 0.1);
+}
+
+.crash-course-price-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.crash-course-original-price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gray);
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.crash-course-current-price {
+  font-family: 'Poppins', sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--primary-blue);
+  line-height: 1;
+  text-shadow: 0 2px 10px rgba(30, 64, 175, 0.2);
+  animation: price-glow 2s ease-in-out infinite;
+}
+
+@keyframes price-glow {
+  0%, 100% {
+    text-shadow: 0 2px 10px rgba(30, 64, 175, 0.2);
+  }
+  50% {
+    text-shadow: 0 2px 20px rgba(30, 64, 175, 0.4), 0 0 30px rgba(59, 130, 246, 0.3);
+  }
+}
+
+.crash-course-launch-label {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--gold), #f59e0b);
+  color: var(--black);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.crash-course-features {
+  list-style: none;
+  margin-bottom: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.crash-course-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8fafc, var(--white));
+  border-radius: 12px;
+  border-left: 4px solid var(--primary-blue);
+  transition: all 0.3s ease;
+  font-weight: 600;
+  color: var(--dark-gray);
+}
+
+.crash-course-features li:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.15);
+  background: linear-gradient(135deg, var(--white), #f1f5f9);
+}
+
+.crash-course-features .check-icon {
+  color: var(--success);
+  font-weight: bold;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.crash-course-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.crash-course-enroll-btn {
+  padding: 18px 48px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  box-shadow: 0 8px 25px rgba(30, 64, 175, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.crash-course-enroll-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.crash-course-enroll-btn:hover::before {
+  left: 100%;
+}
+
+.crash-course-enroll-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(30, 64, 175, 0.4);
+}
+
+.crash-course-explore-btn {
+  padding: 18px 48px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--primary-blue);
+  border: 2px solid var(--primary-blue);
+  transition: all 0.3s ease;
+}
+
+.crash-course-explore-btn:hover {
+  background: var(--primary-blue);
+  color: var(--white);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.3);
+}
+
+@media (max-width: 768px) {
+  .crash-course-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .crash-course-card {
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+  }
+
+  .crash-course-title {
+    font-size: 2rem;
+  }
+
+  .crash-course-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .crash-course-current-price {
+    font-size: 3rem;
+  }
+
+  .crash-course-features {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .crash-course-buttons {
+    flex-direction: column;
+  }
+
+  .crash-course-enroll-btn,
+  .crash-course-explore-btn {
+    width: 100%;
+    padding: 16px 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .crash-course-section {
+    padding: 3rem 1rem;
+  }
+
+  .crash-course-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .crash-course-title {
+    font-size: 1.75rem;
+  }
+
+  .crash-course-subtitle {
+    font-size: 1rem;
+  }
+
+  .crash-course-current-price {
+    font-size: 2.5rem;
+  }
+
+  .crash-course-price-container {
+    padding: 1.5rem;
+  }
+
+  .crash-course-badge {
+    font-size: 12px;
+    padding: 8px 20px;
+  }
+}
+
 .enroll {
   padding: 6rem 2rem;
   background: linear-gradient(135deg, var(--light-blue), var(--white));

@@ -72,7 +72,7 @@ const [showRefund, setShowRefund] = useState(false);
     window.open(GOOGLE_FORM, "_blank");
   };
 
-  const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+  const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, sectionId: string) => {
     event.preventDefault();
     const section = document.getElementById(sectionId);
     if (section) {
@@ -199,6 +199,59 @@ useEffect(() => {
                 <Link to="/login" className="btn btn-secondary">
                   Already enrolled? Log in
                 </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Special 100-Day NEET Crash Course Section */}
+        <section className="crash-course-section" id="crash-course">
+          <div className="section-container">
+            <div className="crash-course-card reveal-on-scroll">
+              <div className="crash-course-badge">Limited Time Launch Offer</div>
+              <h2 className="crash-course-title">Special 100-Day NEET Crash Course</h2>
+              <p className="crash-course-subtitle">Make the most out of your last 100 days before NEET.</p>
+              
+              <div className="crash-course-price-container">
+                <div className="crash-course-price-wrapper">
+                  <span className="crash-course-original-price">₹20,000</span>
+                  <span className="crash-course-current-price">₹9,999</span>
+                  <span className="crash-course-launch-label">Launch Offer</span>
+                </div>
+              </div>
+
+              <ul className="crash-course-features">
+                <li>
+                  <span className="check-icon">✓</span>
+                  <span>NEET-focused rapid revision</span>
+                </li>
+                <li>
+                  <span className="check-icon">✓</span>
+                  <span>Daily tests & performance tracking</span>
+                </li>
+                <li>
+                  <span className="check-icon">✓</span>
+                  <span>Live classes</span>
+                </li>
+                <li>
+                  <span className="check-icon">✓</span>
+                  <span>Dedicated doubt-clearing</span>
+                </li>
+              </ul>
+
+              <div className="crash-course-buttons">
+                <button 
+                  className="btn btn-primary crash-course-enroll-btn"
+                  onClick={() => window.open(GOOGLE_FORM, "_blank")}
+                >
+                  Enroll Now
+                </button>
+                <button 
+                  className="btn btn-secondary crash-course-explore-btn"
+                  onClick={(event) => handleNavClick(event, 'enroll')}
+                >
+                  Explore Other Plans
+                </button>
               </div>
             </div>
           </div>
