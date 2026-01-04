@@ -41,6 +41,7 @@ export const navLinks: NavLink[] = [
   { id: 'home', label: 'Home' },
   { id: 'mentor-panel', label: 'Mentors' },
   { id: 'about-academy', label: 'About' },
+  { id: 'crash-course', label: 'Crash Course' },
   { id: 'enroll', label: 'Enroll' },
 ];
 
