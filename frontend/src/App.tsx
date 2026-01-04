@@ -364,7 +364,7 @@ Sign up
               
               <div className="crash-course-price-container">
                 <div className="crash-course-price-wrapper">
-                  <span className="crash-course-original-price">₹20,000</span>
+                  <span className="crash-course-original-price">₹19,999</span>
                   <span className="crash-course-current-price">₹9,999</span>
                   <span className="crash-course-launch-label">Launch Offer</span>
                 </div>
@@ -377,7 +377,7 @@ Sign up
                 </li>
                 <li>
                   <span className="check-icon">✓</span>
-                  <span>Daily tests & performance tracking</span>
+                  <span>Tests & performance tracking</span>
                 </li>
                 <li>
                   <span className="check-icon">✓</span>
@@ -385,7 +385,7 @@ Sign up
                 </li>
                 <li>
                   <span className="check-icon">✓</span>
-                  <span>Dedicated doubt-clearing</span>
+                  <span>Dedicated doubt-clearing from Top rank holders</span>
                 </li>
               </ul>
 
