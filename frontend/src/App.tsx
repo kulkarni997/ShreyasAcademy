@@ -30,7 +30,7 @@ const initialFormState: ContactFormPayload = {
 
 
 const GOOGLE_FORM =
-  "https://docs.google.com/forms/d/e/1FAIpQLSfxNkVv-MS8mZwQThQCQnq4FZTTD1quucipXcP-VoywvA_v8A/viewform";
+  "https://docs.google.com/forms/d/e/1FAIpQLSfN2IKyUtdK9LbpQspIzjgKh-Iwg7aQ42yQGqkDSXY4FZ93_Q/viewform?usp=publish-editor";
 
 const App = () => {
   const navigate = useNavigate();
