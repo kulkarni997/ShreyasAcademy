@@ -26,8 +26,7 @@ const initialFormState: ContactFormPayload = {
   email: '',
   phone: '',
   message: '',
-};
-
+}; 
 
 const GOOGLE_FORM =
   "https://docs.google.com/forms/d/e/1FAIpQLSfN2IKyUtdK9LbpQspIzjgKh-Iwg7aQ42yQGqkDSXY4FZ93_Q/viewform?usp=publish-editor";
@@ -608,3 +607,4 @@ Get Started
 };
 
 export default App;
+
